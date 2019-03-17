@@ -144,7 +144,6 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/xlib_hack.h
         DOOM/linuxdoom-1.10/z_zone.c
         DOOM/linuxdoom-1.10/z_zone.h
-        /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/stdio.h
         DOOM/linuxdoom-1.10/pcx.c
         DOOM/linuxdoom-1.10/pcx.h
         DOOM/linuxdoom-1.10/bitmap.c
@@ -155,3 +154,5 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
         )
+
+target_link_libraries(pg_doom curses)

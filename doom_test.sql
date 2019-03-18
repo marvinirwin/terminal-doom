@@ -1,2 +1,0 @@
-CREATE EXTENSION doom;
-SELECT doom();

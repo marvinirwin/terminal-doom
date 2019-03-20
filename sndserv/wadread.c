@@ -126,7 +126,7 @@ unsigned short SwapSHORT(unsigned short x)
 // Way too many of those...
 static void derror(char* msg)
 {
-    fprintf(stderr, "\nwadread error: %s\n", msg);
+    // fprintf(stderr, "\nwadread error: %s\n", msg);
     exit(-1);
 }
 

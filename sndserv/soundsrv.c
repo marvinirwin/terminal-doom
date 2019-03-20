@@ -135,7 +135,7 @@ int		vol_lookup[128*256];
 
 static void derror(char* msg)
 {
-    fprintf(stderr, "error: %s\n", msg);
+    // fprintf(stderr, "error: %s\n", msg);
     exit(-1);
 }
 
@@ -370,14 +370,14 @@ grabdata
     //   name = DEVDATA "doom.wad";
     else
     {
-	fprintf(stderr, "Could not find wadfile anywhere\n");
+	// fprintf(stderr, "Could not find wadfile anywhere\n");
 	exit(-1);
     }
 
     
     openwad(name);
     if (snd_verbose)
-	fprintf(stderr, "loading from [%s]\n", name);
+	// fprintf(stderr, "loading from [%s]\n", name);
 
     for (i=1 ; i<NUMSFX ; i++)
     {
@@ -618,7 +618,7 @@ main
     I_InitMusic();
 
     if (snd_verbose)
-	fprintf(stderr, "ready\n");
+	// fprintf(stderr, "ready\n");
     
     // parse commands and play sounds until done
     FD_ZERO(&fdset);
@@ -648,7 +648,7 @@ main
 		    else
 		    {
 			if (snd_verbose)
-			    fprintf(stderr, "cmd: %c", commandbuf[0]);
+			    // fprintf(stderr, "cmd: %c", commandbuf[0]);
 
 			switch (commandbuf[0])
 			{
@@ -659,7 +659,7 @@ main
 			    if (snd_verbose)
 			    {
 				commandbuf[9]=0;
-				fprintf(stderr, "%s\n", commandbuf);
+				// fprintf(stderr, "%s\n", commandbuf);
 			    }
 
 			    commandbuf[0] -=
@@ -711,7 +711,7 @@ main
 			  break;
 			  
 			  default:
-			    fprintf(stderr, "Did not recognize command\n");
+			    // fprintf(stderr, "Did not recognize command\n");
 			    break;
 			}
 		    }

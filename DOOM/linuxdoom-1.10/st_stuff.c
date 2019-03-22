@@ -531,7 +531,7 @@ ST_Responder (event_t* ev)
 	break;
 	
       case AM_MSGEXITED:
-	//	fprintf(stderr, "AM exited\n");
+	//	// fprintf(stderr, "AM exited\n");
 	st_gamestate = FirstPersonState;
 	break;
     }

@@ -63,6 +63,8 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include "m_misc.h"
 
+extern WINDOW * myWindow;
+
 typedef struct DensityChar {
     double density;
     char character;
@@ -71,20 +73,24 @@ typedef struct DensityChar {
 DensityChar characters[10] = {
         (DensityChar){.density = 0, .character = ' '},
         (DensityChar){.density = .2, .character = '.'},
-        (DensityChar){.density = .4, .character = ','},
-        (DensityChar){.density = .6, .character = ':'},
-        (DensityChar){.density = .8, .character = ';'},
-        (DensityChar){.density = .10, .character = 'o'},
-        (DensityChar){.density = .13, .character = 'x'},
-        (DensityChar){.density = .15, .character = '%'},
-        (DensityChar){.density = .17, .character = '#'},
+        (DensityChar){.density = .4, .character = ':'},
+        (DensityChar){.density = .6, .character = '-'},
+        (DensityChar){.density = .8, .character = '='},
+        (DensityChar){.density = .10, .character = '+'},
+        (DensityChar){.density = .13, .character = '*'},
+        (DensityChar){.density = .15, .character = '#'},
+        (DensityChar){.density = .17, .character = '%'},
         (DensityChar){.density = .22, .character = '@'},
 };
 
+char * orderedCharacters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
+
+
 char getChar(double density) {
-    for (int i = 0; i < 10; ++i) {
-        if (characters[9 - i].density < density) {
-            return characters[9 - i].character;
+    density = density;
+    for (int i = 0; i < sizeof(orderedCharacters); ++i) {
+        if ((i / sizeof(orderedCharacters)) < density) {
+            return orderedCharacters[i];
         }
     }
 }
@@ -542,7 +548,7 @@ WritePCXfile
 	*pack++ = *palette++;
     
     // write output file
-    length = pack - (byte *)pcx;
+    length = (int) (pack - (byte *)pcx);
 
     Bitmap * b = ReadPCXFile(pcx, length);
 
@@ -550,39 +556,61 @@ WritePCXfile
     int h = b->Height;
 
     // Add the extra height to compensate for the newline characters getting added to the end of each line
-    int bufSize = (h * w) + h + 1;
+    // And the null character at the end
+    int bufSize = (h * w) + h + 1 + 1;
     char * charBuffer = malloc((size_t) bufSize);
 
     double maxgrey = MININT;
     double mingrey = MAXINT;
 
     int charBufferPosition = 0;
-    for (int j = 0; j < h; ++j) {
-        for (int k = 0; k < w; ++k) {
+    // I made these both two to scale down the image halfways
+    for (int j = 0; j < h; j+=1) {
+        for (int k = 0; k < w; k+=1) {
             int pos = (j * w) + k;
             // Take our height * by the current row we're on
             // and add the current column
             Pixel pix = b->Data[pos];
             // Now RGB to greyscale
-            pix.C;
             double R_linear = sRGB_to_linear(pix.C.R/255.0);
             double G_linear = sRGB_to_linear(pix.C.G/255.0);
             double B_linear = sRGB_to_linear(pix.C.B/255.0);
-            double gray_linear = 0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear;
+            double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;
             if (gray_linear > maxgrey) {
                 maxgrey = gray_linear;
             }
             if (gray_linear < mingrey) {
                 mingrey = gray_linear;
             }
-            charBuffer[charBufferPosition++] = getChar(gray_linear);
+            // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
+            mvprintw(j/1, k/1, "%d", gray_linear);
+
+/*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
         }
-        charBuffer[charBufferPosition++] = '\n';
+        //  mvprintw(0, j/1, "%c", '\n');
+/*        charBuffer[charBufferPosition++] = '\n';*/
 /*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
     }
-    for (int l = 0; l < bufSize; ++l) {
-        printf("%c", charBuffer[l]);
-    }
+    mvprintw(0, 0, "%f %f", maxgrey, mingrey);
+
+/*    charBuffer[charBufferPosition++] = '\0';*/
+/*    mvprintw(0, 0, charBuffer);*/
+
+    free(charBuffer);
+    free(b);
+
+    // What does refresh do?
+    refresh();
+    // What does getch do?
+    // Pauses the program to get a character
+    // Don't do this
+    // getch();
+    // What does endwin do?
+    // Puts the terminal back to normal, don't do this until we're done
+    // endwin();
+    // Ok these two work, why doesn't printw work?
+/*    printf("dogsarecute\n");
+    fprintf( stderr, "zzzzzz\n");*/
 
 
 

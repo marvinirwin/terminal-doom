@@ -144,11 +144,10 @@ static PCXHeader *ReadPCXHeader(const char *bytes, int position, const char *Nam
 
     /* Check the header data */
     if (P->Id != PCX_MAGIC_ID || P->FileVersion == 1 || P->FileVersion > 5) {
-        printf("'%s' is not a PCX file", Name);
+        //printf("'%s' is not a PCX file", Name);
     }
     if (P->Compressed > 1) {
-        printf("Unsupported compression (%d) in PCX file '%s'",
-               P->Compressed, Name);
+        //printf("Unsupported compression (%d) in PCX file '%s'", P->Compressed, Name);
     }
     /* We support:
     **   - one plane with either 1 or 8 bits per pixel
@@ -158,16 +157,13 @@ static PCXHeader *ReadPCXHeader(const char *bytes, int position, const char *Nam
     if (!((P->BPP == 1 && P->Planes == 1) ||
           (P->BPP == 8 && (P->Planes == 1 || P->Planes == 3 || P->Planes == 4)))) {
         /* We could support others, but currently we don't */
-        printf("Unsupported PCX format: %u planes, %u bpp in PCX file '%s'",
-               P->Planes, P->BPP, Name);
+        //printf("Unsupported PCX format: %u planes, %u bpp in PCX file '%s'", P->Planes, P->BPP, Name);
     }
     if (P->PalInfo != 1 && P->PalInfo != 2) {
-        printf("Unsupported palette info (%u) in PCX file '%s'",
-               P->PalInfo, Name);
+        //printf("Unsupported palette info (%u) in PCX file '%s'", P->PalInfo, Name);
     }
     if (!ValidBitmapSize(P->Width, P->Height)) {
-        printf("PCX file '%s' has an unsupported size (w=%u, h=%d)",
-               Name, P->Width, P->Height);
+        //printf("PCX file '%s' has an unsupported size (w=%u, h=%d)", Name, P->Width, P->Height);
     }
 
     /* Return the structured header */
@@ -178,8 +174,8 @@ static PCXHeader *ReadPCXHeader(const char *bytes, int position, const char *Nam
 static void DumpPCXHeader(const PCXHeader *P, const char *Name)
 /* Dump the header of the PCX file in readable form to stdout */
 {
-    printf("File name:       %s\n", Name);
-    printf("PCX Version:     ");
+    //printf("File name:       %s\n", Name);
+    //printf("PCX Version:     ");
     switch (P->FileVersion) {
         case 0:
             puts("2.5");
@@ -194,16 +190,16 @@ static void DumpPCXHeader(const PCXHeader *P, const char *Name)
             puts("PCX for Windows without palette");
             break;
         case 5:
-            puts("3.0");
+            // puts("3.0");
             break;
     }
-    printf("Image type:      %s\n", P->PalInfo ? "color" : "grayscale");
-    printf("Compression:     %s\n", P->Compressed ? "RLE" : "None");
-    printf("Structure:       %u planes of %u bits\n", P->Planes, P->BPP);
-    printf("Bounding box:    [%u/%u - %u/%u]\n", P->XMin, P->YMin, P->XMax, P->YMax);
-    printf("Resolution:      %u/%u DPI\n", P->XDPI, P->YDPI);
-    printf("Screen size:     %u/%u\n", P->ScreenWidth, P->ScreenHeight);
-    printf("Bytes per plane: %u\n", P->BytesPerPlane);
+    //printf("Image type:      %s\n", P->PalInfo ? "color" : "grayscale");
+    //printf("Compression:     %s\n", P->Compressed ? "RLE" : "None");
+    //printf("Structure:       %u planes of %u bits\n", P->Planes, P->BPP);
+    //printf("Bounding box:    [%u/%u - %u/%u]\n", P->XMin, P->YMin, P->XMax, P->YMax);
+    //printf("Resolution:      %u/%u DPI\n", P->XDPI, P->YDPI);
+    // printf("Screen size:     %u/%u\n", P->ScreenWidth, P->ScreenHeight);
+    // printf("Bytes per plane: %u\n", P->BytesPerPlane);
 }
 
 

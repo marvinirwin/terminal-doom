@@ -180,7 +180,7 @@ void PacketGet (void)
     {
 	static int first=1;
 	if (first)
-	    printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
+	    //printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
 	first = 0;
     }
 
@@ -273,7 +273,7 @@ void I_InitNetwork (void)
     if (p && p<myargc-1)
     {
 	DOOMPORT = atoi (myargv[p+1]);
-	printf ("using alternate port %i\n",DOOMPORT);
+	//printf ("using alternate port %i\n",DOOMPORT);
     }
     
     // parse network game options,

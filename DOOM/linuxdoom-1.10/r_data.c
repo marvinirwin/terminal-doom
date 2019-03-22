@@ -275,7 +275,7 @@ void R_GenerateComposite(int texnum) {
 
     // Now that the texture has been built in column cache,
     //  it is purgable from zone memory.
-    Z_ChangeTag (block, PU_CACHE);
+    // Z_ChangeTag (block, PU_CACHE);
 }
 
 
@@ -334,8 +334,7 @@ void R_GenerateLookup(int texnum) {
 
     for (x = 0; x < texture->width; x++) {
         if (!patchcount[x]) {
-            printf("R_GenerateLookup: column without a patch (%s)\n",
-                   texture->name);
+            //printf("R_GenerateLookup: column without a patch (%s)\n", texture->name);
             return;
         }
         // I_Error ("R_GenerateLookup: column without a patch");
@@ -420,7 +419,7 @@ void R_InitTextures(void) {
 
 
     // Load the patch names from pnames.lmp.
-    printf("Entered InitTextures...\n");
+    //printf("Entered InitTextures...\n");
     name[8] = 0;
     names = W_CacheLumpName("PNAMES", PU_STATIC);
     nummappatches = LONG (*((int *) names));
@@ -429,7 +428,7 @@ void R_InitTextures(void) {
 
     for (i = 0; i < nummappatches; i++) {
         strncpy (name, name_p + i * 8, 8);
-        printf("%s\n", name);
+        //printf("%s\n", name);
         patchlookup[i] = W_CheckNumForName(name);
     }
 /*    Z_Free(names);*/
@@ -467,17 +466,17 @@ void R_InitTextures(void) {
     temp1 = W_GetNumForName("S_START");  // P_???????
     temp2 = W_GetNumForName("S_END") - 1;
     temp3 = ((temp2 - temp1 + 63) / 64) + ((numtextures + 63) / 64);
-    printf("[");
+    //printf("[");
     for (i = 0; i < temp3; i++)
-        printf(" ");
-    printf("         ]");
+        //printf(" ");
+    //printf("         ]");
     for (i = 0; i < temp3; i++)
-        printf("\x8");
-    printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
+        //printf("\x8");
+    //printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
 
     for (i = 0; i < numtextures; i++, directory++) {
         if (!(i & 63))
-            printf(".");
+            //printf(".");
 
         if (i == numtextures1) {
             // Start looking in second texture file.
@@ -511,7 +510,7 @@ void R_InitTextures(void) {
             // If for some reason our patch reference is broken, use the other patches.
             // This also requires that the previous patch to exist IE wont work if this first patch is broke.  What a terrible hack.
             if (mpatch->patch < nummappatches) {
-                printf("Bad patch %d\n", SHORT(mpatch->patch));
+                //printf("Bad patch %d\n", SHORT(mpatch->patch));
                 patch->originx = SHORT(mpatch->originx);
                 patch->originy = SHORT(mpatch->originy);
                 patch->patch = patchlookup[SHORT(mpatch->patch)];
@@ -592,7 +591,7 @@ void R_InitSpriteLumps(void) {
 
     for (i = 0; i < numspritelumps; i++) {
         if (!(i & 63))
-            printf(".");
+            //printf(".");
 
         patch = W_CacheLumpNum(firstspritelump + i, PU_CACHE);
         spritewidth[i] = SHORT(patch->width) << FRACBITS;
@@ -625,15 +624,15 @@ void R_InitColormaps(void) {
 // Must be called after W_Init.
 //
 void R_InitData(void) {
-    printf("InitTextures...\n");
+    //printf("InitTextures...\n");
     R_InitTextures();
-    printf("\nInitTextures");
+    //printf("\nInitTextures");
     R_InitFlats();
-    printf("\nInitFlats");
+    //printf("\nInitFlats");
     R_InitSpriteLumps();
-    printf("\nInitSprites");
+    //printf("\nInitSprites");
     R_InitColormaps();
-    printf("\nInitColormaps");
+    //printf("\nInitColormaps");
 }
 
 

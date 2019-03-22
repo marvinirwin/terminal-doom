@@ -156,7 +156,7 @@ char *reloadname;
 
 unsigned char * loadEntireWad(int handle, int slen) {
     unsigned int ulen = slen + UINT_MAX + 1;
-    printf("Loading entire wad\n");
+    //printf("Loading entire wad\n");
     // First get the length of the file
     unsigned char *  fileContent = malloc(ulen);
     read(handle, fileContent, ulen);
@@ -183,7 +183,7 @@ void W_AddFile(char *filename) {
     }
 
     if ((handle = open(filename, O_RDONLY | O_BINARY)) == -1) {
-        printf(" couldn't open %s\n", filename);
+        //printf(" couldn't open %s\n", filename);
         return;
     }
 
@@ -191,7 +191,7 @@ void W_AddFile(char *filename) {
     // The original code only uses sizeof compile time constants
     entireWad = loadEntireWad(handle, filelength(handle));
 
-    printf(" adding %s\n", filename);
+    //printf(" adding %s\n", filename);
     startlump = numlumps;
 
     if (strcmpi(filename + strlen(filename) - 3, "wad")) {
@@ -220,7 +220,7 @@ void W_AddFile(char *filename) {
         lseek(handle, header.infotableofs, SEEK_SET);
         read(handle, fileinfo, length);
         numlumps += header.numlumps;
-        printf(" id: %s, Number of lumps: %d, directory location: %d\n", header.identification,header.numlumps,  header.infotableofs);
+        //printf(" id: %s, Number of lumps: %d, directory location: %d\n", header.identification,header.numlumps,  header.infotableofs);
     }
 
 
@@ -240,7 +240,7 @@ void W_AddFile(char *filename) {
         lump_p->position = LONG(fileinfo->filepos);
         lump_p->size = LONG(fileinfo->size);
         strncpy (lump_p->name, fileinfo->name, 8);
-        printf("lump name %s\n", lump_p->name);
+        //printf("lump name %s\n", lump_p->name);
     }
 
 
@@ -447,7 +447,7 @@ W_ReadLump
 
     l = lumpinfo + lump;
 
-/*    printf("Reading lump %s\n", l->name);*/
+/*    //printf("Reading lump %s\n", l->name);*/
 
     int pos = l->position;
 
@@ -460,7 +460,7 @@ W_ReadLump
     if (l->handle == -1) {
         // reloadable file, so use open / read / close
         if ((handle = open(reloadname, O_RDONLY | O_BINARY)) == -1){
-            printf("W_ReadLump: couldn't open %s", reloadname);
+            //printf("W_ReadLump: couldn't open %s", reloadname);
             return -1;
         }
     } else
@@ -470,8 +470,7 @@ W_ReadLump
     c = read(handle, dest, l->size);
 
     if (c < l->size){
-        printf("W_ReadLump: only read %i of %i on lump %i",
-                c, l->size, lump);
+        //printf("W_ReadLump: only read %i of %i on lump %i", c, l->size, lump);
         return -1;
     }
 

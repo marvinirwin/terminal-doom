@@ -196,71 +196,74 @@ static int	lastmousey = 0;
 boolean		mousemoved = false;
 boolean		shmFinished;
 
-void I_GetEvent(void)
+/*void I_GetEvent(void)
 {
 
     event_t event;
 
+    // TODO replace this with curses input, or just checking if a kye is pressed
+    int keyDown = 1;
+
     // put event-grabbing stuff in here
     // TODO replace this by grabbing std::in
-/*    XNextEvent(X_display, &X_event);*/
-/*    switch (X_event.type)*/
-/*     char[] eventType  =  "";
+    // XNextEvent(X_display, &X_event);
+    switch (X_event.type)*
+     char[] eventType  =  "";
 	switch(eventType)
     {
-*//*      case "KeyPress":*//*
+      case "KeyPress":
 	event.type = ev_keydown;
 	event.data1 = xlatekey();
 	D_PostEvent(&event);
 	// fprintf(stderr, "k");
 	break;
-*//*      case "KeyRelease":*//*
+      case "KeyRelease":
 	event.type = ev_keyup;
 	event.data1 = xlatekey();
 	D_PostEvent(&event);
 	// fprintf(stderr, "ku");
 	break;
-*//*      case "ButtonPress":*//*
+      case "ButtonPress":
 	event.type = ev_mouse;
-	*//*event.data1 =
+	event.data1 =
 	    (X_event.xbutton.state & Button1Mask)
 	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
 	    | (X_event.xbutton.state & Button3Mask ? 4 : 0)
 	    | (X_event.xbutton.button == Button1)
 	    | (X_event.xbutton.button == Button2 ? 2 : 0)
-	    | (X_event.xbutton.button == Button3 ? 4 : 0);*//*
+	    | (X_event.xbutton.button == Button3 ? 4 : 0);
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
 	// fprintf(stderr, "b");
 	break;
-*//*      case "ButtonRelease":*//*
+      case "ButtonRelease":
 	event.type = ev_mouse;
-*//*	event.data1 =
+	event.data1 =
 	    (X_event.xbutton.state & Button1Mask)
 	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);*//*
+	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);
 	// suggest parentheses around arithmetic in operand of |
-*//*	event.data1 =
+	event.data1 =
 	    event.data1
 	    ^ (X_event.xbutton.button == Button1 ? 1 : 0)
 	    ^ (X_event.xbutton.button == Button2 ? 2 : 0)
-	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);*//*
+	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);
 	event.data2 = event.data3 = 0;
 	D_PostEvent(&event);
 	// fprintf(stderr, "bu");
 	break;
-*//*      case "MotionNotify":
-	event.type = ev_mouse;*//*
-*//*	event.data1 =
+      case "MotionNotify":
+	event.type = ev_mouse;
+	event.data1 =
 	    (X_event.xmotion.state & Button1Mask)
 	    | (X_event.xmotion.state & Button2Mask ? 2 : 0)
 	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
 	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-	event.data3 = (lastmousey - X_event.xmotion.y) << 2;*//*
+	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
 
 	if (event.data2 || event.data3)
 	{
-*//*	    lastmousex = X_event.xmotion.x;
+	    lastmousex = X_event.xmotion.x;
 	    lastmousey = X_event.xmotion.y;
 	    if (X_event.xmotion.x != X_width/2 &&
 		X_event.xmotion.y != X_height/2)
@@ -271,20 +274,19 @@ void I_GetEvent(void)
 	    } else
 	    {
 		mousemoved = true;
-	    }*//*
+	    }
 	}
 	break;
 	
-*//*      case Expose:
-      case ConfigureNotify:*//*
+      case Expose:
+      case ConfigureNotify:
 	break;
 	
       default:
-*//*	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;*//*
 	break;
-    }*/
+    }
 
-}
+}*/
 
 /*Cursor
 createnullcursor
@@ -963,7 +965,7 @@ void InitExpand2 (void)
 	unsigned	u[2];
     } pixel;
 	
-    printf ("building exptable2...\n");
+    //printf ("building exptable2...\n");
     exp = exptable2;
     for (i=0 ; i<256 ; i++)
     {
@@ -974,7 +976,7 @@ void InitExpand2 (void)
 	    *exp++ = pixel.d;
 	}
     }
-    printf ("done.\n");
+    //printf ("done.\n");
 }
 
 int	inited;

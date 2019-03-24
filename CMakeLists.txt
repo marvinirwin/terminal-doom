@@ -154,5 +154,8 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
         )
+find_package(Curses REQUIRED)
+
+message(${CURSES_LIBRARIES})
 
 target_link_libraries(pg_doom curses)

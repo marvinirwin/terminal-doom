@@ -98,7 +98,7 @@ void FreeBitmap (Bitmap* B);
 /* Free a dynamically allocated bitmap */
 
 int ValidBitmapSize (unsigned Width, unsigned Height);
-/* Return true if this is a valid size for a bitmap */
+/* Return doomTrue if this is a valid size for a bitmap */
 
 Bitmap* SliceBitmap (const Bitmap* Original,
                      unsigned X, unsigned Y,
@@ -120,7 +120,7 @@ Pixel GetPixel (const Bitmap* B, unsigned X, unsigned Y);
 
 #if defined(HAVE_INLINE)
 INLINE int BitmapIsIndexed (const Bitmap* B)
-/* Return true if this is an indexed bitmap */
+/* Return doomTrue if this is an indexed bitmap */
 {
     return (B->Pal != 0);
 }

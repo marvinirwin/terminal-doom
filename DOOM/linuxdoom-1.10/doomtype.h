@@ -20,10 +20,10 @@
 //    
 //-----------------------------------------------------------------------------
 
-#include  "xlib_hack.h"
 
 #ifndef __DOOMTYPE__
 #define __DOOMTYPE__
+
 
 
 #ifndef __BYTEBOOL__
@@ -32,7 +32,7 @@
 #ifdef __cplusplus
 typedef bool boolean;
 #else
-typedef enum {false, true} boolean;
+typedef enum {doomFalse, doomTrue} boolean;
 #endif
 typedef unsigned char byte;
 #endif
@@ -54,6 +54,8 @@ typedef unsigned char byte;
 // Max negative 32-bit integer.
 #define MININT		((int)0x80000000)	
 #define MINLONG		((long)0x80000000)
+
+
 #endif
 
 

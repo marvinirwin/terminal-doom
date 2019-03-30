@@ -40,6 +40,7 @@ static const char
 #include "r_local.h"
 
 #include "doomstat.h"
+#include "debug.h"
 
 
 #define MINZ                (FRACUNIT*4)
@@ -114,15 +115,15 @@ R_InstallSpriteLump
 
     if (rotation == 0) {
         // the lump should be used for all rotations
-        if (sprtemp[frame].rotate == false)
+        if (sprtemp[frame].rotate == doomFalse)
             I_Error("R_InitSprites: Sprite %s frame %c has "
                     "multip rot=0 lump", spritename, 'A' + frame);
 
-        if (sprtemp[frame].rotate == true)
+        if (sprtemp[frame].rotate == doomTrue)
             I_Error("R_InitSprites: Sprite %s frame %c has rotations "
                     "and a rot=0 lump", spritename, 'A' + frame);
 
-        sprtemp[frame].rotate = false;
+        sprtemp[frame].rotate = doomFalse;
         for (r = 0; r < 8; r++) {
             sprtemp[frame].lump[r] = lump - firstspritelump;
             sprtemp[frame].flip[r] = (byte) flipped;
@@ -131,11 +132,11 @@ R_InstallSpriteLump
     }
 
     // the lump is only used for one rotation
-    if (sprtemp[frame].rotate == false)
+    if (sprtemp[frame].rotate == doomFalse)
         I_Error("R_InitSprites: Sprite %s frame %c has rotations "
                 "and a rot=0 lump", spritename, 'A' + frame);
 
-    sprtemp[frame].rotate = true;
+    sprtemp[frame].rotate = doomTrue;
 
     // make 0 based
     rotation--;
@@ -212,12 +213,12 @@ void R_InitSpriteDefs(char **namelist) {
                 else
                     patched = l;
 
-                R_InstallSpriteLump(patched, frame, rotation, false);
+                R_InstallSpriteLump(patched, frame, rotation, doomFalse);
 
                 if (lumpinfo[l].name[6]) {
                     frame = lumpinfo[l].name[6] - 'A';
                     rotation = lumpinfo[l].name[7] - '0';
-                    R_InstallSpriteLump(l, frame, rotation, true);
+                    R_InstallSpriteLump(l, frame, rotation, doomTrue);
                 }
             }
         }
@@ -395,15 +396,17 @@ R_DrawVisSprite
     for (dc_x = vis->x1; dc_x <= vis->x2; dc_x++, frac += vis->xiscale) {
         texturecolumn = frac >> FRACBITS;
 #ifdef RANGECHECK
-        if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width))
+        if (texturecolumn < 0 || texturecolumn >= SHORT(patch->width)){
             continue;
-/*        I_Error("R_DrawSpriteRange: bad texturecolumn");*/
+            curseDebug("R_// fprintf(stderrRange: bad texturecolumn");
+            I_Error("R_// fprintf(stderrRange: bad texturecolumn");
+        }
 #endif
 // I can't figure out if the texturecolumn is out of range here
-/*        column = (column_t *) ((byte *) patch +
+        column = (column_t *) ((byte *) patch +
                                LONG(patch->columnofs[texturecolumn]));
 
-        R_DrawMaskedColumn(column);*/
+        R_DrawMaskedColumn(column);
     }
 
     colfunc = basecolfunc;
@@ -765,7 +768,7 @@ void R_SortVisSprites(void) {
 //
 // R_DrawSprite
 //
-void R_DrawSprite(vissprite_t *spr) {
+void R_// fprintf(stderr(vissprite_t *spr) {
     drawseg_t *ds;
     short clipbot[SCREENWIDTH];
     short cliptop[SCREENWIDTH];
@@ -877,7 +880,7 @@ void R_DrawMasked(void) {
              spr != &vsprsortedhead;
              spr = spr->next) {
 
-            R_DrawSprite(spr);
+            R_// fprintf(stderr(spr);
         }
     }
 

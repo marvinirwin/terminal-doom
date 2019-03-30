@@ -52,7 +52,7 @@ the final version, it's not really high priority.
 Also, spans don't really allow for looking up and
 down."
 
-Comment: true looking up/down vs. Heretic-style
+Comment: doomTrue looking up/down vs. Heretic-style
 y-shearing seems to require either a strange kind
 of transofrmation matrix (he probably does not use
 the OpenGL transformation at all), or rendering
@@ -102,7 +102,7 @@ by Billy Zelsnack of Rebel Boat Rocker when we were working
 at 3D Realms together a few years ago. Basically, Billy was
 designing an engine that dealt with the world in a 2D portal
 format similar to the one that Build used, except that it had
-true looking up and down (no shearing). Since floors were
+doomTrue looking up and down (no shearing). Since floors were
 basically implicit and could be concave, Billy drew them as
 if the walls extended downwards to infinity, but fixed the
 texture coordinates to appear that they were on the plane of

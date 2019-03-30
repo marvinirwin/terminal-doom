@@ -458,7 +458,7 @@ R_StoreWallRange
 	// single sided line
 	midtexture = texturetranslation[sidedef->midtexture];
 	// a single sided line is terminal, so it must mark ends
-	markfloor = markceiling = true;
+	markfloor = markceiling = doomTrue;
 	if (linedef->flags & ML_DONTPEGBOTTOM)
 	{
 	    vtop = frontsector->floorheight +
@@ -538,12 +538,12 @@ R_StoreWallRange
 	    || backsector->floorpic != frontsector->floorpic
 	    || backsector->lightlevel != frontsector->lightlevel)
 	{
-	    markfloor = true;
+	    markfloor = doomTrue;
 	}
 	else
 	{
 	    // same plane on both sides
-	    markfloor = false;
+	    markfloor = doomFalse;
 	}
 	
 			
@@ -551,19 +551,19 @@ R_StoreWallRange
 	    || backsector->ceilingpic != frontsector->ceilingpic
 	    || backsector->lightlevel != frontsector->lightlevel)
 	{
-	    markceiling = true;
+	    markceiling = doomTrue;
 	}
 	else
 	{
 	    // same plane on both sides
-	    markceiling = false;
+	    markceiling = doomFalse;
 	}
 	
 	if (backsector->ceilingheight <= frontsector->floorheight
 	    || backsector->floorheight >= frontsector->ceilingheight)
 	{
 	    // closed door
-	    markceiling = markfloor = true;
+	    markceiling = markfloor = doomTrue;
 	}
 	
 
@@ -607,7 +607,7 @@ R_StoreWallRange
 	if (sidedef->midtexture)
 	{
 	    // masked midtexture
-	    maskedtexture = true;
+	    maskedtexture = doomTrue;
 	    ds_p->maskedtexturecol = maskedtexturecol = lastopening - rw_x;
 	    lastopening += rw_stopx - rw_x;
 	}
@@ -665,14 +665,14 @@ R_StoreWallRange
     if (frontsector->floorheight >= viewz)
     {
 	// above view plane
-	markfloor = false;
+	markfloor = doomFalse;
     }
     
     if (frontsector->ceilingheight <= viewz 
 	&& frontsector->ceilingpic != skyflatnum)
     {
 	// below view plane
-	markceiling = false;
+	markceiling = doomFalse;
     }
 
     

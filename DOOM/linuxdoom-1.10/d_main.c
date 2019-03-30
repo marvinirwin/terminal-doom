@@ -104,7 +104,7 @@ boolean fastparm;    // checkparm of -fast
 
 boolean drone;
 
-boolean singletics = false; // debug flag to cancel adaptiveness
+boolean singletics = doomFalse; // debug flag to cancel adaptiveness
 
 
 
@@ -161,20 +161,63 @@ void D_PostEvent(event_t *ev) {
 // D_ProcessEvents
 // Send all the events of the given timestamp down the responder chain
 //
+#include "curses.h"
+#include "debug.h"
+
 void D_ProcessEvents(void) {
-    event_t *ev;
+    event_t *ev = malloc(sizeof(event_t));
 
-    // IF STORE DEMO, DO NOT ACCEPT INPUT
-    if ((gamemode == commercial)
-        && (W_CheckNumForName("map01") < 0))
-        return;
 
-    for (; eventtail != eventhead; eventtail = (++eventtail) & (MAXEVENTS - 1)) {
-        ev = &events[eventtail];
-        if (M_Responder(ev))
-            continue;               // menu ate the event
-        G_Responder(ev);
+    // TODO figure out the right things to send to DOOM
+    //  to understand how it decides how far to move
+
+    int ch = getch();
+    switch(ch) {
+        case ERR:
+            return;
+        // If I'm right this will work, if I'm wrong
+        // I may have to do multiple getch to figure out if an arrow key is pressed
+        // Also I may have to simulate keyup by checking to see that the last pressed character is no longer pressed
+/*        case KEY_LEFTARROW:
+        case KEY_DOWNARROW:
+        case KEY_RIGHTARROW:
+        case KEY_UPARROW:*/
+        case 259:
+            ch = KEY_UPARROW;
+            ev->data1 = ch;
+            ev->type = ev_keydown;
+            cPrintf("up arrow %u", 0xad );
+            break;
+        case 261:
+            ch = KEY_RIGHTARROW;
+            ev->data1 = ch;
+            ev->type = ev_keydown;
+
+            cPrintf("right arrow %u", 0xae);
+            break;
+        case 258:
+            ch = KEY_DOWNARROW;
+            ev->data1 = ch;
+            ev->type = ev_keydown;
+            cPrintf("down arrow %u", 0xaf );
+            break;
+        case 260:
+            ch = KEY_LEFTARROW;
+            ev->data1 = ch;
+            ev->type = ev_keydown;
+            cPrintf("left arrow %u", 0xac );
+            break;
+        default:
+            ev->data1 = ch;
+            // mvprintw(0, ch, "%d", ch);
+        // default:
+            // mvprintw(0, 0, "%d", ch);
     }
+    // If ch === ERR then no key is down
+/*    if (M_Responder(ev))
+        return;*/
+    G_Responder(ev);
+    free(ev);
 }
 
 
@@ -757,9 +800,12 @@ void D_DoomMain(void) {
     char file[256];
 
     myWindow = initscr();
-/*	cbreak();
+    keypad(myWindow, true);
+	cbreak();
 	noecho();
-	clear();*/
+	clear();
+    nodelay(stdscr, TRUE);
+
     myPrint("doommain\n");
     FindResponseFile();
 
@@ -902,7 +948,7 @@ void D_DoomMain(void) {
     if (p) {
         // the parms after p are wadfile/lump names,
         // until end of parms or another - preceded parm
-        // modifiedgame = true;            // homebrew levels
+        // modifiedgame = doomTrue;            // homebrew levels
         while (++p != myargc && myargv[p][0] != '-')
             D_AddFile(myargv[p]);
     }

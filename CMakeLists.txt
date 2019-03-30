@@ -153,7 +153,6 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/pixel.h
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
-        )
-# find_package(Curses REQUIRED)
+        DOOM/linuxdoom-1.10/debug.c DOOM/linuxdoom-1.10/debug.h)
 
 target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)

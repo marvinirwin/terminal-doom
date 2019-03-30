@@ -243,7 +243,7 @@ int GetLocalAddress (void)
 //
 void I_InitNetwork (void)
 {
-    boolean		trueval = true;
+    boolean		trueval = doomTrue;
     int			i;
     int			p;
     struct hostent*	hostentry;	// host information entry
@@ -282,17 +282,17 @@ void I_InitNetwork (void)
     if (!i)
     {
 	// single player game
-	netgame = false;
+	netgame = doomFalse;
 	doomcom->id = DOOMCOM_ID;
 	doomcom->numplayers = doomcom->numnodes = 1;
-	doomcom->deathmatch = false;
+	doomcom->deathmatch = doomFalse;
 	doomcom->consoleplayer = 0;
 	return;
     }
 
     netsend = PacketSend;
     netget = PacketGet;
-    netgame = true;
+    netgame = doomTrue;
 
     // parse player number and host list
     doomcom->consoleplayer = myargv[i+1][0]-'1';

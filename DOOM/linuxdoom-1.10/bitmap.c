@@ -90,7 +90,7 @@ Bitmap* NewBitmap (unsigned Width, unsigned Height)
 
 
 int ValidBitmapSize (unsigned Width, unsigned Height)
-/* Return true if this is a valid size for a bitmap */
+/* Return doomTrue if this is a valid size for a bitmap */
 {
     /* Calculate the size of the bitmap in pixels */
     unsigned long Size = (unsigned long) Width * Height;

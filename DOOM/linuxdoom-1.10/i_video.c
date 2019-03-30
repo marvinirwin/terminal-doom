@@ -51,6 +51,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include <netinet/in.h>
 // #include <errnos.h>
 #include <signal.h>
+#include <curses.h>
 
 #include "doomstat.h"
 #include "i_system.h"
@@ -196,97 +197,18 @@ static int	lastmousey = 0;
 boolean		mousemoved = false;
 boolean		shmFinished;
 
-/*void I_GetEvent(void)
+void I_GetEvent(void)
 {
-
     event_t event;
+    // So in this method I'm going to get input from curses and then decide what to do with it
 
-    // TODO replace this with curses input, or just checking if a kye is pressed
-    int keyDown = 1;
+    int key = getch();
 
-    // put event-grabbing stuff in here
-    // TODO replace this by grabbing std::in
-    // XNextEvent(X_display, &X_event);
-    switch (X_event.type)*
-     char[] eventType  =  "";
-	switch(eventType)
-    {
-      case "KeyPress":
-	event.type = ev_keydown;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "k");
-	break;
-      case "KeyRelease":
-	event.type = ev_keyup;
-	event.data1 = xlatekey();
-	D_PostEvent(&event);
-	// fprintf(stderr, "ku");
-	break;
-      case "ButtonPress":
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0)
-	    | (X_event.xbutton.button == Button1)
-	    | (X_event.xbutton.button == Button2 ? 2 : 0)
-	    | (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "b");
-	break;
-      case "ButtonRelease":
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xbutton.state & Button1Mask)
-	    | (X_event.xbutton.state & Button2Mask ? 2 : 0)
-	    | (X_event.xbutton.state & Button3Mask ? 4 : 0);
-	// suggest parentheses around arithmetic in operand of |
-	event.data1 =
-	    event.data1
-	    ^ (X_event.xbutton.button == Button1 ? 1 : 0)
-	    ^ (X_event.xbutton.button == Button2 ? 2 : 0)
-	    ^ (X_event.xbutton.button == Button3 ? 4 : 0);
-	event.data2 = event.data3 = 0;
-	D_PostEvent(&event);
-	// fprintf(stderr, "bu");
-	break;
-      case "MotionNotify":
-	event.type = ev_mouse;
-	event.data1 =
-	    (X_event.xmotion.state & Button1Mask)
-	    | (X_event.xmotion.state & Button2Mask ? 2 : 0)
-	    | (X_event.xmotion.state & Button3Mask ? 4 : 0);
-	event.data2 = (X_event.xmotion.x - lastmousex) << 2;
-	event.data3 = (lastmousey - X_event.xmotion.y) << 2;
+    event.type = ev_keydown;
+    event.data1 = key;
 
-	if (event.data2 || event.data3)
-	{
-	    lastmousex = X_event.xmotion.x;
-	    lastmousey = X_event.xmotion.y;
-	    if (X_event.xmotion.x != X_width/2 &&
-		X_event.xmotion.y != X_height/2)
-	    {
-		D_PostEvent(&event);
-		// fprintf(stderr, "m");
-		mousemoved = false;
-	    } else
-	    {
-		mousemoved = true;
-	    }
-	}
-	break;
-	
-      case Expose:
-      case ConfigureNotify:
-	break;
-	
-      default:
-	break;
-    }
-
-}*/
+	D_PostEvent(&event);
+}
 
 /*Cursor
 createnullcursor
@@ -320,6 +242,7 @@ createnullcursor
 void I_StartTic (void)
 {
 
+
 /*    if (!X_display)
 	return;*/
 
@@ -344,7 +267,7 @@ void I_StartTic (void)
 	}
     }
 
-    mousemoved = false;*/
+    mousemoved = doomFalse;*/
 
 }
 
@@ -507,7 +430,7 @@ void I_FinishUpdate (void)
 	    I_Error("XShmPutImage() failed\n");
 
 	// wait for it to finish and processes all input events
-	shmFinished = false;
+	shmFinished = doomFalse;
 	do
 	{
 	    I_GetEvent();
@@ -808,7 +731,7 @@ void I_InitGraphics(void)
 	    d = displayname;
 	    while (*d && (*d != ':')) d++;
 	    if (*d) *d = 0;
-	    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = false;
+	    if (!(!strcasecmp(displayname, "unix") || !*displayname)) doShm = doomFalse;
 	}
     }*/
 

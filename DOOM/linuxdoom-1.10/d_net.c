@@ -61,7 +61,7 @@ ticcmd_t	localcmds[BACKUPTICS];
 
 ticcmd_t        netcmds[MAXPLAYERS][BACKUPTICS];
 int         	nettics[MAXNETNODES];
-boolean		nodeingame[MAXNETNODES];		// set false as nodes leave game
+boolean		nodeingame[MAXNETNODES];		// set doomFalse as nodes leave game
 boolean		remoteresend[MAXNETNODES];		// set when local needs tics
 int		resendto[MAXNETNODES];			// set when remote needs tics
 int		resendcount[MAXNETNODES];
@@ -149,7 +149,7 @@ HSendPacket
     if (!node)
     {
 	reboundstore = *netbuffer;
-	reboundpacket = true;
+	reboundpacket = doomTrue;
 	return;
     }
 
@@ -187,7 +187,7 @@ HSendPacket
 
 //
 // HGetPacket
-// Returns false if no packet is waiting
+// Returns doomFalse if no packet is waiting
 //
 boolean HGetPacket (void)
 {	
@@ -195,34 +195,34 @@ boolean HGetPacket (void)
     {
 	*netbuffer = reboundstore;
 	doomcom->remotenode = 0;
-	reboundpacket = false;
-	return true;
+	reboundpacket = doomFalse;
+	return doomTrue;
     }
 
     if (!netgame)
-	return false;
+	return doomFalse;
 
     if (demoplayback)
-	return false;
+	return doomFalse;
 		
     doomcom->command = CMD_GET;
     I_NetCmd ();
     
     if (doomcom->remotenode == -1)
-	return false;
+	return doomFalse;
 
     if (doomcom->datalength != NetbufferSize ())
     {
 	if (debugfile)
 	    fprintf (debugfile,"bad packet length %i\n",doomcom->datalength);
-	return false;
+	return doomFalse;
     }
 	
     if (NetbufferChecksum () != (netbuffer->checksum&NCMD_CHECKSUM) )
     {
 	if (debugfile)
 	    fprintf (debugfile,"bad packet checksum\n");
-	return false;
+	return doomFalse;
     }
 
     if (debugfile)
@@ -249,7 +249,7 @@ boolean HGetPacket (void)
 	    fprintf (debugfile,"\n");
 	}
     }
-    return true;	
+    return doomTrue;
 }
 
 
@@ -284,8 +284,8 @@ void GetPackets (void)
 	{
 	    if (!nodeingame[netnode])
 		continue;
-	    nodeingame[netnode] = false;
-	    playeringame[netconsole] = false;
+	    nodeingame[netnode] = doomFalse;
+	    playeringame[netconsole] = doomFalse;
 	    strcpy (exitmsg, "Player 1 left the game");
 	    exitmsg[7] += netconsole;
 	    players[consoleplayer].message = exitmsg;
@@ -333,7 +333,7 @@ void GetPackets (void)
 		fprintf (debugfile,
 			 "missed tics from %i (%i - %i)\n",
 			 netnode, realstart, nettics[netnode]);
-	    remoteresend[netnode] = true;
+	    remoteresend[netnode] = doomTrue;
 	    continue;
 	}
 
@@ -341,7 +341,7 @@ void GetPackets (void)
         {
 	    int		start;
 
-	    remoteresend[netnode] = false;
+	    remoteresend[netnode] = doomFalse;
 		
 	    start = nettics[netnode] - realstart;		
 	    src = &netbuffer->cmds[start];
@@ -478,7 +478,7 @@ void D_ArbitrateNetStart (void)
     int		i;
     boolean	gotinfo[MAXNETNODES];
 	
-    autostart = true;
+    autostart = doomTrue;
     memset (gotinfo,0,sizeof(gotinfo));
 	
     if (doomcom->consoleplayer)
@@ -530,12 +530,12 @@ void D_ArbitrateNetStart (void)
 	    for(i = 10 ; i  &&  HGetPacket(); --i)
 	    {
 		if((netbuffer->player&0x7f) < MAXNETNODES)
-		    gotinfo[netbuffer->player&0x7f] = true;
+		    gotinfo[netbuffer->player&0x7f] = doomTrue;
 	    }
 #else
 	    while (HGetPacket ())
 	    {
-		gotinfo[netbuffer->player&0x7f] = true;
+		gotinfo[netbuffer->player&0x7f] = doomTrue;
 	    }
 #endif
 
@@ -558,9 +558,9 @@ void D_CheckNetGame (void)
 	
     for (i=0 ; i<MAXNETNODES ; i++)
     {
-	nodeingame[i] = false;
+	nodeingame[i] = doomFalse;
        	nettics[i] = 0;
-	remoteresend[i] = false;	// set when local needs tics
+	remoteresend[i] = doomFalse;	// set when local needs tics
 	resendto[i] = 0;		// which tic to start sending
     }
 	
@@ -583,9 +583,9 @@ void D_CheckNetGame (void)
 	maxsend = 1;
 			
     for (i=0 ; i<doomcom->numplayers ; i++)
-	playeringame[i] = true;
+	playeringame[i] = doomTrue;
     for (i=0 ; i<doomcom->numnodes ; i++)
-	nodeingame[i] = true;
+	nodeingame[i] = doomTrue;
 	
     //printf ("player %i of %i (%i nodes)\n", consoleplayer+1, doomcom->numplayers, doomcom->numnodes);
 

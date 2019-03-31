@@ -768,7 +768,7 @@ void R_SortVisSprites(void) {
 //
 // R_DrawSprite
 //
-void R_// fprintf(stderr(vissprite_t *spr) {
+void R_DrawSprite(vissprite_t *spr) {
     drawseg_t *ds;
     short clipbot[SCREENWIDTH];
     short cliptop[SCREENWIDTH];
@@ -880,7 +880,7 @@ void R_DrawMasked(void) {
              spr != &vsprsortedhead;
              spr = spr->next) {
 
-            R_// fprintf(stderr(spr);
+            R_DrawSprite(spr);
         }
     }
 

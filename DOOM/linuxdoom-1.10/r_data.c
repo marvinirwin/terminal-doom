@@ -49,6 +49,7 @@ static const char
 
 
 #include "r_data.h"
+#include "debug.h"
 
 //
 // Graphics.
@@ -469,73 +470,67 @@ void R_InitTextures(void) {
     //printf("[");
     for (i = 0; i < temp3; i++)
         //printf(" ");
-    //printf("         ]");
-    for (i = 0; i < temp3; i++)
-        //printf("\x8");
-    //printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
+        //printf("         ]");
+        for (i = 0; i < temp3; i++)
+            //printf("\x8");
+            //printf("\x8\x8\x8\x8\x8\x8\x8\x8\x8\x8");
 
-    for (i = 0; i < numtextures; i++, directory++) {
-        if (!(i & 63))
-            //printf(".");
+            for (i = 0; i < numtextures; i++, directory++) {
+                if (!(i & 63))
+                    //printf(".");
 
-        if (i == numtextures1) {
-            // Start looking in second texture file.
-            maptex = maptex2;
-            maxoff = maxoff2;
-            directory = maptex + 1;
-        }
+                    if (i == numtextures1) {
+                        // Start looking in second texture file.
+                        maptex = maptex2;
+                        maxoff = maxoff2;
+                        directory = maptex + 1;
+                    }
 
-        offset = LONG(*directory);
+                offset = LONG(*directory);
 
-        if (offset > maxoff)
-            I_Error("R_InitTextures: bad texture directory");
+                if (offset > maxoff)
+                    I_Error("R_InitTextures: bad texture directory");
 
-        mtexture = (maptexture_t *) ((byte *) maptex + offset);
+                mtexture = (maptexture_t *) ((byte *) maptex + offset);
 
-        texture = textures[i] =
-                Z_Malloc(sizeof(texture_t)
-                         + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
-                         PU_STATIC, 0);
+                texture = textures[i] =
+                        Z_Malloc(sizeof(texture_t)
+                                 + sizeof(texpatch_t) * (SHORT(mtexture->patchcount) - 1),
+                                 PU_STATIC, 0);
 
-        texture->width = SHORT(mtexture->width);
-        texture->height = SHORT(mtexture->height);
-        texture->patchcount = SHORT(mtexture->patchcount);
+                texture->width = SHORT(mtexture->width);
+                texture->height = SHORT(mtexture->height);
+                texture->patchcount = SHORT(mtexture->patchcount);
 
-        memcpy (texture->name, mtexture->name, sizeof(texture->name));
-        mpatch = &mtexture->patches[0];
-        patch = &texture->patches[0];
+                memcpy (texture->name, mtexture->name, sizeof(texture->name));
+                mpatch = &mtexture->patches[0];
+                patch = &texture->patches[0];
 
-        for (j = 0; j < texture->patchcount; j++, mpatch++, patch++) {
-            // printf("%d\n", SHORT(mpatch->patch));
-            // If for some reason our patch reference is broken, use the other patches.
-            // This also requires that the previous patch to exist IE wont work if this first patch is broke.  What a terrible hack.
-            if (mpatch->patch < nummappatches) {
-                //printf("Bad patch %d\n", SHORT(mpatch->patch));
-                patch->originx = SHORT(mpatch->originx);
-                patch->originy = SHORT(mpatch->originy);
-                patch->patch = patchlookup[SHORT(mpatch->patch)];
-            } else {
-                patch->originx = (mpatch - 1)->originx;
-                patch->originy = (mpatch - 1)->originy;
-                patch->patch = patchlookup[SHORT((mpatch - 1)->patch)];
+                for (j = 0; j < texture->patchcount; j++, mpatch++, patch++) {
+                    // printf("%d\n", SHORT(mpatch->patch));
+                    // If for some reason our patch reference is broken, use the other patches.
+                    // This also requires that the previous patch to exist IE wont work if this first patch is broke.  What a terrible hack.
+                    patch->originx = (mpatch - 1)->originx;
+                    patch->originy = (mpatch - 1)->originy;
+                    patch->patch = patchlookup[SHORT((mpatch - 1)->patch)];
+
+                    if (patch->patch == -1) {
+                        I_Error("R_InitTextures: Missing patch in texture %s",
+                                texture->name);
+                    }
+                }
+                texturecolumnlump[i] = Z_Malloc(texture->width * 2, PU_STATIC, 0);
+                texturecolumnofs[i] = Z_Malloc(texture->width * 2, PU_STATIC, 0);
+
+                j = 1;
+                while (j * 2 <= texture->width)
+                    j <<= 1;
+
+                texturewidthmask[i] = j - 1;
+                textureheight[i] = texture->height << FRACBITS;
+
+                totalwidth += texture->width;
             }
-            if (patch->patch == -1) {
-                I_Error("R_InitTextures: Missing patch in texture %s",
-                        texture->name);
-            }
-        }
-        texturecolumnlump[i] =  Z_Malloc(texture->width * 2, PU_STATIC, 0);
-        texturecolumnofs[i] = Z_Malloc(texture->width * 2, PU_STATIC, 0);
-
-        j = 1;
-        while (j * 2 <= texture->width)
-            j <<= 1;
-
-        texturewidthmask[i] = j - 1;
-        textureheight[i] = texture->height << FRACBITS;
-
-        totalwidth += texture->width;
-    }
 
 /*    Z_Free(maptex1);
     if (maptex2)
@@ -593,7 +588,7 @@ void R_InitSpriteLumps(void) {
         if (!(i & 63))
             //printf(".");
 
-        patch = W_CacheLumpNum(firstspritelump + i, PU_CACHE);
+            patch = W_CacheLumpNum(firstspritelump + i, PU_CACHE);
         spritewidth[i] = SHORT(patch->width) << FRACBITS;
         spriteoffset[i] = SHORT(patch->leftoffset) << FRACBITS;
         spritetopoffset[i] = SHORT(patch->topoffset) << FRACBITS;

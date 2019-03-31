@@ -55,7 +55,6 @@ dkms.conf
 
 .idea/
 cmake-build-debug
-/DOOM/linuxdoom-1.10/linux/
 /cmake-build-debug/
 /doom2.wad
 /doom1.wad

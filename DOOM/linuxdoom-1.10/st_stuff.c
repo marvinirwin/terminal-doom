@@ -527,11 +527,11 @@ ST_Responder (event_t* ev)
     {
       case AM_MSGENTERED:
 	st_gamestate = AutomapState;
-	st_firsttime = doomTrue;
+	st_firsttime = true;
 	break;
 	
       case AM_MSGEXITED:
-	//	// fprintf(stderr, "AM exited\n");
+	//	fprintf(stderr, "AM exited\n");
 	st_gamestate = FirstPersonState;
 	break;
     }
@@ -567,7 +567,7 @@ ST_Responder (event_t* ev)
 	plyr->armortype = 2;
 	
 	for (i=0;i<NUMWEAPONS;i++)
-	  plyr->weaponowned[i] = doomTrue;
+	  plyr->weaponowned[i] = true;
 	
 	for (i=0;i<NUMAMMO;i++)
 	  plyr->ammo[i] = plyr->maxammo[i];
@@ -581,13 +581,13 @@ ST_Responder (event_t* ev)
 	plyr->armortype = 2;
 	
 	for (i=0;i<NUMWEAPONS;i++)
-	  plyr->weaponowned[i] = doomTrue;
+	  plyr->weaponowned[i] = true;
 	
 	for (i=0;i<NUMAMMO;i++)
 	  plyr->ammo[i] = plyr->maxammo[i];
 	
 	for (i=0;i<NUMCARDS;i++)
-	  plyr->cards[i] = doomTrue;
+	  plyr->cards[i] = true;
 	
 	plyr->message = STSTR_KFAADDED;
       }
@@ -656,8 +656,8 @@ ST_Responder (event_t* ev)
       // 'choppers' invulnerability & chainsaw
       else if (cht_CheckCheat(&cheat_choppers, ev->data1))
       {
-	plyr->weaponowned[wp_chainsaw] = doomTrue;
-	plyr->powers[pw_invulnerability] = doomTrue;
+	plyr->weaponowned[wp_chainsaw] = true;
+	plyr->powers[pw_invulnerability] = true;
 	plyr->message = STSTR_CHOPPERS;
       }
       // 'mypos' for player position
@@ -694,34 +694,34 @@ ST_Responder (event_t* ev)
 
       // Catch invalid maps.
       if (epsd < 1)
-	return doomFalse;
+	return false;
 
       if (map < 1)
-	return doomFalse;
+	return false;
       
       // Ohmygod - this is not going to work.
       if ((gamemode == retail)
 	  && ((epsd > 4) || (map > 9)))
-	return doomFalse;
+	return false;
 
       if ((gamemode == registered)
 	  && ((epsd > 3) || (map > 9)))
-	return doomFalse;
+	return false;
 
       if ((gamemode == shareware)
 	  && ((epsd > 1) || (map > 9)))
-	return doomFalse;
+	return false;
 
       if ((gamemode == commercial)
 	&& (( epsd > 1) || (map > 34)))
-	return doomFalse;
+	return false;
 
       // So be it.
       plyr->message = STSTR_CLEV;
       G_DeferedInitNew(gameskill, epsd, map);
     }    
   }
-  return doomFalse;
+  return false;
 }
 
 
@@ -774,13 +774,13 @@ void ST_updateFaceWidget(void)
 	if (plyr->bonuscount)
 	{
 	    // picking up bonus
-	    doevilgrin = doomFalse;
+	    doevilgrin = false;
 
 	    for (i=0;i<NUMWEAPONS;i++)
 	    {
 		if (oldweaponsowned[i] != plyr->weaponowned[i])
 		{
-		    doevilgrin = doomTrue;
+		    doevilgrin = true;
 		    oldweaponsowned[i] = plyr->weaponowned[i];
 		}
 	    }
@@ -945,7 +945,7 @@ void ST_updateWidgets(void)
     w_ready.data = plyr->readyweapon;
 
     // if (*w_ready.on)
-    //  STlib_updateNum(&w_ready, doomTrue);
+    //  STlib_updateNum(&w_ready, true);
     // refresh weapon change
     //  }
 
@@ -1089,20 +1089,20 @@ void ST_drawWidgets(boolean refresh)
 void ST_doRefresh(void)
 {
 
-    st_firsttime = doomFalse;
+    st_firsttime = false;
 
     // draw status bar background to off-screen buff
     ST_refreshBackground();
 
     // and refresh all widgets
-    ST_drawWidgets(doomTrue);
+    ST_drawWidgets(true);
 
 }
 
 void ST_diffDraw(void)
 {
     // update all widgets
-    ST_drawWidgets(doomFalse);
+    ST_drawWidgets(false);
 }
 
 void ST_Drawer (boolean fullscreen, boolean refresh)
@@ -1251,16 +1251,16 @@ void ST_initData(void)
 
     int		i;
 
-    st_firsttime = doomTrue;
+    st_firsttime = true;
     plyr = &players[consoleplayer];
 
     st_clock = 0;
     st_chatstate = StartChatState;
     st_gamestate = FirstPersonState;
 
-    st_statusbaron = doomTrue;
-    st_oldchat = st_chat = doomFalse;
-    st_cursoron = doomFalse;
+    st_statusbaron = true;
+    st_oldchat = st_chat = false;
+    st_cursoron = false;
 
     st_faceindex = 0;
     st_palette = -1;
@@ -1438,7 +1438,7 @@ void ST_createWidgets(void)
 
 }
 
-static boolean	st_stopped = doomTrue;
+static boolean	st_stopped = true;
 
 
 void ST_Start (void)
@@ -1449,7 +1449,7 @@ void ST_Start (void)
 
     ST_initData();
     ST_createWidgets();
-    st_stopped = doomFalse;
+    st_stopped = false;
 
 }
 
@@ -1460,7 +1460,7 @@ void ST_Stop (void)
 
     I_SetPalette (W_CacheLumpNum (lu_palette, PU_CACHE));
 
-    st_stopped = doomTrue;
+    st_stopped = true;
 }
 
 void ST_Init (void)

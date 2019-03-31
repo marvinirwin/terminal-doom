@@ -129,7 +129,7 @@ P_InterceptVector2
 
 //
 // P_CrossSubsector
-// Returns doomTrue
+// Returns true
 //  if strace crosses the given subsector successfully.
 //
 boolean P_CrossSubsector (int num)
@@ -196,7 +196,7 @@ boolean P_CrossSubsector (int num)
 	// stop because it is not two sided anyway
 	// might do this after updating validcount?
 	if ( !(line->flags & ML_TWOSIDED) )
-	    return doomFalse;
+	    return false;
 	
 	// crosses a two sided line
 	front = seg->frontsector;
@@ -222,7 +222,7 @@ boolean P_CrossSubsector (int num)
 		
 	// quick test for totally closed doors
 	if (openbottom >= opentop)	
-	    return doomFalse;		// stop
+	    return false;		// stop
 	
 	frac = P_InterceptVector2 (&strace, &divl);
 		
@@ -241,17 +241,17 @@ boolean P_CrossSubsector (int num)
 	}
 		
 	if (topslope <= bottomslope)
-	    return doomFalse;		// stop
+	    return false;		// stop				
     }
     // passed the subsector ok
-    return doomTrue;
+    return true;		
 }
 
 
 
 //
 // P_CrossBSPNode
-// Returns doomTrue
+// Returns true
 //  if strace crosses the given node successfully.
 //
 boolean P_CrossBSPNode (int bspnum)
@@ -276,13 +276,13 @@ boolean P_CrossBSPNode (int bspnum)
 
     // cross the starting side
     if (!P_CrossBSPNode (bsp->children[side]) )
-	return doomFalse;
+	return false;
 	
     // the partition plane is crossed here
     if (side == P_DivlineSide (t2x, t2y,(divline_t *)bsp))
     {
 	// the line doesn't touch the other side
-	return doomTrue;
+	return true;
     }
     
     // cross the ending side		
@@ -292,7 +292,7 @@ boolean P_CrossBSPNode (int bspnum)
 
 //
 // P_CheckSight
-// Returns doomTrue
+// Returns true
 //  if a straight line between t1 and t2 is unobstructed.
 // Uses REJECT.
 //
@@ -322,7 +322,7 @@ P_CheckSight
 	sightcounts[0]++;
 
 	// can't possibly be connected
-	return doomFalse;
+	return false;	
     }
 
     // An unobstructed LOS is possible.

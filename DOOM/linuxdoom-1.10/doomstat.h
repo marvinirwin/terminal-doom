@@ -88,10 +88,10 @@ extern  int		gamemap;
 // Nightmare mode flag, single player.
 extern  boolean         respawnmonsters;
 
-// Netgame? Only doomTrue if >1 player.
+// Netgame? Only true if >1 player.
 extern  boolean	netgame;
 
-// Flag: doomTrue only if started as net deathmatch.
+// Flag: true only if started as net deathmatch.
 // An enum might handle altdeath/cooperative better.
 extern  boolean	deathmatch;	
 	
@@ -244,7 +244,7 @@ extern  int		maxammo[NUMAMMO];
 extern	char		basedefault[1024];
 extern  FILE*		debugfile;
 
-// if doomTrue, load all graphics at level load
+// if true, load all graphics at level load
 extern  boolean         precache;
 
 

@@ -47,7 +47,7 @@ void HUlib_clearTextLine(hu_textline_t* t)
 {
     t->len = 0;
     t->l[0] = 0;
-    t->needsupdate = doomTrue;
+    t->needsupdate = true;
 }
 
 void
@@ -72,13 +72,13 @@ HUlib_addCharToTextLine
 {
 
     if (t->len == HU_MAXLINELENGTH)
-	return doomFalse;
+	return false;
     else
     {
 	t->l[t->len++] = ch;
 	t->l[t->len] = 0;
 	t->needsupdate = 4;
-	return doomTrue;
+	return true;
     }
 
 }
@@ -86,12 +86,12 @@ HUlib_addCharToTextLine
 boolean HUlib_delCharFromTextLine(hu_textline_t* t)
 {
 
-    if (!t->len) return doomFalse;
+    if (!t->len) return false;
     else
     {
 	t->l[--t->len] = 0;
 	t->needsupdate = 4;
-	return doomTrue;
+	return true;
     }
 
 }
@@ -145,7 +145,7 @@ void HUlib_eraseTextLine(hu_textline_t* l)
     int			lh;
     int			y;
     int			yoffset;
-    static boolean	lastautomapactive = doomTrue;
+    static boolean	lastautomapactive = true;
 
     // Only erases when NOT in automap and the screen is reduced,
     // and the text must either need updating or refreshing
@@ -188,7 +188,7 @@ HUlib_initSText
 
     s->h = h;
     s->on = on;
-    s->laston = doomTrue;
+    s->laston = true;
     s->cl = 0;
     for (i=0;i<h;i++)
 	HUlib_initTextLine(&s->l[i],
@@ -246,7 +246,7 @@ void HUlib_drawSText(hu_stext_t* s)
 	l = &s->l[idx];
 
 	// need a decision made here on whether to skip the draw
-	HUlib_drawTextLine(l, doomFalse); // no cursor, please
+	HUlib_drawTextLine(l, false); // no cursor, please
     }
 
 }
@@ -277,7 +277,7 @@ HUlib_initIText
 {
     it->lm = 0; // default left margin is start of text
     it->on = on;
-    it->laston = doomTrue;
+    it->laston = true;
     HUlib_initTextLine(&it->l, x, y, font, startchar);
 }
 
@@ -313,7 +313,7 @@ HUlib_addPrefixToIText
 }
 
 // wrapper function for handling general keyed input.
-// returns doomTrue if it ate the key
+// returns true if it ate the key
 boolean
 HUlib_keyInIText
 ( hu_itext_t*	it,
@@ -327,9 +327,9 @@ HUlib_keyInIText
 	    HUlib_delCharFromIText(it);
 	else 
 	    if (ch != KEY_ENTER) 
-		return doomFalse; // did not eat key
+		return false; // did not eat key
 
-    return doomTrue; // ate the key
+    return true; // ate the key
 
 }
 
@@ -340,7 +340,7 @@ void HUlib_drawIText(hu_itext_t* it)
 
     if (!*it->on)
 	return;
-    HUlib_drawTextLine(l, doomTrue); // draw the line w/ cursor
+    HUlib_drawTextLine(l, true); // draw the line w/ cursor
 
 }
 

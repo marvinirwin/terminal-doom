@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
-project(pg_doom C)
+project(pg_doom LANGUAGES CXX)
 
-set(CMAKE_C_STANDARD 11)
+# set(CMAKE_C_STANDARD 11)
 
 include_directories(DOOM/linuxdoom-1.10)
 
@@ -10,8 +10,6 @@ SET(DEBUG -g)
 SET(WALL -Wall)
 SET(NORMALUNIX -DNORMALUNIX)
 SET(MACOS -DMACOS)
-SET(FLAG32 -m32)
-SET(CMAKE_C_FLAGS "-m32")
 
 add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS})
 
@@ -153,6 +151,14 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/pixel.h
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
-        DOOM/linuxdoom-1.10/debug.c DOOM/linuxdoom-1.10/debug.h)
+        DOOM/linuxdoom-1.10/debug.c
+        DOOM/linuxdoom-1.10/debug.h
+        )
 
 target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)
+
+
+set_target_properties(pg_doom PROPERTIES LINKER_LANGUAGE CXX)
+
+file(GLOB_RECURSE all_c_files DOOM/linuxdoom-1.10/*.c)
+set_source_files_properties(${all_c_files} PROPERTIES LANGUAGE CXX)

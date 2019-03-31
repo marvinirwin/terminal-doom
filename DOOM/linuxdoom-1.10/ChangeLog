@@ -66,7 +66,7 @@ Mon Dec 22 17:08:33 1997    <bk@gamers.org>
 	  replace a bunch of booleans with an enum and
 	  use the same identifiers. Point in case:
 	   "if ( commercial )" will not give an error,
-	  and will always be doomTrue as long as the enum
+	  and will always be true as long as the enum
 	  value is greater than zero.
 	  I found that the DOOM2 vs. DOOM differences
 	  are everywhere (weapons, monsters, doors).
@@ -161,7 +161,7 @@ Sun Dec 21 12:38:08 1997    <bk@gamers.org>
 	  was compiled as C++ without a parsing error. So there.
 	
 	* sounds.c: included doomtype.h and removed yet another
-	            enum { doomFalse, doomTrue } definition.
+	            enum { false, true } definition.
 
 	* p_saveg.c  (misc): several. 
 	* p_mobj.c   (P_SpawnMobj): (actionf_p1)P_MobjThinker

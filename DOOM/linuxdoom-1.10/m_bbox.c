@@ -33,10 +33,6 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #endif
 #include "m_bbox.h"
 
-#ifdef MACOS
-int MAXINT = 35000;
-int MININT = -35000;
-#endif
 
 
 

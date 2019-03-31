@@ -72,7 +72,7 @@ typedef struct
 //
 typedef struct
 {
-    boolean	istexture;	// if doomFalse, it is a flat
+    boolean	istexture;	// if false, it is a flat
     char	endname[9];
     char	startname[9];
     int		speed;
@@ -100,33 +100,33 @@ extern anim_t*	lastanim;
 //
 animdef_t		animdefs[] =
 {
-    {doomFalse,	"NUKAGE3",	"NUKAGE1",	8},
-    {doomFalse,	"FWATER4",	"FWATER1",	8},
-    {doomFalse,	"SWATER4",	"SWATER1", 	8},
-    {doomFalse,	"LAVA4",	"LAVA1",	8},
-    {doomFalse,	"BLOOD3",	"BLOOD1",	8},
+    {false,	"NUKAGE3",	"NUKAGE1",	8},
+    {false,	"FWATER4",	"FWATER1",	8},
+    {false,	"SWATER4",	"SWATER1", 	8},
+    {false,	"LAVA4",	"LAVA1",	8},
+    {false,	"BLOOD3",	"BLOOD1",	8},
 
     // DOOM II flat animations.
-    {doomFalse,	"RROCK08",	"RROCK05",	8},
-    {doomFalse,	"SLIME04",	"SLIME01",	8},
-    {doomFalse,	"SLIME08",	"SLIME05",	8},
-    {doomFalse,	"SLIME12",	"SLIME09",	8},
+    {false,	"RROCK08",	"RROCK05",	8},		
+    {false,	"SLIME04",	"SLIME01",	8},
+    {false,	"SLIME08",	"SLIME05",	8},
+    {false,	"SLIME12",	"SLIME09",	8},
 
-    {doomTrue,	"BLODGR4",	"BLODGR1",	8},
-    {doomTrue,	"SLADRIP3",	"SLADRIP1",	8},
+    {true,	"BLODGR4",	"BLODGR1",	8},
+    {true,	"SLADRIP3",	"SLADRIP1",	8},
 
-    {doomTrue,	"BLODRIP4",	"BLODRIP1",	8},
-    {doomTrue,	"FIREWALL",	"FIREWALA",	8},
-    {doomTrue,	"GSTFONT3",	"GSTFONT1",	8},
-    {doomTrue,	"FIRELAVA",	"FIRELAV3",	8},
-    {doomTrue,	"FIREMAG3",	"FIREMAG1",	8},
-    {doomTrue,	"FIREBLU2",	"FIREBLU1",	8},
-    {doomTrue,	"ROCKRED3",	"ROCKRED1",	8},
+    {true,	"BLODRIP4",	"BLODRIP1",	8},
+    {true,	"FIREWALL",	"FIREWALA",	8},
+    {true,	"GSTFONT3",	"GSTFONT1",	8},
+    {true,	"FIRELAVA",	"FIRELAV3",	8},
+    {true,	"FIREMAG3",	"FIREMAG1",	8},
+    {true,	"FIREBLU2",	"FIREBLU1",	8},
+    {true,	"ROCKRED3",	"ROCKRED1",	8},
 
-    {doomTrue,	"BFALL4",	"BFALL1",	8},
-    {doomTrue,	"SFALL4",	"SFALL1",	8},
-    {doomTrue,	"WFALL4",	"WFALL1",	8},
-    {doomTrue,	"DBRAIN4",	"DBRAIN1",	8},
+    {true,	"BFALL4",	"BFALL1",	8},
+    {true,	"SFALL4",	"SFALL1",	8},
+    {true,	"WFALL4",	"WFALL1",	8},
+    {true,	"DBRAIN4",	"DBRAIN1",	8},
 	
     {-1}
 };
@@ -542,13 +542,13 @@ P_CrossSpecialLine
 	// All from here to RETRIGGERS.
       case 2:
 	// Open Door
-	EV_DoDoor(line,e_open);
+	EV_DoDoor(line,open);
 	line->special = 0;
 	break;
 
       case 3:
 	// Close Door
-	EV_DoDoor(line,e_close);
+	EV_DoDoor(line,close);
 	line->special = 0;
 	break;
 
@@ -801,7 +801,7 @@ P_CrossSpecialLine
 	
       case 75:
 	// Close Door
-	EV_DoDoor(line,e_close);
+	EV_DoDoor(line,close);
 	break;
 	
       case 76:
@@ -846,7 +846,7 @@ P_CrossSpecialLine
 
       case 86:
 	// Open Door
-	EV_DoDoor(line,e_open);
+	EV_DoDoor(line,open);
 	break;
 	
       case 87:
@@ -987,7 +987,7 @@ P_ShootSpecialLine
 	
       case 46:
 	// OPEN DOOR
-	EV_DoDoor(line,e_open);
+	EV_DoDoor(line,open);
 	P_ChangeSwitchTexture(line,1);
 	break;
 	
@@ -1089,7 +1089,7 @@ void P_UpdateSpecials (void)
 
     
     //	LEVEL TIMER
-    if (levelTimer == doomTrue)
+    if (levelTimer == true)
     {
 	levelTimeCount--;
 	if (!levelTimeCount)
@@ -1195,7 +1195,7 @@ int EV_DoDonut(line_t*	line)
 	    s2->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 	    floor->type = donutRaise;
-	    floor->crush = doomFalse;
+	    floor->crush = false;
 	    floor->direction = 1;
 	    floor->sector = s2;
 	    floor->speed = FLOORSPEED / 2;
@@ -1209,7 +1209,7 @@ int EV_DoDonut(line_t*	line)
 	    s1->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 	    floor->type = lowerFloor;
-	    floor->crush = doomFalse;
+	    floor->crush = false;
 	    floor->direction = -1;
 	    floor->sector = s1;
 	    floor->speed = FLOORSPEED / 2;
@@ -1248,12 +1248,12 @@ void P_SpawnSpecials (void)
 
     
     // See if -TIMER needs to be used.
-    levelTimer = doomFalse;
+    levelTimer = false;
 	
     i = M_CheckParm("-avg");
     if (i && deathmatch)
     {
-	levelTimer = doomTrue;
+	levelTimer = true;
 	levelTimeCount = 20 * 60 * 35;
     }
 	
@@ -1262,7 +1262,7 @@ void P_SpawnSpecials (void)
     {
 	int	time;
 	time = atoi(myargv[i+1]) * 60 * 35;
-	levelTimer = doomTrue;
+	levelTimer = true;
 	levelTimeCount = time;
     }
     

@@ -180,7 +180,7 @@ void PacketGet (void)
     {
 	static int first=1;
 	if (first)
-	    //printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
+	    printf("len=%d:p=[0x%x 0x%x] \n", c, *(int*)&sw, *((int*)&sw+1));
 	first = 0;
     }
 
@@ -243,7 +243,7 @@ int GetLocalAddress (void)
 //
 void I_InitNetwork (void)
 {
-    boolean		trueval = doomTrue;
+    boolean		trueval = true;
     int			i;
     int			p;
     struct hostent*	hostentry;	// host information entry
@@ -273,7 +273,7 @@ void I_InitNetwork (void)
     if (p && p<myargc-1)
     {
 	DOOMPORT = atoi (myargv[p+1]);
-	//printf ("using alternate port %i\n",DOOMPORT);
+	printf ("using alternate port %i\n",DOOMPORT);
     }
     
     // parse network game options,
@@ -282,17 +282,17 @@ void I_InitNetwork (void)
     if (!i)
     {
 	// single player game
-	netgame = doomFalse;
+	netgame = false;
 	doomcom->id = DOOMCOM_ID;
 	doomcom->numplayers = doomcom->numnodes = 1;
-	doomcom->deathmatch = doomFalse;
+	doomcom->deathmatch = false;
 	doomcom->consoleplayer = 0;
 	return;
     }
 
     netsend = PacketSend;
     netget = PacketGet;
-    netgame = doomTrue;
+    netgame = true;
 
     // parse player number and host list
     doomcom->consoleplayer = myargv[i+1][0]-'1';

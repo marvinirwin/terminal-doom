@@ -106,7 +106,7 @@ void T_PlatRaise(plat_t* plat)
 	break;
 	
       case	down:
-	res = T_MovePlane(plat->sector,plat->speed,plat->low,doomFalse,0,-1);
+	res = T_MovePlane(plat->sector,plat->speed,plat->low,false,0,-1);
 
 	if (res == pastdest)
 	{
@@ -177,7 +177,7 @@ EV_DoPlat
 	plat->sector = sec;
 	plat->sector->specialdata = plat;
 	plat->thinker.function.acp1 = (actionf_p1) T_PlatRaise;
-	plat->crush = doomFalse;
+	plat->crush = false;
 	plat->tag = line->tag;
 	
 	switch(type)

@@ -307,7 +307,7 @@ typedef post_t	column_t;
 //
 
 // This could be wider for >8 bit display.
-// Indeed, doomTrue color support is posibble
+// Indeed, true color support is posibble
 //  precalculating 24bpp lightmap/colormap LUT.
 //  from darkening PLAYPAL to all black.
 // Could even us emore than 32 levels.
@@ -426,7 +426,7 @@ typedef struct vissprite_s
 //
 typedef struct
 {
-    // If doomFalse use 0 for any position.
+    // If false use 0 for any position.
     // Note: as eight entries are available,
     //  we might as well insert the same name eight times.
     boolean	rotate;

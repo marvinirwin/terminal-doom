@@ -42,9 +42,7 @@ rcsid[] = "$Id: i_unix.c,v 1.5 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/ioctl.h>
 
 // Linux voxware output.
-#ifdef LINUX
 #include <linux/soundcard.h>
-#endif
 
 // Timer stuff. Experimental.
 #include <time.h>
@@ -170,8 +168,8 @@ myioctl
     rc = ioctl(fd, command, arg);  
     if (rc < 0)
     {
-	// fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
-	// fprintf(stderr, "errno=%d\n", errno);
+	fprintf(stderr, "ioctl(dsp,%d,arg) failed\n", command);
+	fprintf(stderr, "errno=%d\n", errno);
 	exit(-1);
     }
 }
@@ -755,8 +753,8 @@ I_InitSound()
     strcat(buffer, " -quiet");
     sndserver = popen(buffer, "w");
   }
-  else{}
-    // fprintf(stderr, "Could not start sound server [%s]\n", buffer);
+  else
+    fprintf(stderr, "Could not start sound server [%s]\n", buffer);
 #else
     
   int i;
@@ -771,7 +769,7 @@ I_InitSound()
   
   audio_fd = open("/dev/dsp", O_WRONLY);
   if (audio_fd<0)
-    // fprintf(stderr, "Could not open /dev/dsp\n");
+    fprintf(stderr, "Could not open /dev/dsp\n");
   
                      
   i = 11 | (2<<16);                                           
@@ -790,9 +788,9 @@ I_InitSound()
   if (i&=AFMT_S16_LE)    
     myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
   else
-    // fprintf(stderr, "Could not play signed 16 data\n");
+    fprintf(stderr, "Could not play signed 16 data\n");
 
-  // fprintf(stderr, " configured audio device\n" );
+  fprintf(stderr, " configured audio device\n" );
 
     
   // Initialize external data (all sounds) at start, keep static.
@@ -821,7 +819,7 @@ I_InitSound()
     mixbuffer[i] = 0;
   
   // Finished initialization.
-  // fprintf(stderr, "I_InitSound: sound module ready\n");
+  fprintf(stderr, "I_InitSound: sound module ready\n");
     
 #endif
 }

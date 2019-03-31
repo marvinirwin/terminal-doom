@@ -164,7 +164,7 @@ void S_Init
 {  
   int		i;
 
-  // fprintf( stderr, "S_Init: default sfx volume %d\n", sfxVolume);
+  fprintf( stderr, "S_Init: default sfx volume %d\n", sfxVolume);
 
   // Whatever these did with DMX, these are rather dummies now.
   I_SetChannels();
@@ -242,7 +242,7 @@ void S_Start(void)
   //  if (commercial && mnum > mus_e3m9)	
   //      mnum -= mus_e3m9;
   
-  S_ChangeMusic(mnum, doomTrue);
+  S_ChangeMusic(mnum, true);
   
   nextcleanup = 15;
 }	
@@ -423,7 +423,7 @@ S_StartSound
     {
 	for (i=first_saw;i!=next_saw;i=(i+1)%10)
 	    if (last_saw_origins[i] != origin)
-		// fprintf(stderr, "old origin 0x%lx != "
+		fprintf(stderr, "old origin 0x%lx != "
 			"origin 0x%lx for sfx %d\n",
 			last_saw_origins[i],
 			origin,
@@ -449,7 +449,7 @@ S_StartSound
 		    || channels[i].sfxinfo == &S_sfx[sfx_sawful]
 		    || channels[i].sfxinfo == &S_sfx[sfx_sawhit])
 		{
-		    // fprintf(stderr,
+		    fprintf(stderr,
 			    "chn: sfxinfo=0x%lx, origin=0x%lx, "
 			    "handle=%d\n",
 			    channels[i].sfxinfo,
@@ -457,7 +457,7 @@ S_StartSound
 			    channels[i].handle);
 		}
 	    }
-	    // fprintf(stderr, "\n");
+	    fprintf(stderr, "\n");
 	}
     }
 }
@@ -499,7 +499,7 @@ void S_PauseSound(void)
     if (mus_playing && !mus_paused)
     {
 	I_PauseSong(mus_playing->handle);
-	mus_paused = doomTrue;
+	mus_paused = true;
     }
 }
 
@@ -508,7 +508,7 @@ void S_ResumeSound(void)
     if (mus_playing && mus_paused)
     {
 	I_ResumeSong(mus_playing->handle);
-	mus_paused = doomFalse;
+	mus_paused = false;
     }
 }
 
@@ -643,7 +643,7 @@ void S_SetSfxVolume(int volume)
 //
 void S_StartMusic(int m_id)
 {
-    S_ChangeMusic(m_id, doomFalse);
+    S_ChangeMusic(m_id, false);
 }
 
 void
@@ -718,7 +718,7 @@ void S_StopChannel(int cnum)
 	{
 #ifdef SAWDEBUG
 	    if (c->sfxinfo == &S_sfx[sfx_sawful])
-		// fprintf(stderr, "stopped\n");
+		fprintf(stderr, "stopped\n");
 #endif
 	    I_StopSound(c->handle);
 	}

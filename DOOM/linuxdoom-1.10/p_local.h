@@ -198,7 +198,7 @@ void P_SetThingPosition (mobj_t* thing);
 // P_MAP
 //
 
-// If "floatok" doomTrue, move would be ok
+// If "floatok" true, move would be ok
 // if within "tmfloorz - tmceilingz".
 extern boolean		floatok;
 extern fixed_t		tmfloorz;

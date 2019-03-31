@@ -70,7 +70,7 @@ T_MovePlane
 		lastpos = sector->floorheight;
 		sector->floorheight = dest;
 		flag = P_ChangeSector(sector,crush);
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->floorheight =lastpos;
 		    P_ChangeSector(sector,crush);
@@ -83,7 +83,7 @@ T_MovePlane
 		lastpos = sector->floorheight;
 		sector->floorheight -= speed;
 		flag = P_ChangeSector(sector,crush);
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->floorheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -99,7 +99,7 @@ T_MovePlane
 		lastpos = sector->floorheight;
 		sector->floorheight = dest;
 		flag = P_ChangeSector(sector,crush);
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->floorheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -113,9 +113,9 @@ T_MovePlane
 		lastpos = sector->floorheight;
 		sector->floorheight += speed;
 		flag = P_ChangeSector(sector,crush);
-		if (flag == doomTrue)
+		if (flag == true)
 		{
-		    if (crush == doomTrue)
+		    if (crush == true)
 			return crushed;
 		    sector->floorheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -138,7 +138,7 @@ T_MovePlane
 		sector->ceilingheight = dest;
 		flag = P_ChangeSector(sector,crush);
 
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -153,9 +153,9 @@ T_MovePlane
 		sector->ceilingheight -= speed;
 		flag = P_ChangeSector(sector,crush);
 
-		if (flag == doomTrue)
+		if (flag == true)
 		{
-		    if (crush == doomTrue)
+		    if (crush == true)
 			return crushed;
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -171,7 +171,7 @@ T_MovePlane
 		lastpos = sector->ceilingheight;
 		sector->ceilingheight = dest;
 		flag = P_ChangeSector(sector,crush);
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -186,7 +186,7 @@ T_MovePlane
 		flag = P_ChangeSector(sector,crush);
 // UNUSED
 #if 0
-		if (flag == doomTrue)
+		if (flag == true)
 		{
 		    sector->ceilingheight = lastpos;
 		    P_ChangeSector(sector,crush);
@@ -284,7 +284,7 @@ EV_DoFloor
 	sec->specialdata = floor;
 	floor->thinker.function.acp1 = (actionf_p1) T_MoveFloor;
 	floor->type = floortype;
-	floor->crush = doomFalse;
+	floor->crush = false;
 
 	switch(floortype)
 	{
@@ -315,7 +315,7 @@ EV_DoFloor
 	    break;
 
 	  case raiseFloorCrush:
-	    floor->crush = doomTrue;
+	    floor->crush = true;
 	  case raiseFloor:
 	    floor->direction = 1;
 	    floor->sector = sec;

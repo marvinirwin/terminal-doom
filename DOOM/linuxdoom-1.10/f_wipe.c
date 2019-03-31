@@ -90,7 +90,7 @@ wipe_doColorXForm
     byte*	e;
     int		newval;
 
-    changed = doomFalse;
+    changed = false;
     w = wipe_scr;
     e = wipe_scr_end;
     
@@ -105,7 +105,7 @@ wipe_doColorXForm
 		    *w = *e;
 		else
 		    *w = newval;
-		changed = doomTrue;
+		changed = true;
 	    }
 	    else if (*w < *e)
 	    {
@@ -114,7 +114,7 @@ wipe_doColorXForm
 		    *w = *e;
 		else
 		    *w = newval;
-		changed = doomTrue;
+		changed = true;
 	    }
 	}
 	w++;
@@ -152,7 +152,6 @@ wipe_initMelt
     // to have stuff in column-major format
     wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
     wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
-
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)
@@ -182,7 +181,7 @@ wipe_doMelt
     
     short*	s;
     short*	d;
-    boolean	done = doomTrue;
+    boolean	done = true;
 
     width/=2;
 
@@ -192,7 +191,7 @@ wipe_doMelt
 	{
 	    if (y[i]<0)
 	    {
-		y[i]++; done = doomFalse;
+		y[i]++; done = false;
 	    }
 	    else if (y[i] < height)
 	    {
@@ -215,7 +214,7 @@ wipe_doMelt
 		    d[idx] = *(s++);
 		    idx += width;
 		}
-		done = doomFalse;
+		done = false;
 	    }
 	}
     }

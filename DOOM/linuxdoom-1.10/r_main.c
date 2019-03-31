@@ -659,7 +659,7 @@ R_SetViewSize
 ( int		blocks,
   int		detail )
 {
-    setsizeneeded = doomTrue;
+    setsizeneeded = true;
     setblocks = blocks;
     setdetail = detail;
 }
@@ -677,7 +677,7 @@ void R_ExecuteSetViewSize (void)
     int		level;
     int		startmap; 	
 
-    setsizeneeded = doomFalse;
+    setsizeneeded = false;
 
     if (setblocks == 11)
     {
@@ -772,24 +772,23 @@ extern int	screenblocks;
 
 void R_Init (void)
 {
-    //printf("R_InitStart\n");
     R_InitData ();
-    //printf ("\nR_InitData");
-    R_InitPointToAngle();
-    //printf ("\nR_InitPointToAngle");
+    printf ("\nR_InitData");
+    R_InitPointToAngle ();
+    printf ("\nR_InitPointToAngle");
     R_InitTables ();
     // viewwidth / viewheight / detailLevel are set by the defaults
-    //printf ("\nR_InitTables");
+    printf ("\nR_InitTables");
 
     R_SetViewSize (screenblocks, detailLevel);
     R_InitPlanes ();
-    //printf ("\nR_InitPlanes");
+    printf ("\nR_InitPlanes");
     R_InitLightTables ();
-    //printf ("\nR_InitLightTables");
+    printf ("\nR_InitLightTables");
     R_InitSkyMap ();
-    //printf ("\nR_InitSkyMap");
+    printf ("\nR_InitSkyMap");
     R_InitTranslationTables ();
-    //printf ("\nR_InitTranslationsTables");
+    printf ("\nR_InitTranslationsTables");
 	
     framecount = 0;
 }

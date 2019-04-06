@@ -58,6 +58,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #include "doomdef.h"
 #include "xlib_hack.h"
+#include "m_misc.h"
 
 #define POINTER_WARP_COUNTDOWN	1
 
@@ -923,11 +924,12 @@ void I_InitGraphics(void)
 
     }*/
 
-    if (multiply == 1)
+/*    if (multiply == 1)
 	screens[0] = (unsigned char *) (image->data);
-    else
+    else*/
 	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
 
+    M_ScreenShot();
 }
 
 

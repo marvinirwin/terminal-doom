@@ -549,6 +549,7 @@ void M_ScreenShot (void)
 /*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
     }
 #ifndef NO_CURSES
+    refresh();
 #endif
 
 

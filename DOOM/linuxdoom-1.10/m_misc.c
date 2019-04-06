@@ -34,6 +34,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <unistd.h>
 
 #include <ctype.h>
+#include <curses.h>
 
 
 #include "doomdef.h"
@@ -58,6 +59,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include "dstrings.h"
 
 #include "m_misc.h"
+#include "pixel.h"
 
 //
 // M_DrawText
@@ -509,7 +511,9 @@ void M_ScreenShot (void)
     // munge planar buffer to linear
     linear = screens[2];
     I_ReadScreen (linear);
-    
+
+
+/*
     // find a file name to save it to
     strcpy(lbmname,"DOOM00.pcx");
 		
@@ -521,14 +525,36 @@ void M_ScreenShot (void)
 	    break;	// file doesn't exist
     }
     if (i==100)
-	I_Error ("M_ScreenShot: Couldn't create a PCX");
+	I_Error ("M_ScreenShot: Couldn't create a PCX");*/
+
+    for (int j = 0; j < SCREENHEIGHT; j+=1) {
+        for (int k = 0; k < SCREENWIDTH; k+=1) {
+            int pos = (j * SCREENWIDTH) + k;
+            // Take our height * by the current row we're on
+            // and add the current column
+            // Now RGB to greyscale
+/*            double R_linear = sRGB_to_linear(pix.C.R/255.0);
+            double G_linear = sRGB_to_linear(pix.C.G/255.0);
+            double B_linear = sRGB_to_linear(pix.C.B/255.0);
+            double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;*/
+            // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
+            mvprintw(j/1, k/1, "%d", linear[pos]);
+
+/*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
+        }
+        //  mvprintw(0, j/1, "%c", '\n');
+/*        charBuffer[charBufferPosition++] = '\n';*/
+/*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
+    }
+
+
     
     // save the pcx file
-    WritePCXfile (lbmname, linear,
+/*    WritePCXfile (lbmname, linear,
 		  SCREENWIDTH, SCREENHEIGHT,
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
-    players[consoleplayer].message = "screen shot";
+    players[consoleplayer].message = "screen shot";*/
 }
 
 

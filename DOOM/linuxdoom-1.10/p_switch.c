@@ -109,7 +109,8 @@ void P_InitSwitchList(void)
     int		i;
     int		index;
     int		episode;
-	
+
+
     episode = 1;
 
     if (gamemode == registered)

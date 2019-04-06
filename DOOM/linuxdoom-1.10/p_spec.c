@@ -127,8 +127,9 @@ animdef_t		animdefs[] =
     {true,	"SFALL4",	"SFALL1",	8},
     {true,	"WFALL4",	"WFALL1",	8},
     {true,	"DBRAIN4",	"DBRAIN1",	8},
-	
-    {-1}
+	{true,  "END_ANIM", "END_ANIM", 8}
+/*    {-1}*/
+// Why was it negative one?  That's till true in boolean logic
 };
 
 anim_t		anims[MAXANIMS];
@@ -152,7 +153,7 @@ void P_InitPicAnims (void)
     
     //	Init animation
     lastanim = anims;
-    for (i=0 ; animdefs[i].istexture != -1 ; i++)
+    for (i=0 ; !strcmp(animdefs[i].startname, "END_ANIM") ; i++)
     {
 	if (animdefs[i].istexture)
 	{
@@ -166,8 +167,6 @@ void P_InitPicAnims (void)
 	else
 	{
 	    if (W_CheckNumForName(animdefs[i].startname) == -1)
-		continue;
-
 	    lastanim->picnum = R_FlatNumForName (animdefs[i].endname);
 	    lastanim->basepic = R_FlatNumForName (animdefs[i].startname);
 	}

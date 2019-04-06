@@ -1034,16 +1034,16 @@ void D_DoomMain (void)
 	};
 	int i;
 	
-	if ( gamemode == shareware)
+/*	if ( gamemode == shareware)
 	    I_Error("\nYou cannot -file with the shareware "
-		    "version. Register!");
+		    "version. Register!");*/
 
 	// Check for fake IWAD with right name,
 	// but w/o all the lumps of the registered version. 
-	if (gamemode == registered)
+/*	if (gamemode == registered)
 	    for (i = 0;i < 23; i++)
 		if (W_CheckNumForName(name[i])<0)
-		    I_Error("\nThis is not the registered version.");
+		    I_Error("\nThis is not the registered version.");*/
     }
     
     // Iff additonal PWAD files are used, print modified banner
@@ -1057,7 +1057,7 @@ void D_DoomMain (void)
 	    "                      press enter to continue\n"
 	    "===========================================================================\n"
 	    );
-	getchar ();
+/*	getchar ();*/
     }
 	
 

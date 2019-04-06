@@ -46,7 +46,7 @@ typedef struct {
 typedef unsigned long int XID;
 typedef XID Cursor;
 typedef XID GC;
-typedef XID pixmap;
+typedef XID Pixmap;
 typedef XID Window;
 typedef XID Colormap;
 
@@ -54,6 +54,8 @@ typedef XID Colormap;
 #define True 0
 #define PseudoColor	3
 #define DoRed	(1<<0)
+#define DoGreen (1<<0)
+#define DoBlue  (1<<0)
 #define AllocNone	0
 #define AllocAll	1
 #define CWColormap	(1L<<13)
@@ -155,8 +157,6 @@ typedef struct _XImage {
     } f;
 } XImage;
 
-
-void myPrint(char *);
 
 
 

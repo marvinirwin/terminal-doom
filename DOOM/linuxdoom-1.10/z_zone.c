@@ -28,8 +28,6 @@ rcsid[] = "$Id: z_zone.c,v 1.4 1997/02/03 16:47:58 b1 Exp $";
 #include "i_system.h"
 #include "doomdef.h"
 
-#include <stdlib.h>
-#include <limits.h>
 
 //
 // ZONE MEMORY ALLOCATION
@@ -125,11 +123,6 @@ void Z_Free (void* ptr)
 {
     memblock_t*		block;
     memblock_t*		other;
-
-    // Can't I just use free?
-    // Probably not
-    free(ptr);
-    return;
 	
     block = (memblock_t *) ( (byte *)ptr - sizeof(memblock_t));
 
@@ -193,8 +186,6 @@ Z_Malloc
   int		tag,
   void*		user )
 {
-	unsigned int ulen = size + UINT_MAX + 1;
-	return malloc(ulen);
     int		extra;
     memblock_t*	start;
     memblock_t* rover;
@@ -307,8 +298,6 @@ Z_FreeTags
 ( int		lowtag,
   int		hightag )
 {
-    // This is probably what's segfaulting
-    return;
     memblock_t*	block;
     memblock_t*	next;
 	
@@ -341,14 +330,17 @@ Z_DumpHeap
 {
     memblock_t*	block;
 	
-    //printf ("zone size: %i  location: %p\n", mainzone->size,mainzone);
+    printf ("zone size: %i  location: %p\n",
+	    mainzone->size,mainzone);
     
-    //printf ("tag range: %i to %i\n", lowtag, hightag);
+    printf ("tag range: %i to %i\n",
+	    lowtag, hightag);
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)
     {
 	if (block->tag >= lowtag && block->tag <= hightag)
-	    //printf ("block:%p    size:%7i    user:%p    tag:%3i\n", block, block->size, block->user, block->tag);
+	    printf ("block:%p    size:%7i    user:%p    tag:%3i\n",
+		    block, block->size, block->user, block->tag);
 		
 	if (block->next == &mainzone->blocklist)
 	{
@@ -357,13 +349,13 @@ Z_DumpHeap
 	}
 	
 	if ( (byte *)block + block->size != (byte *)block->next)
-	    //printf ("ERROR: block size does not touch the next block\n");
+	    printf ("ERROR: block size does not touch the next block\n");
 
-	if ( block->next->prev != block){}
-	    //printf ("ERROR: next block doesn't have proper back link\n");
+	if ( block->next->prev != block)
+	    printf ("ERROR: next block doesn't have proper back link\n");
 
-	if (!block->user && !block->next->user){}
-	    //printf ("ERROR: two consecutive free blocks\n");
+	if (!block->user && !block->next->user)
+	    printf ("ERROR: two consecutive free blocks\n");
     }
 }
 
@@ -404,10 +396,8 @@ void Z_FileDumpHeap (FILE* f)
 //
 // Z_CheckHeap
 //
-// What does this even do?
 void Z_CheckHeap (void)
 {
-    return;
     memblock_t*	block;
 	
     for (block = mainzone->blocklist.next ; ; block = block->next)

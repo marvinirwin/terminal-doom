@@ -538,7 +538,9 @@ void M_ScreenShot (void)
             double B_linear = sRGB_to_linear(pix.C.B/255.0);
             double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;*/
             // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
+#ifndef NO_CURSES
             mvprintw(j/1, k/1, "%d", linear[pos]);
+#endif
 
 /*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
         }
@@ -546,6 +548,8 @@ void M_ScreenShot (void)
 /*        charBuffer[charBufferPosition++] = '\n';*/
 /*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
     }
+#ifndef NO_CURSES
+#endif
 
 
     

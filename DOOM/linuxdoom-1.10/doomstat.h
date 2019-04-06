@@ -35,6 +35,7 @@
 
 // We need the playr data structure as well.
 #include "d_player.h"
+#include "player.h"
 
 
 #ifdef __GNUG__
@@ -207,6 +208,7 @@ extern  gamestate_t     gamestate;
 
 extern	int		gametic;
 
+struct player_t;
 
 // Bookkeeping on players - state.
 extern	player_t	players[MAXPLAYERS];

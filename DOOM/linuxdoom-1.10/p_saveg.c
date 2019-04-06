@@ -55,7 +55,7 @@ void P_ArchivePlayers (void)
 	if (!playeringame[i])
 	    continue;
 	
-	PADSAVEP();
+	// PADSAVEP();
 
 	dest = (player_t *)save_p;
 	memcpy (dest,&players[i],sizeof(player_t));
@@ -86,7 +86,7 @@ void P_UnArchivePlayers (void)
 	if (!playeringame[i])
 	    continue;
 	
-	PADSAVEP();
+	// PADSAVEP();
 
 	memcpy (&players[i],save_p, sizeof(player_t));
 	save_p += sizeof(player_t);
@@ -101,7 +101,7 @@ void P_UnArchivePlayers (void)
 	    if (players[i]. psprites[j].state)
 	    {
 		players[i]. psprites[j].state 
-		    = &states[ (int)players[i].psprites[j].state ];
+		    = &states[ (int)(long)players[i].psprites[j].state ];
 	    }
 	}
     }
@@ -240,7 +240,7 @@ void P_ArchiveThinkers (void)
 	if (th->function.acp1 == (actionf_p1)P_MobjThinker)
 	{
 	    *save_p++ = tc_mobj;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    mobj = (mobj_t *)save_p;
 	    memcpy (mobj, th, sizeof(*mobj));
 	    save_p += sizeof(*mobj);
@@ -295,15 +295,15 @@ void P_UnArchiveThinkers (void)
 	    return; 	// end of list
 			
 	  case tc_mobj:
-	    PADSAVEP();
-	    mobj = Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    mobj = static_cast<mobj_t *>(Z_Malloc (sizeof(*mobj), PU_LEVEL, NULL));
 	    memcpy (mobj, save_p, sizeof(*mobj));
 	    save_p += sizeof(*mobj);
-	    mobj->state = &states[(int)mobj->state];
+	    mobj->state = &states[(int)(long)mobj->state];
 	    mobj->target = NULL;
 	    if (mobj->player)
 	    {
-		mobj->player = &players[(int)mobj->player-1];
+		mobj->player = &players[(int)(long)mobj->player-1];
 		mobj->player->mo = mobj;
 	    }
 	    P_SetThingPosition (mobj);
@@ -376,7 +376,7 @@ void P_ArchiveSpecials (void)
 	    if (i<MAXCEILINGS)
 	    {
 		*save_p++ = tc_ceiling;
-		PADSAVEP();
+		// PADSAVEP();
 		ceiling = (ceiling_t *)save_p;
 		memcpy (ceiling, th, sizeof(*ceiling));
 		save_p += sizeof(*ceiling);
@@ -388,7 +388,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_MoveCeiling)
 	{
 	    *save_p++ = tc_ceiling;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    ceiling = (ceiling_t *)save_p;
 	    memcpy (ceiling, th, sizeof(*ceiling));
 	    save_p += sizeof(*ceiling);
@@ -399,7 +399,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_VerticalDoor)
 	{
 	    *save_p++ = tc_door;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    door = (vldoor_t *)save_p;
 	    memcpy (door, th, sizeof(*door));
 	    save_p += sizeof(*door);
@@ -410,7 +410,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_MoveFloor)
 	{
 	    *save_p++ = tc_floor;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    floor = (floormove_t *)save_p;
 	    memcpy (floor, th, sizeof(*floor));
 	    save_p += sizeof(*floor);
@@ -421,7 +421,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_PlatRaise)
 	{
 	    *save_p++ = tc_plat;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    plat = (plat_t *)save_p;
 	    memcpy (plat, th, sizeof(*plat));
 	    save_p += sizeof(*plat);
@@ -432,7 +432,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_LightFlash)
 	{
 	    *save_p++ = tc_flash;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    flash = (lightflash_t *)save_p;
 	    memcpy (flash, th, sizeof(*flash));
 	    save_p += sizeof(*flash);
@@ -443,7 +443,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_StrobeFlash)
 	{
 	    *save_p++ = tc_strobe;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    strobe = (strobe_t *)save_p;
 	    memcpy (strobe, th, sizeof(*strobe));
 	    save_p += sizeof(*strobe);
@@ -454,7 +454,7 @@ void P_ArchiveSpecials (void)
 	if (th->function.acp1 == (actionf_p1)T_Glow)
 	{
 	    *save_p++ = tc_glow;
-	    PADSAVEP();
+	    // PADSAVEP();
 	    glow = (glow_t *)save_p;
 	    memcpy (glow, th, sizeof(*glow));
 	    save_p += sizeof(*glow);
@@ -494,11 +494,11 @@ void P_UnArchiveSpecials (void)
 	    return;	// end of list
 			
 	  case tc_ceiling:
-	    PADSAVEP();
-	    ceiling = Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    ceiling = static_cast<ceiling_t *>(Z_Malloc (sizeof(*ceiling), PU_LEVEL, NULL));
 	    memcpy (ceiling, save_p, sizeof(*ceiling));
 	    save_p += sizeof(*ceiling);
-	    ceiling->sector = &sectors[(int)ceiling->sector];
+	    ceiling->sector = &sectors[(int)(long)ceiling->sector];
 	    ceiling->sector->specialdata = ceiling;
 
 	    if (ceiling->thinker.function.acp1)
@@ -509,33 +509,33 @@ void P_UnArchiveSpecials (void)
 	    break;
 				
 	  case tc_door:
-	    PADSAVEP();
-	    door = Z_Malloc (sizeof(*door), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    door = static_cast<vldoor_t *>(Z_Malloc (sizeof(*door), PU_LEVEL, NULL));
 	    memcpy (door, save_p, sizeof(*door));
 	    save_p += sizeof(*door);
-	    door->sector = &sectors[(int)door->sector];
+	    door->sector = &sectors[(int)(long)door->sector];
 	    door->sector->specialdata = door;
 	    door->thinker.function.acp1 = (actionf_p1)T_VerticalDoor;
 	    P_AddThinker (&door->thinker);
 	    break;
 				
 	  case tc_floor:
-	    PADSAVEP();
-	    floor = Z_Malloc (sizeof(*floor), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    floor = static_cast<floormove_t *>(Z_Malloc (sizeof(*floor), PU_LEVEL, NULL));
 	    memcpy (floor, save_p, sizeof(*floor));
 	    save_p += sizeof(*floor);
-	    floor->sector = &sectors[(int)floor->sector];
+	    floor->sector = &sectors[(int)(long)floor->sector];
 	    floor->sector->specialdata = floor;
 	    floor->thinker.function.acp1 = (actionf_p1)T_MoveFloor;
 	    P_AddThinker (&floor->thinker);
 	    break;
 				
 	  case tc_plat:
-	    PADSAVEP();
-	    plat = Z_Malloc (sizeof(*plat), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    plat = static_cast<plat_t *>(Z_Malloc (sizeof(*plat), PU_LEVEL, NULL));
 	    memcpy (plat, save_p, sizeof(*plat));
 	    save_p += sizeof(*plat);
-	    plat->sector = &sectors[(int)plat->sector];
+	    plat->sector = &sectors[(int)(long)plat->sector];
 	    plat->sector->specialdata = plat;
 
 	    if (plat->thinker.function.acp1)
@@ -546,31 +546,31 @@ void P_UnArchiveSpecials (void)
 	    break;
 				
 	  case tc_flash:
-	    PADSAVEP();
-	    flash = Z_Malloc (sizeof(*flash), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    flash = static_cast<lightflash_t *>(Z_Malloc (sizeof(*flash), PU_LEVEL, NULL));
 	    memcpy (flash, save_p, sizeof(*flash));
 	    save_p += sizeof(*flash);
-	    flash->sector = &sectors[(int)flash->sector];
+	    flash->sector = &sectors[(int)(long)flash->sector];
 	    flash->thinker.function.acp1 = (actionf_p1)T_LightFlash;
 	    P_AddThinker (&flash->thinker);
 	    break;
 				
 	  case tc_strobe:
-	    PADSAVEP();
-	    strobe = Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    strobe = static_cast<strobe_t *>(Z_Malloc (sizeof(*strobe), PU_LEVEL, NULL));
 	    memcpy (strobe, save_p, sizeof(*strobe));
 	    save_p += sizeof(*strobe);
-	    strobe->sector = &sectors[(int)strobe->sector];
+	    strobe->sector = &sectors[(int)(long)strobe->sector];
 	    strobe->thinker.function.acp1 = (actionf_p1)T_StrobeFlash;
 	    P_AddThinker (&strobe->thinker);
 	    break;
 				
 	  case tc_glow:
-	    PADSAVEP();
-	    glow = Z_Malloc (sizeof(*glow), PU_LEVEL, NULL);
+	    // PADSAVEP();
+	    glow = static_cast<glow_t *>(Z_Malloc (sizeof(*glow), PU_LEVEL, NULL));
 	    memcpy (glow, save_p, sizeof(*glow));
 	    save_p += sizeof(*glow);
-	    glow->sector = &sectors[(int)glow->sector];
+	    glow->sector = &sectors[(int)(long)glow->sector];
 	    glow->thinker.function.acp1 = (actionf_p1)T_Glow;
 	    P_AddThinker (&glow->thinker);
 	    break;

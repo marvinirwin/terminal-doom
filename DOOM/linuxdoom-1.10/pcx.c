@@ -99,7 +99,7 @@ static PCXHeader *NewPCXHeader(void)
 /* Allocate a new PCX header and return it */
 {
     /* No initialization here */
-    return malloc(sizeof(PCXHeader));
+    return static_cast<PCXHeader *>(malloc(sizeof(PCXHeader)));
 }
 
 
@@ -275,7 +275,7 @@ Bitmap *ReadPCXFile(const char *bytes, int length)
     B = NewBitmap(P->Width, P->Height);
 
     /* Allocate memory for the scan line */
-    L = malloc(P->Width);
+    L = static_cast<unsigned char *>(malloc(P->Width));
 
     /* Read the pixel data */
     Px = B->Data;

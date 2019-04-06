@@ -22,7 +22,7 @@ void curseDebug(char * cstr){
 }
 
 void cPrintf(char * format, ...) {
-    char * newfmt = malloc(strlen(format) * 2 + 10);
+    char * newfmt = static_cast<char *>(malloc(strlen(format) * 2 + 10));
     va_list args;
     va_start(args, format);
     sprintf(newfmt, format, args);

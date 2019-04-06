@@ -26,7 +26,9 @@
 // Need data structure definitions.
 #include "d_player.h"
 #include "r_data.h"
-
+#include "r_defs.h"
+#include "spritenum.h"
+#include "sector.h"
 
 
 #ifdef __GNUG__
@@ -49,6 +51,8 @@ extern fixed_t*		spritewidth;
 extern fixed_t*		spriteoffset;
 extern fixed_t*		spritetopoffset;
 
+typedef byte lighttable_t;
+
 extern lighttable_t*	colormaps;
 
 extern int		viewwidth;
@@ -68,6 +72,7 @@ extern int		lastspritelump;
 extern int		numspritelumps;
 
 
+typedef byte spritedef_t;
 
 //
 // Lookup tables for map data.

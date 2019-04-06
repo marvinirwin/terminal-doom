@@ -36,6 +36,8 @@
 #include "d_think.h"
 // SECTORS do store MObjs anyway.
 #include "p_mobj.h"
+#include "player.h"
+#include "sector.h"
 
 
 
@@ -79,60 +81,7 @@ typedef struct
 // Forward of LineDefs, for Sectors.
 struct line_s;
 
-// Each sector has a degenmobj_t in its center
-//  for sound origin purposes.
-// I suppose this does not handle sound from
-//  moving objects (doppler), because
-//  position is prolly just buffered, not
-//  updated.
-typedef struct
-{
-    thinker_t		thinker;	// not used for anything
-    fixed_t		x;
-    fixed_t		y;
-    fixed_t		z;
 
-} degenmobj_t;
-
-//
-// The SECTORS record, at runtime.
-// Stores things/mobjs.
-//
-typedef	struct
-{
-    fixed_t	floorheight;
-    fixed_t	ceilingheight;
-    short	floorpic;
-    short	ceilingpic;
-    short	lightlevel;
-    short	special;
-    short	tag;
-
-    // 0 = untraversed, 1,2 = sndlines -1
-    int		soundtraversed;
-
-    // thing that made a sound (or null)
-    mobj_t*	soundtarget;
-
-    // mapblock bounding box for height changes
-    int		blockbox[4];
-
-    // origin for any sounds played by the sector
-    degenmobj_t	soundorg;
-
-    // if == validcount, already checked
-    int		validcount;
-
-    // list of mobjs in sector
-    mobj_t*	thinglist;
-
-    // thinker_t for reversable actions
-    void*	specialdata;
-
-    int			linecount;
-    struct line_s**	lines;	// [linecount] size
-    
-} sector_t;
 
 
 

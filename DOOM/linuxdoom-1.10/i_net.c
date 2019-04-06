@@ -107,7 +107,7 @@ BindToLocalPort
 ( int	s,
   int	port )
 {
-    int			v;
+/*    int			v;
     struct sockaddr_in	address;
 	
     memset (&address, 0, sizeof(address));
@@ -117,7 +117,7 @@ BindToLocalPort
 			
     v = bind (s, (void *)&address, sizeof(address));
     if (v == -1)
-	I_Error ("BindToPort: bind: %s", strerror(errno));
+	I_Error ("BindToPort: bind: %s", strerror(errno));*/
 }
 
 
@@ -126,7 +126,7 @@ BindToLocalPort
 //
 void PacketSend (void)
 {
-    int		c;
+/*    int		c;
     doomdata_t	sw;
 				
     // byte swap
@@ -151,7 +151,7 @@ void PacketSend (void)
 		,sizeof(sendaddress[doomcom->remotenode]));
 	
     //	if (c == -1)
-    //		I_Error ("SendPacket error: %s",strerror(errno));
+    //		I_Error ("SendPacket error: %s",strerror(errno));*/
 }
 
 
@@ -160,7 +160,7 @@ void PacketSend (void)
 //
 void PacketGet (void)
 {
-    int			i;
+/*    int			i;
     int			c;
     struct sockaddr_in	fromaddress;
     int			fromlen;
@@ -214,7 +214,7 @@ void PacketGet (void)
 	netbuffer->cmds[c].consistancy = ntohs(sw.cmds[c].consistancy);
 	netbuffer->cmds[c].chatchar = sw.cmds[c].chatchar;
 	netbuffer->cmds[c].buttons = sw.cmds[c].buttons;
-    }
+    }*/
 }
 
 
@@ -248,7 +248,7 @@ void I_InitNetwork (void)
     int			p;
     struct hostent*	hostentry;	// host information entry
 	
-    doomcom = malloc (sizeof (*doomcom) );
+    doomcom = static_cast<doomcom_t *>(malloc (sizeof (*doomcom) ));
     memset (doomcom, 0, sizeof(*doomcom) );
     
     // set up for network

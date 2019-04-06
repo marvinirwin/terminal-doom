@@ -29,11 +29,11 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-#include <X11/Xlib.h>
+/*#include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/keysym.h>
 
-#include <X11/extensions/XShm.h>
+#include <X11/extensions/XShm.h>*/
 // Had to dig up XShm.c for this one.
 // It is in the libXext, but not in the XFree86 headers.
 #ifdef LINUX
@@ -46,7 +46,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include <sys/socket.h>
 
 #include <netinet/in.h>
-#include <errnos.h>
+/*#include <errnos.h>*/
 #include <signal.h>
 
 #include "doomstat.h"
@@ -57,24 +57,26 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 
 #include "doomdef.h"
 
+#include "xlib_hack.h"
+
 #define POINTER_WARP_COUNTDOWN	1
 
-Display*	X_display=0;
+/*Display*	X_display=0;
 Window		X_mainWindow;
 Colormap	X_cmap;
 Visual*		X_visual;
 GC		X_gc;
-XEvent		X_event;
+XEvent		X_event;*/
 int		X_screen;
-XVisualInfo	X_visualinfo;
-XImage*		image;
+/*XVisualInfo	X_visualinfo;
+XImage*		image;*/
 int		X_width;
 int		X_height;
 
 // MIT SHared Memory extension.
 boolean		doShm;
 
-XShmSegmentInfo	X_shminfo;
+/*XShmSegmentInfo	X_shminfo;*/
 int		X_shmeventtype;
 
 // Fake mouse handling.
@@ -96,7 +98,7 @@ static int	multiply=1;
 
 int xlatekey(void)
 {
-
+/*
     int rc;
 
     switch(rc = XKeycodeToKeysym(X_display, X_event.xkey.keycode, 0))
@@ -157,13 +159,13 @@ int xlatekey(void)
 	break;
     }
 
-    return rc;
+    return rc;*/
 
 }
 
 void I_ShutdownGraphics(void)
 {
-  // Detach from X server
+/*  // Detach from X server
   if (!XShmDetach(X_display, &X_shminfo))
 	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
 
@@ -172,7 +174,7 @@ void I_ShutdownGraphics(void)
   shmctl(X_shminfo.shmid, IPC_RMID, 0);
 
   // Paranoia.
-  image->data = NULL;
+  image->data = NULL;*/
 }
 
 
@@ -193,7 +195,7 @@ boolean		shmFinished;
 
 void I_GetEvent(void)
 {
-
+/*
     event_t event;
 
     // put event-grabbing stuff in here
@@ -274,7 +276,7 @@ void I_GetEvent(void)
       default:
 	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;
 	break;
-    }
+    }*/
 
 }
 
@@ -283,13 +285,13 @@ createnullcursor
 ( Display*	display,
   Window	root )
 {
-    Pixmap cursormask;
+/*    Pixmap cursormask;
     XGCValues xgc;
     GC gc;
     XColor dummycolour;
     Cursor cursor;
 
-    cursormask = XCreatePixmap(display, root, 1, 1, 1/*depth*/);
+    cursormask = XCreatePixmap(display, root, 1, 1, 1*//*depth*//*);
     xgc.function = GXclear;
     gc =  XCreateGC(display, cursormask, GCFunction, &xgc);
     XFillRectangle(display, cursormask, gc, 0, 0, 1, 1);
@@ -300,7 +302,7 @@ createnullcursor
 				 &dummycolour,&dummycolour, 0,0);
     XFreePixmap(display,cursormask);
     XFreeGC(display,gc);
-    return cursor;
+    return cursor;*/
 }
 
 //
@@ -308,7 +310,7 @@ createnullcursor
 //
 void I_StartTic (void)
 {
-
+/*
     if (!X_display)
 	return;
 
@@ -333,7 +335,7 @@ void I_StartTic (void)
 	}
     }
 
-    mousemoved = false;
+    mousemoved = false;*/
 
 }
 
@@ -351,7 +353,7 @@ void I_UpdateNoBlit (void)
 //
 void I_FinishUpdate (void)
 {
-
+/*
     static int	lasttic;
     int		tics;
     int		i;
@@ -516,7 +518,7 @@ void I_FinishUpdate (void)
 	// sync up with server
 	XSync(X_display, False);
 
-    }
+    }*/
 
 }
 
@@ -537,7 +539,7 @@ static XColor	colors[256];
 
 void UploadNewPalette(Colormap cmap, byte *palette)
 {
-
+/*
     register int	i;
     register int	c;
     static boolean	firstcall = true;
@@ -573,7 +575,7 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 	    // store the colors to the current colormap
 	    XStoreColors(X_display, cmap, colors, 256);
 
-	}
+	}*/
 }
 
 //
@@ -581,7 +583,7 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 //
 void I_SetPalette (byte* palette)
 {
-    UploadNewPalette(X_cmap, palette);
+/*    UploadNewPalette(X_cmap, palette);*/
 }
 
 
@@ -680,13 +682,13 @@ void grabsharedmemory(int size)
 	    "shared memory segments.\n");
     }	
   
-  X_shminfo.shmid = id;
+/*  X_shminfo.shmid = id;
   
   // attach to the shared memory segment
   image->data = X_shminfo.shmaddr = shmat(id, 0, 0);
   
   fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
-	  (int) (image->data));
+	  (int) (image->data));*/
 }
 
 void I_InitGraphics(void)
@@ -705,7 +707,7 @@ void I_InitGraphics(void)
     
     int			oktodraw;
     unsigned long	attribmask;
-    XSetWindowAttributes attribs;
+    // XSetWindowAttributes attribs;
     XGCValues		xgcvalues;
     int			valuemask;
     static int		firsttime=1;
@@ -757,6 +759,7 @@ void I_InitGraphics(void)
     }
 
     // open the display
+/*
     X_display = XOpenDisplay(displayname);
     if (!X_display)
     {
@@ -911,6 +914,7 @@ void I_InitGraphics(void)
 	screens[0] = (unsigned char *) (image->data);
     else
 	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
+*/
 
 }
 
@@ -986,13 +990,13 @@ Expand4
 	{
 	    fourpixels = lineptr[0];
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[0] = dpixel;
 	    xline[160] = dpixel;
 	    xline[320] = dpixel;
 	    xline[480] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[1] = dpixel;
 	    xline[161] = dpixel;
 	    xline[321] = dpixel;
@@ -1000,13 +1004,13 @@ Expand4
 
 	    fourpixels = lineptr[1];
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[2] = dpixel;
 	    xline[162] = dpixel;
 	    xline[322] = dpixel;
 	    xline[482] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[3] = dpixel;
 	    xline[163] = dpixel;
 	    xline[323] = dpixel;
@@ -1014,13 +1018,13 @@ Expand4
 
 	    fourpixels = lineptr[2];
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[4] = dpixel;
 	    xline[164] = dpixel;
 	    xline[324] = dpixel;
 	    xline[484] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[5] = dpixel;
 	    xline[165] = dpixel;
 	    xline[325] = dpixel;
@@ -1028,13 +1032,13 @@ Expand4
 
 	    fourpixels = lineptr[3];
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff0000)>>13) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff0000)>>13) );
 	    xline[6] = dpixel;
 	    xline[166] = dpixel;
 	    xline[326] = dpixel;
 	    xline[486] = dpixel;
 			
-	    dpixel = *(double *)( (int)exp + ( (fourpixels&0xffff)<<3 ) );
+	    dpixel = *(double *)( (int)(long)exp + ( (fourpixels&0xffff)<<3 ) );
 	    xline[7] = dpixel;
 	    xline[167] = dpixel;
 	    xline[327] = dpixel;

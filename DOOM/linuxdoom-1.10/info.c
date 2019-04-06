@@ -23,12 +23,13 @@
 //
 //-----------------------------------------------------------------------------
 
-static const char
-rcsid[] = "$Id: info.c,v 1.3 1997/01/26 07:45:00 b1 Exp $";
+/*static const char
+rcsid[] = "$Id: info.c,v 1.3 1997/01/26 07:45:00 b1 Exp $";*/
 
 // Data.
 #include "sounds.h"
 #include "m_fixed.h"
+#include "p_enemy2.h"
 
 #ifdef __GNUG__
 #pragma implementation "info.h"
@@ -56,7 +57,7 @@ char *sprnames[NUMSPRITES] = {
 
 
 // Doesn't work with g++, needs actionf_p1
-void  A_Light0();
+/*void  A_Light0();
 void A_WeaponReady();
 void A_Lower();
 void A_Raise();
@@ -129,105 +130,105 @@ void A_BrainAwake();
 void A_BrainSpit();
 void A_SpawnSound();
 void A_SpawnFly();
-void A_BrainExplode();
+void A_BrainExplode();*/
 
 
 state_t	states[NUMSTATES] = {
-    {SPR_TROO,0,-1,{NULL},S_NULL,0,0},	// S_NULL
-    {SPR_SHTG,4,0,{A_Light0},S_NULL,0,0},	// S_LIGHTDONE
-    {SPR_PUNG,0,1,{A_WeaponReady},S_PUNCH,0,0},	// S_PUNCH
-    {SPR_PUNG,0,1,{A_Lower},S_PUNCHDOWN,0,0},	// S_PUNCHDOWN
-    {SPR_PUNG,0,1,{A_Raise},S_PUNCHUP,0,0},	// S_PUNCHUP
-    {SPR_PUNG,1,4,{NULL},S_PUNCH2,0,0},		// S_PUNCH1
-    {SPR_PUNG,2,4,{A_Punch},S_PUNCH3,0,0},	// S_PUNCH2
-    {SPR_PUNG,3,5,{NULL},S_PUNCH4,0,0},		// S_PUNCH3
-    {SPR_PUNG,2,4,{NULL},S_PUNCH5,0,0},		// S_PUNCH4
-    {SPR_PUNG,1,5,{A_ReFire},S_PUNCH,0,0},	// S_PUNCH5
-    {SPR_PISG,0,1,{A_WeaponReady},S_PISTOL,0,0},// S_PISTOL
-    {SPR_PISG,0,1,{A_Lower},S_PISTOLDOWN,0,0},	// S_PISTOLDOWN
-    {SPR_PISG,0,1,{A_Raise},S_PISTOLUP,0,0},	// S_PISTOLUP
-    {SPR_PISG,0,4,{NULL},S_PISTOL2,0,0},	// S_PISTOL1
-    {SPR_PISG,1,6,{A_FirePistol},S_PISTOL3,0,0},// S_PISTOL2
-    {SPR_PISG,2,4,{NULL},S_PISTOL4,0,0},	// S_PISTOL3
-    {SPR_PISG,1,5,{A_ReFire},S_PISTOL,0,0},	// S_PISTOL4
-    {SPR_PISF,32768,7,{A_Light1},S_LIGHTDONE,0,0},	// S_PISTOLFLASH
-    {SPR_SHTG,0,1,{A_WeaponReady},S_SGUN,0,0},	// S_SGUN
-    {SPR_SHTG,0,1,{A_Lower},S_SGUNDOWN,0,0},	// S_SGUNDOWN
-    {SPR_SHTG,0,1,{A_Raise},S_SGUNUP,0,0},	// S_SGUNUP
-    {SPR_SHTG,0,3,{NULL},S_SGUN2,0,0},	// S_SGUN1
-    {SPR_SHTG,0,7,{A_FireShotgun},S_SGUN3,0,0},	// S_SGUN2
-    {SPR_SHTG,1,5,{NULL},S_SGUN4,0,0},	// S_SGUN3
-    {SPR_SHTG,2,5,{NULL},S_SGUN5,0,0},	// S_SGUN4
-    {SPR_SHTG,3,4,{NULL},S_SGUN6,0,0},	// S_SGUN5
-    {SPR_SHTG,2,5,{NULL},S_SGUN7,0,0},	// S_SGUN6
-    {SPR_SHTG,1,5,{NULL},S_SGUN8,0,0},	// S_SGUN7
-    {SPR_SHTG,0,3,{NULL},S_SGUN9,0,0},	// S_SGUN8
-    {SPR_SHTG,0,7,{A_ReFire},S_SGUN,0,0},	// S_SGUN9
-    {SPR_SHTF,32768,4,{A_Light1},S_SGUNFLASH2,0,0},	// S_SGUNFLASH1
-    {SPR_SHTF,32769,3,{A_Light2},S_LIGHTDONE,0,0},	// S_SGUNFLASH2
-    {SPR_SHT2,0,1,{A_WeaponReady},S_DSGUN,0,0},	// S_DSGUN
-    {SPR_SHT2,0,1,{A_Lower},S_DSGUNDOWN,0,0},	// S_DSGUNDOWN
-    {SPR_SHT2,0,1,{A_Raise},S_DSGUNUP,0,0},	// S_DSGUNUP
-    {SPR_SHT2,0,3,{NULL},S_DSGUN2,0,0},	// S_DSGUN1
-    {SPR_SHT2,0,7,{A_FireShotgun2},S_DSGUN3,0,0},	// S_DSGUN2
-    {SPR_SHT2,1,7,{NULL},S_DSGUN4,0,0},	// S_DSGUN3
-    {SPR_SHT2,2,7,{A_CheckReload},S_DSGUN5,0,0},	// S_DSGUN4
-    {SPR_SHT2,3,7,{A_OpenShotgun2},S_DSGUN6,0,0},	// S_DSGUN5
-    {SPR_SHT2,4,7,{NULL},S_DSGUN7,0,0},	// S_DSGUN6
-    {SPR_SHT2,5,7,{A_LoadShotgun2},S_DSGUN8,0,0},	// S_DSGUN7
-    {SPR_SHT2,6,6,{NULL},S_DSGUN9,0,0},	// S_DSGUN8
-    {SPR_SHT2,7,6,{A_CloseShotgun2},S_DSGUN10,0,0},	// S_DSGUN9
-    {SPR_SHT2,0,5,{A_ReFire},S_DSGUN,0,0},	// S_DSGUN10
-    {SPR_SHT2,1,7,{NULL},S_DSNR2,0,0},	// S_DSNR1
-    {SPR_SHT2,0,3,{NULL},S_DSGUNDOWN,0,0},	// S_DSNR2
-    {SPR_SHT2,32776,5,{A_Light1},S_DSGUNFLASH2,0,0},	// S_DSGUNFLASH1
-    {SPR_SHT2,32777,4,{A_Light2},S_LIGHTDONE,0,0},	// S_DSGUNFLASH2
-    {SPR_CHGG,0,1,{A_WeaponReady},S_CHAIN,0,0},	// S_CHAIN
-    {SPR_CHGG,0,1,{A_Lower},S_CHAINDOWN,0,0},	// S_CHAINDOWN
-    {SPR_CHGG,0,1,{A_Raise},S_CHAINUP,0,0},	// S_CHAINUP
-    {SPR_CHGG,0,4,{A_FireCGun},S_CHAIN2,0,0},	// S_CHAIN1
-    {SPR_CHGG,1,4,{A_FireCGun},S_CHAIN3,0,0},	// S_CHAIN2
-    {SPR_CHGG,1,0,{A_ReFire},S_CHAIN,0,0},	// S_CHAIN3
-    {SPR_CHGF,32768,5,{A_Light1},S_LIGHTDONE,0,0},	// S_CHAINFLASH1
-    {SPR_CHGF,32769,5,{A_Light2},S_LIGHTDONE,0,0},	// S_CHAINFLASH2
-    {SPR_MISG,0,1,{A_WeaponReady},S_MISSILE,0,0},	// S_MISSILE
-    {SPR_MISG,0,1,{A_Lower},S_MISSILEDOWN,0,0},	// S_MISSILEDOWN
-    {SPR_MISG,0,1,{A_Raise},S_MISSILEUP,0,0},	// S_MISSILEUP
-    {SPR_MISG,1,8,{A_GunFlash},S_MISSILE2,0,0},	// S_MISSILE1
-    {SPR_MISG,1,12,{A_FireMissile},S_MISSILE3,0,0},	// S_MISSILE2
-    {SPR_MISG,1,0,{A_ReFire},S_MISSILE,0,0},	// S_MISSILE3
-    {SPR_MISF,32768,3,{A_Light1},S_MISSILEFLASH2,0,0},	// S_MISSILEFLASH1
-    {SPR_MISF,32769,4,{NULL},S_MISSILEFLASH3,0,0},	// S_MISSILEFLASH2
-    {SPR_MISF,32770,4,{A_Light2},S_MISSILEFLASH4,0,0},	// S_MISSILEFLASH3
-    {SPR_MISF,32771,4,{A_Light2},S_LIGHTDONE,0,0},	// S_MISSILEFLASH4
-    {SPR_SAWG,2,4,{A_WeaponReady},S_SAWB,0,0},	// S_SAW
-    {SPR_SAWG,3,4,{A_WeaponReady},S_SAW,0,0},	// S_SAWB
-    {SPR_SAWG,2,1,{A_Lower},S_SAWDOWN,0,0},	// S_SAWDOWN
-    {SPR_SAWG,2,1,{A_Raise},S_SAWUP,0,0},	// S_SAWUP
-    {SPR_SAWG,0,4,{A_Saw},S_SAW2,0,0},	// S_SAW1
-    {SPR_SAWG,1,4,{A_Saw},S_SAW3,0,0},	// S_SAW2
-    {SPR_SAWG,1,0,{A_ReFire},S_SAW,0,0},	// S_SAW3
-    {SPR_PLSG,0,1,{A_WeaponReady},S_PLASMA,0,0},	// S_PLASMA
-    {SPR_PLSG,0,1,{A_Lower},S_PLASMADOWN,0,0},	// S_PLASMADOWN
-    {SPR_PLSG,0,1,{A_Raise},S_PLASMAUP,0,0},	// S_PLASMAUP
-    {SPR_PLSG,0,3,{A_FirePlasma},S_PLASMA2,0,0},	// S_PLASMA1
-    {SPR_PLSG,1,20,{A_ReFire},S_PLASMA,0,0},	// S_PLASMA2
-    {SPR_PLSF,32768,4,{A_Light1},S_LIGHTDONE,0,0},	// S_PLASMAFLASH1
-    {SPR_PLSF,32769,4,{A_Light1},S_LIGHTDONE,0,0},	// S_PLASMAFLASH2
-    {SPR_BFGG,0,1,{A_WeaponReady},S_BFG,0,0},	// S_BFG
-    {SPR_BFGG,0,1,{A_Lower},S_BFGDOWN,0,0},	// S_BFGDOWN
-    {SPR_BFGG,0,1,{A_Raise},S_BFGUP,0,0},	// S_BFGUP
-    {SPR_BFGG,0,20,{A_BFGsound},S_BFG2,0,0},	// S_BFG1
-    {SPR_BFGG,1,10,{A_GunFlash},S_BFG3,0,0},	// S_BFG2
-    {SPR_BFGG,1,10,{A_FireBFG},S_BFG4,0,0},	// S_BFG3
-    {SPR_BFGG,1,20,{A_ReFire},S_BFG,0,0},	// S_BFG4
-    {SPR_BFGF,32768,11,{A_Light1},S_BFGFLASH2,0,0},	// S_BFGFLASH1
-    {SPR_BFGF,32769,6,{A_Light2},S_LIGHTDONE,0,0},	// S_BFGFLASH2
-    {SPR_BLUD,2,8,{NULL},S_BLOOD2,0,0},	// S_BLOOD1
-    {SPR_BLUD,1,8,{NULL},S_BLOOD3,0,0},	// S_BLOOD2
-    {SPR_BLUD,0,8,{NULL},S_NULL,0,0},	// S_BLOOD3
-    {SPR_PUFF,32768,4,{NULL},S_PUFF2,0,0},	// S_PUFF1
-    {SPR_PUFF,1,4,{NULL},S_PUFF3,0,0},	// S_PUFF2
+    {SPR_TROO,0,-1,{NULL},                                       S_NULL,      0, 0},	// S_NULL
+    {SPR_SHTG,4,0,{A_Light0},      S_NULL,       0, 0},	// S_LIGHTDONE
+    {SPR_PUNG,0,1,{A_WeaponReady}, S_PUNCH,      0, 0},	// S_PUNCH
+    {SPR_PUNG,0,1,{A_Lower},       S_PUNCHDOWN,  0, 0},	// S_PUNCHDOWN
+    {SPR_PUNG,0,1,{A_Raise},  S_PUNCHUP,    0, 0},	// S_PUNCHUP
+    {SPR_PUNG,1,4,{NULL},                                        S_PUNCH2,     0, 0},		// S_PUNCH1
+    {SPR_PUNG,2,4,{A_Punch},       S_PUNCH3,     0, 0},	// S_PUNCH2
+    {SPR_PUNG,3,5,{NULL},                                            S_PUNCH4,     0, 0},		// S_PUNCH3
+    {SPR_PUNG,2,4,{NULL},                                            S_PUNCH5,     0, 0},		// S_PUNCH4
+    {SPR_PUNG,1,5,{    A_ReFire},      S_PUNCH,      0, 0},	// S_PUNCH5
+    {SPR_PISG,0,1,{    A_WeaponReady}, S_PISTOL,     0, 0},// S_PISTOL
+    {SPR_PISG,0,1,{    A_Lower},      S_PISTOLDOWN, 0, 0},	// S_PISTOLDOWN
+    {SPR_PISG,0,1,{    A_Raise},      S_PISTOLUP,  0, 0},	// S_PISTOLUP
+    {SPR_PISG,0,4,{NULL},                                            S_PISTOL2,   0, 0},	// S_PISTOL1
+    {SPR_PISG,1,6,{    A_FirePistol},  S_PISTOL3,   0, 0},// S_PISTOL2
+    {SPR_PISG,2,4,{NULL},                                            S_PISTOL4,   0, 0},	// S_PISTOL3
+    {SPR_PISG,1,5,{    A_ReFire},      S_PISTOL,    0, 0},	// S_PISTOL4
+    {SPR_PISF,32768,7,{A_Light1},      S_LIGHTDONE, 0, 0},	// S_PISTOLFLASH
+    {SPR_SHTG,0,1,{    A_WeaponReady}, S_SGUN,      0, 0},	// S_SGUN
+    {SPR_SHTG,0,1,{    A_Lower},       S_SGUNDOWN,  0, 0},	// S_SGUNDOWN
+    {SPR_SHTG,0,1,{    A_Raise},       S_SGUNUP,    0, 0},	// S_SGUNUP
+    {SPR_SHTG,0,3,{NULL},                                            S_SGUN2,     0, 0},	// S_SGUN1
+    {SPR_SHTG,0,7,{    A_FireShotgun}, S_SGUN3,     0, 0},	// S_SGUN2
+    {SPR_SHTG,1,5,{NULL},                                            S_SGUN4,     0, 0},	// S_SGUN3
+    {SPR_SHTG,2,5,{NULL},                                       S_SGUN5,      0, 0},	// S_SGUN4
+    {SPR_SHTG,3,4,{NULL},                                       S_SGUN6,      0, 0},	// S_SGUN5
+    {SPR_SHTG,2,5,{NULL},                                       S_SGUN7,      0, 0},	// S_SGUN6
+    {SPR_SHTG,1,5,{NULL},                                            S_SGUN8,      0, 0},	// S_SGUN7
+    {SPR_SHTG,0,3,{NULL},                                            S_SGUN9,      0, 0},	// S_SGUN8
+    {SPR_SHTG,0,7,{    A_ReFire},      S_SGUN,       0, 0},	// S_SGUN9
+    {SPR_SHTF,32768,4,{A_Light1},      S_SGUNFLASH2, 0, 0},	// S_SGUNFLASH1
+    {SPR_SHTF,32769,3,{A_Light2},       S_LIGHTDONE, 0, 0},	// S_SGUNFLASH2
+    {SPR_SHT2,0,1,{    A_WeaponReady},  S_DSGUN,     0, 0},	// S_DSGUN
+    {SPR_SHT2,0,1,{A_Lower},        S_DSGUNDOWN, 0, 0},	// S_DSGUNDOWN
+    {SPR_SHT2,0,1,{A_Raise},        S_DSGUNUP, 0, 0},	// S_DSGUNUP
+    {SPR_SHT2,0,3,{NULL},                                         S_DSGUN2,  0, 0},	// S_DSGUN1
+    {SPR_SHT2,0,7,{    A_FireShotgun2}, S_DSGUN3,    0, 0},	// S_DSGUN2
+    {SPR_SHT2,1,7,{NULL},                                             S_DSGUN4,    0, 0},	// S_DSGUN3
+    {SPR_SHT2,2,7,{    A_CheckReload},   S_DSGUN5,      0, 0},	// S_DSGUN4
+    {SPR_SHT2,3,7,{    A_OpenShotgun2},  S_DSGUN6,      0, 0},	// S_DSGUN5
+    {SPR_SHT2,4,7,{NULL},                                              S_DSGUN7,      0, 0},	// S_DSGUN6
+    {SPR_SHT2,5,7,{    A_LoadShotgun2},  S_DSGUN8,      0, 0},	// S_DSGUN7
+    {SPR_SHT2,6,6,{NULL},                                              S_DSGUN9,      0, 0},	// S_DSGUN8
+    {SPR_SHT2,7,6,{    A_CloseShotgun2}, S_DSGUN10,     0, 0},	// S_DSGUN9
+    {SPR_SHT2,0,5,{    A_ReFire},      S_DSGUN,       0, 0},	// S_DSGUN10
+    {SPR_SHT2,1,7,{NULL},                                            S_DSNR2,       0, 0},	// S_DSNR1
+    {SPR_SHT2,0,3,{NULL},                                            S_DSGUNDOWN,   0, 0},	// S_DSNR2
+    {SPR_SHT2,32776,5,{A_Light1},      S_DSGUNFLASH2, 0, 0},	// S_DSGUNFLASH1
+    {SPR_SHT2,32777,4,{A_Light2},      S_LIGHTDONE,   0, 0},	// S_DSGUNFLASH2
+    {SPR_CHGG,0,1,{    A_WeaponReady}, S_CHAIN,       0, 0},	// S_CHAIN
+    {SPR_CHGG,0,1,{    A_Lower},    S_CHAINDOWN,   0, 0},	// S_CHAINDOWN
+    {SPR_CHGG,0,1,{    A_Raise},    S_CHAINUP,     0, 0},	// S_CHAINUP
+    {SPR_CHGG,0,4,{    A_FireCGun},    S_CHAIN2,      0, 0},	// S_CHAIN1
+    {SPR_CHGG,1,4,{    A_FireCGun},    S_CHAIN3,        0, 0},	// S_CHAIN2
+    {SPR_CHGG,1,0,{    A_ReFire},      S_CHAIN,         0, 0},	// S_CHAIN3
+    {SPR_CHGF,32768,5,{A_Light1},      S_LIGHTDONE,     0, 0},	// S_CHAINFLASH1
+    {SPR_CHGF,32769,5,{A_Light2},      S_LIGHTDONE,     0, 0},	// S_CHAINFLASH2
+    {SPR_MISG,0,1,{    A_WeaponReady}, S_MISSILE,       0, 0},	// S_MISSILE
+    {SPR_MISG,0,1,{    A_Lower},       S_MISSILEDOWN,   0, 0},	// S_MISSILEDOWN
+    {SPR_MISG,0,1,{    A_Raise},       S_MISSILEUP,     0, 0},	// S_MISSILEUP
+    {SPR_MISG,1,8,{    A_GunFlash},    S_MISSILE2,      0, 0},	// S_MISSILE1
+    {SPR_MISG,1,12,{   A_FireMissile}, S_MISSILE3,      0, 0},	// S_MISSILE2
+    {SPR_MISG,1,0,{    A_ReFire},      S_MISSILE,       0, 0},	// S_MISSILE3
+    {SPR_MISF,32768,3,{A_Light1},      S_MISSILEFLASH2, 0, 0},	// S_MISSILEFLASH1
+    {SPR_MISF,32769,4,{NULL},                                        S_MISSILEFLASH3, 0, 0},	// S_MISSILEFLASH2
+    {SPR_MISF,32770,4,{A_Light2},      S_MISSILEFLASH4, 0, 0},	// S_MISSILEFLASH3
+    {SPR_MISF,32771,4,{A_Light2},      S_LIGHTDONE,  0, 0},	// S_MISSILEFLASH4
+    {SPR_SAWG,2,4,{A_WeaponReady}, S_SAWB,       0, 0},	// S_SAW
+    {SPR_SAWG,3,4,{ A_WeaponReady}, S_SAW,        0, 0},	// S_SAWB
+    {SPR_SAWG,2,1,{    A_Lower},       S_SAWDOWN,    0, 0},	// S_SAWDOWN
+    {SPR_SAWG,2,1,{    A_Raise},       S_SAWUP,      0, 0},	// S_SAWUP
+    {SPR_SAWG,0,4,{    A_Saw},         S_SAW2,       0, 0},	// S_SAW1
+    {SPR_SAWG,1,4,{    A_Saw},         S_SAW3,       0, 0},	// S_SAW2
+    {SPR_SAWG,1,0,{    A_ReFire},      S_SAW,        0, 0},	// S_SAW3
+    {SPR_PLSG,0,1,{    A_WeaponReady}, S_PLASMA,     0, 0},	// S_PLASMA
+    {SPR_PLSG,0,1,{    A_Lower},      S_PLASMADOWN, 0, 0},	// S_PLASMADOWN
+    {SPR_PLSG,0,1,{    A_Raise},       S_PLASMAUP,  0, 0},	// S_PLASMAUP
+    {SPR_PLSG,0,3,{    A_FirePlasma},  S_PLASMA2,   0, 0},	// S_PLASMA1
+    {SPR_PLSG,1,20,{    A_ReFire},      S_PLASMA,    0, 0},	// S_PLASMA2
+    {SPR_PLSF,32768,4,{ A_Light1},      S_LIGHTDONE, 0, 0},	// S_PLASMAFLASH1
+    {SPR_PLSF,32769,4,{ A_Light1},      S_LIGHTDONE, 0, 0},	// S_PLASMAFLASH2
+    {SPR_BFGG,0,1,{     A_WeaponReady}, S_BFG,       0, 0},	// S_BFG
+    {SPR_BFGG,0,1,{     A_Lower},    S_BFGDOWN,   0, 0},	// S_BFGDOWN
+    {SPR_BFGG,0,1,{     A_Raise},    S_BFGUP,     0, 0},	// S_BFGUP
+    {SPR_BFGG,0,20,{    A_BFGsound}, S_BFG2,      0, 0},	// S_BFG1
+    {SPR_BFGG,1,10,{    A_GunFlash}, S_BFG3,      0, 0},	// S_BFG2
+    {SPR_BFGG,1,10,{    A_FireBFG},  S_BFG4,      0, 0},	// S_BFG3
+    {SPR_BFGG,1,20,{    A_ReFire},   S_BFG,       0, 0},	// S_BFG4
+    {SPR_BFGF,32768,11,{A_Light1},   S_BFGFLASH2, 0, 0},	// S_BFGFLASH1
+    {SPR_BFGF,32769,6,{ A_Light2},   S_LIGHTDONE, 0, 0},	// S_BFGFLASH2
+    {SPR_BLUD,2,8,{NULL},                                          S_BLOOD2,    0, 0},	// S_BLOOD1
+    {SPR_BLUD,1,8,{NULL},                                          S_BLOOD3,    0, 0},	// S_BLOOD2
+    {SPR_BLUD,0,8,{NULL},                                          S_NULL,      0, 0},	// S_BLOOD3
+    {SPR_PUFF,32768,4,{NULL},                                      S_PUFF2,     0, 0},	// S_PUFF1
+    {SPR_PUFF,1,4,{NULL},                                          S_PUFF3,     0, 0},	// S_PUFF2
     {SPR_PUFF,2,4,{NULL},S_PUFF4,0,0},	// S_PUFF3
     {SPR_PUFF,3,4,{NULL},S_NULL,0,0},	// S_PUFF4
     {SPR_BAL1,32768,4,{NULL},S_TBALL2,0,0},	// S_TBALL1
@@ -244,32 +245,32 @@ state_t	states[NUMSTATES] = {
     {SPR_PLSS,32769,6,{NULL},S_PLASBALL,0,0},	// S_PLASBALL2
     {SPR_PLSE,32768,4,{NULL},S_PLASEXP2,0,0},	// S_PLASEXP
     {SPR_PLSE,32769,4,{NULL},S_PLASEXP3,0,0},	// S_PLASEXP2
-    {SPR_PLSE,32770,4,{NULL},S_PLASEXP4,0,0},	// S_PLASEXP3
-    {SPR_PLSE,32771,4,{NULL},S_PLASEXP5,0,0},	// S_PLASEXP4
-    {SPR_PLSE,32772,4,{NULL},S_NULL,0,0},	// S_PLASEXP5
-    {SPR_MISL,32768,1,{NULL},S_ROCKET,0,0},	// S_ROCKET
-    {SPR_BFS1,32768,4,{NULL},S_BFGSHOT2,0,0},	// S_BFGSHOT
-    {SPR_BFS1,32769,4,{NULL},S_BFGSHOT,0,0},	// S_BFGSHOT2
-    {SPR_BFE1,32768,8,{NULL},S_BFGLAND2,0,0},	// S_BFGLAND
-    {SPR_BFE1,32769,8,{NULL},S_BFGLAND3,0,0},	// S_BFGLAND2
-    {SPR_BFE1,32770,8,{A_BFGSpray},S_BFGLAND4,0,0},	// S_BFGLAND3
-    {SPR_BFE1,32771,8,{NULL},S_BFGLAND5,0,0},	// S_BFGLAND4
-    {SPR_BFE1,32772,8,{NULL},S_BFGLAND6,0,0},	// S_BFGLAND5
-    {SPR_BFE1,32773,8,{NULL},S_NULL,0,0},	// S_BFGLAND6
-    {SPR_BFE2,32768,8,{NULL},S_BFGEXP2,0,0},	// S_BFGEXP
-    {SPR_BFE2,32769,8,{NULL},S_BFGEXP3,0,0},	// S_BFGEXP2
-    {SPR_BFE2,32770,8,{NULL},S_BFGEXP4,0,0},	// S_BFGEXP3
-    {SPR_BFE2,32771,8,{NULL},S_NULL,0,0},	// S_BFGEXP4
-    {SPR_MISL,32769,8,{A_Explode},S_EXPLODE2,0,0},	// S_EXPLODE1
-    {SPR_MISL,32770,6,{NULL},S_EXPLODE3,0,0},	// S_EXPLODE2
-    {SPR_MISL,32771,4,{NULL},S_NULL,0,0},	// S_EXPLODE3
-    {SPR_TFOG,32768,6,{NULL},S_TFOG01,0,0},	// S_TFOG
-    {SPR_TFOG,32769,6,{NULL},S_TFOG02,0,0},	// S_TFOG01
-    {SPR_TFOG,32768,6,{NULL},S_TFOG2,0,0},	// S_TFOG02
-    {SPR_TFOG,32769,6,{NULL},S_TFOG3,0,0},	// S_TFOG2
-    {SPR_TFOG,32770,6,{NULL},S_TFOG4,0,0},	// S_TFOG3
-    {SPR_TFOG,32771,6,{NULL},S_TFOG5,0,0},	// S_TFOG4
-    {SPR_TFOG,32772,6,{NULL},S_TFOG6,0,0},	// S_TFOG5
+    {SPR_PLSE,32770,4,{NULL},                                     S_PLASEXP4, 0, 0},	// S_PLASEXP3
+    {SPR_PLSE,32771,4,{NULL},                                     S_PLASEXP5, 0, 0},	// S_PLASEXP4
+    {SPR_PLSE,32772,4,{NULL},                                     S_NULL,     0, 0},	// S_PLASEXP5
+    {SPR_MISL,32768,1,{NULL},                                     S_ROCKET,   0, 0},	// S_ROCKET
+    {SPR_BFS1,32768,4,{NULL},                                     S_BFGSHOT2, 0, 0},	// S_BFGSHOT
+    {SPR_BFS1,32769,4,{NULL},                                     S_BFGSHOT,  0, 0},	// S_BFGSHOT2
+    {SPR_BFE1,32768,8,{NULL},                                     S_BFGLAND2, 0, 0},	// S_BFGLAND
+    {SPR_BFE1,32769,8,{NULL},                                     S_BFGLAND3, 0, 0},	// S_BFGLAND2
+    {SPR_BFE1,32770,8,{A_BFGSpray}, S_BFGLAND4, 0, 0},	// S_BFGLAND3
+    {SPR_BFE1,32771,8,{NULL},                                     S_BFGLAND5, 0, 0},	// S_BFGLAND4
+    {SPR_BFE1,32772,8,{NULL},                                     S_BFGLAND6, 0, 0},	// S_BFGLAND5
+    {SPR_BFE1,32773,8,{NULL},                                     S_NULL,     0, 0},	// S_BFGLAND6
+    {SPR_BFE2,32768,8,{NULL},                                     S_BFGEXP2,  0, 0},	// S_BFGEXP
+    {SPR_BFE2,32769,8,{NULL},                                     S_BFGEXP3,  0, 0},	// S_BFGEXP2
+    {SPR_BFE2,32770,8,{NULL},                                    S_BFGEXP4,  0, 0},	// S_BFGEXP3
+    {SPR_BFE2,32771,8,{NULL},                                    S_NULL,     0, 0},	// S_BFGEXP4
+    {SPR_MISL,32769,8,{A_Explode}, S_EXPLODE2, 0, 0},	// S_EXPLODE1
+    {SPR_MISL,32770,6,{NULL},                                    S_EXPLODE3, 0, 0},	// S_EXPLODE2
+    {SPR_MISL,32771,4,{NULL},                                    S_NULL,     0, 0},	// S_EXPLODE3
+    {SPR_TFOG,32768,6,{NULL},                                    S_TFOG01,   0, 0},	// S_TFOG
+    {SPR_TFOG,32769,6,{NULL},                                    S_TFOG02,   0, 0},	// S_TFOG01
+    {SPR_TFOG,32768,6,{NULL},                                    S_TFOG2,    0, 0},	// S_TFOG02
+    {SPR_TFOG,32769,6,{NULL},                                    S_TFOG3,    0, 0},	// S_TFOG2
+    {SPR_TFOG,32770,6,{NULL},                                    S_TFOG4,    0, 0},	// S_TFOG3
+    {SPR_TFOG,32771,6,{NULL},                                    S_TFOG5,    0, 0},	// S_TFOG4
+    {SPR_TFOG,32772,6,{NULL},                                    S_TFOG6,    0, 0},	// S_TFOG5
     {SPR_TFOG,32773,6,{NULL},S_TFOG7,0,0},	// S_TFOG6
     {SPR_TFOG,32774,6,{NULL},S_TFOG8,0,0},	// S_TFOG7
     {SPR_TFOG,32775,6,{NULL},S_TFOG9,0,0},	// S_TFOG8
@@ -281,40 +282,40 @@ state_t	states[NUMSTATES] = {
     {SPR_IFOG,32769,6,{NULL},S_IFOG3,0,0},	// S_IFOG2
     {SPR_IFOG,32770,6,{NULL},S_IFOG4,0,0},	// S_IFOG3
     {SPR_IFOG,32771,6,{NULL},S_IFOG5,0,0},	// S_IFOG4
-    {SPR_IFOG,32772,6,{NULL},S_NULL,0,0},	// S_IFOG5
-    {SPR_PLAY,0,-1,{NULL},S_NULL,0,0},	// S_PLAY
-    {SPR_PLAY,0,4,{NULL},S_PLAY_RUN2,0,0},	// S_PLAY_RUN1
-    {SPR_PLAY,1,4,{NULL},S_PLAY_RUN3,0,0},	// S_PLAY_RUN2
-    {SPR_PLAY,2,4,{NULL},S_PLAY_RUN4,0,0},	// S_PLAY_RUN3
-    {SPR_PLAY,3,4,{NULL},S_PLAY_RUN1,0,0},	// S_PLAY_RUN4
-    {SPR_PLAY,4,12,{NULL},S_PLAY,0,0},	// S_PLAY_ATK1
-    {SPR_PLAY,32773,6,{NULL},S_PLAY_ATK1,0,0},	// S_PLAY_ATK2
-    {SPR_PLAY,6,4,{NULL},S_PLAY_PAIN2,0,0},	// S_PLAY_PAIN
-    {SPR_PLAY,6,4,{A_Pain},S_PLAY,0,0},	// S_PLAY_PAIN2
-    {SPR_PLAY,7,10,{NULL},S_PLAY_DIE2,0,0},	// S_PLAY_DIE1
-    {SPR_PLAY,8,10,{A_PlayerScream},S_PLAY_DIE3,0,0},	// S_PLAY_DIE2
-    {SPR_PLAY,9,10,{A_Fall},S_PLAY_DIE4,0,0},	// S_PLAY_DIE3
-    {SPR_PLAY,10,10,{NULL},S_PLAY_DIE5,0,0},	// S_PLAY_DIE4
-    {SPR_PLAY,11,10,{NULL},S_PLAY_DIE6,0,0},	// S_PLAY_DIE5
-    {SPR_PLAY,12,10,{NULL},S_PLAY_DIE7,0,0},	// S_PLAY_DIE6
-    {SPR_PLAY,13,-1,{NULL},S_NULL,0,0},	// S_PLAY_DIE7
-    {SPR_PLAY,14,5,{NULL},S_PLAY_XDIE2,0,0},	// S_PLAY_XDIE1
-    {SPR_PLAY,15,5,{A_XScream},S_PLAY_XDIE3,0,0},	// S_PLAY_XDIE2
-    {SPR_PLAY,16,5,{A_Fall},S_PLAY_XDIE4,0,0},	// S_PLAY_XDIE3
-    {SPR_PLAY,17,5,{NULL},S_PLAY_XDIE5,0,0},	// S_PLAY_XDIE4
-    {SPR_PLAY,18,5,{NULL},S_PLAY_XDIE6,0,0},	// S_PLAY_XDIE5
-    {SPR_PLAY,19,5,{NULL},S_PLAY_XDIE7,0,0},	// S_PLAY_XDIE6
-    {SPR_PLAY,20,5,{NULL},S_PLAY_XDIE8,0,0},	// S_PLAY_XDIE7
-    {SPR_PLAY,21,5,{NULL},S_PLAY_XDIE9,0,0},	// S_PLAY_XDIE8
-    {SPR_PLAY,22,-1,{NULL},S_NULL,0,0},	// S_PLAY_XDIE9
-    {SPR_POSS,0,10,{A_Look},S_POSS_STND2,0,0},	// S_POSS_STND
-    {SPR_POSS,1,10,{A_Look},S_POSS_STND,0,0},	// S_POSS_STND2
-    {SPR_POSS,0,4,{A_Chase},S_POSS_RUN2,0,0},	// S_POSS_RUN1
-    {SPR_POSS,0,4,{A_Chase},S_POSS_RUN3,0,0},	// S_POSS_RUN2
-    {SPR_POSS,1,4,{A_Chase},S_POSS_RUN4,0,0},	// S_POSS_RUN3
-    {SPR_POSS,1,4,{A_Chase},S_POSS_RUN5,0,0},	// S_POSS_RUN4
-    {SPR_POSS,2,4,{A_Chase},S_POSS_RUN6,0,0},	// S_POSS_RUN5
-    {SPR_POSS,2,4,{A_Chase},S_POSS_RUN7,0,0},	// S_POSS_RUN6
+    {SPR_IFOG,32772,6,{NULL},                              S_NULL,       0, 0},	// S_IFOG5
+    {SPR_PLAY,0,-1,{NULL},                                 S_NULL,       0, 0},	// S_PLAY
+    {SPR_PLAY,0,4,{NULL},                                  S_PLAY_RUN2,  0, 0},	// S_PLAY_RUN1
+    {SPR_PLAY,1,4,{NULL},                                  S_PLAY_RUN3,  0, 0},	// S_PLAY_RUN2
+    {SPR_PLAY,2,4,{NULL},                                  S_PLAY_RUN4,  0, 0},	// S_PLAY_RUN3
+    {SPR_PLAY,3,4,{NULL},                                  S_PLAY_RUN1,  0, 0},	// S_PLAY_RUN4
+    {SPR_PLAY,4,12,{NULL},                                         S_PLAY,       0, 0},	// S_PLAY_ATK1
+    {SPR_PLAY,32773,6,{NULL},                                      S_PLAY_ATK1,  0, 0},	// S_PLAY_ATK2
+    {SPR_PLAY,6,4,{NULL},                                          S_PLAY_PAIN2, 0, 0},	// S_PLAY_PAIN
+    {SPR_PLAY,6,4,{ A_Pain},         S_PLAY,       0, 0},	// S_PLAY_PAIN2
+    {SPR_PLAY,7,10,{NULL},                                         S_PLAY_DIE2,  0, 0},	// S_PLAY_DIE1
+    {SPR_PLAY,8,10,{A_PlayerScream}, S_PLAY_DIE3,  0, 0},	// S_PLAY_DIE2
+    {SPR_PLAY,9,10,{A_Fall},         S_PLAY_DIE4,  0, 0},	// S_PLAY_DIE3
+    {SPR_PLAY,10,10,{NULL},                                   S_PLAY_DIE5,  0, 0},	// S_PLAY_DIE4
+    {SPR_PLAY,11,10,{NULL},                                   S_PLAY_DIE6,  0, 0},	// S_PLAY_DIE5
+    {SPR_PLAY,12,10,{NULL},                                   S_PLAY_DIE7,  0, 0},	// S_PLAY_DIE6
+    {SPR_PLAY,13,-1,{NULL},                                   S_NULL,       0, 0},	// S_PLAY_DIE7
+    {SPR_PLAY,14,5,{NULL},                                    S_PLAY_XDIE2, 0, 0},	// S_PLAY_XDIE1
+    {SPR_PLAY,15,5,{A_XScream}, S_PLAY_XDIE3, 0, 0},	// S_PLAY_XDIE2
+    {SPR_PLAY,16,5,{A_Fall},    S_PLAY_XDIE4, 0, 0},	// S_PLAY_XDIE3
+    {SPR_PLAY,17,5,{NULL},                                    S_PLAY_XDIE5, 0, 0},	// S_PLAY_XDIE4
+    {SPR_PLAY,18,5,{NULL},                                 S_PLAY_XDIE6, 0, 0},	// S_PLAY_XDIE5
+    {SPR_PLAY,19,5,{NULL},                                 S_PLAY_XDIE7, 0, 0},	// S_PLAY_XDIE6
+    {SPR_PLAY,20,5,{NULL},                                 S_PLAY_XDIE8, 0, 0},	// S_PLAY_XDIE7
+    {SPR_PLAY,21,5,{NULL},                                 S_PLAY_XDIE9, 0, 0},	// S_PLAY_XDIE8
+    {SPR_PLAY,22,-1,{NULL},                                S_NULL,       0, 0},	// S_PLAY_XDIE9
+    {SPR_POSS,0,10,{A_Look}, S_POSS_STND2, 0, 0},	// S_POSS_STND
+    {SPR_POSS,1,10,{A_Look},                               S_POSS_STND,  0, 0},	// S_POSS_STND2
+    {SPR_POSS,0,4,{A_Chase},                              S_POSS_RUN2,  0, 0},	// S_POSS_RUN1
+    {SPR_POSS,0,4,{A_Chase},                              S_POSS_RUN3,  0, 0},	// S_POSS_RUN2
+    {SPR_POSS,1,4,{A_Chase},                              S_POSS_RUN4,  0, 0},	// S_POSS_RUN3
+    {SPR_POSS,1,4,{A_Chase},                              S_POSS_RUN5,  0, 0},	// S_POSS_RUN4
+    {SPR_POSS,2,4,{A_Chase},                              S_POSS_RUN6,  0, 0},	// S_POSS_RUN5
+    {SPR_POSS,2,4,{A_Chase},                              S_POSS_RUN7,  0, 0},	// S_POSS_RUN6
     {SPR_POSS,3,4,{A_Chase},S_POSS_RUN8,0,0},	// S_POSS_RUN7
     {SPR_POSS,3,4,{A_Chase},S_POSS_RUN1,0,0},	// S_POSS_RUN8
     {SPR_POSS,4,10,{A_FaceTarget},S_POSS_ATK2,0,0},	// S_POSS_ATK1

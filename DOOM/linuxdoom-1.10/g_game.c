@@ -61,6 +61,7 @@ rcsid[] = "$Id: g_game.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 // Data.
 #include "dstrings.h"
 #include "sounds.h"
+#include <string.h>
 
 // SKY handling - still the wrong place.
 #include "r_data.h"
@@ -470,7 +471,7 @@ void G_DoLoadLevel (void)
     levelstarttic = gametic;        // for time calculation
     
     if (wipegamestate == GS_LEVEL) 
-	wipegamestate = -1;             // force a wipe 
+	wipegamestate = GS_NULL;             // force a wipe
 
     gamestate = GS_LEVEL; 
 
@@ -1212,12 +1213,12 @@ void G_DoLoadGame (void)
     
     // skip the description field 
     memset (vcheck,0,sizeof(vcheck)); 
-    sprintf (vcheck,"version %i",VERSION); 
-    if (strcmp (save_p, vcheck)) 
-	return;				// bad version 
+    sprintf (vcheck,"version %i",VERSION);
+    if (strcmp(reinterpret_cast<const char*>(save_p), reinterpret_cast<const char *>(vcheck)))
+	return;				// bad version
     save_p += VERSIONSIZE; 
 			 
-    gameskill = *save_p++; 
+    gameskill = static_cast<skill_t>(*save_p++);
     gameepisode = *save_p++; 
     gamemap = *save_p++; 
     for (i=0 ; i<MAXPLAYERS ; i++) 
@@ -1539,7 +1540,7 @@ void G_RecordDemo (char* name)
     i = M_CheckParm ("-maxdemo");
     if (i && i<myargc-1)
 	maxsize = atoi(myargv[i+1])*1024;
-    demobuffer = Z_Malloc (maxsize,PU_STATIC,NULL); 
+    demobuffer = static_cast<byte *>(Z_Malloc (maxsize, PU_STATIC, NULL));
     demoend = demobuffer + maxsize;
 	
     demorecording = true; 
@@ -1585,7 +1586,7 @@ void G_DoPlayDemo (void)
     int             i, episode, map; 
 	 
     gameaction = ga_nothing; 
-    demobuffer = demo_p = W_CacheLumpName (defdemoname, PU_STATIC); 
+    demobuffer = demo_p = static_cast<byte *>(W_CacheLumpName (defdemoname, PU_STATIC));
     if ( *demo_p++ != VERSION)
     {
       fprintf( stderr, "Demo is from a different game version!\n");
@@ -1593,7 +1594,7 @@ void G_DoPlayDemo (void)
       return;
     }
     
-    skill = *demo_p++; 
+    skill = static_cast<skill_t>(*demo_p++);
     episode = *demo_p++; 
     map = *demo_p++; 
     deathmatch = *demo_p++;

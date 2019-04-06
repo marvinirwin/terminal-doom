@@ -121,7 +121,7 @@ typedef struct {
     VisualID visualid;
     int screen;
     int depth;
-    int class;
+    // int class;
     unsigned long red_mask;
     unsigned long green_mask;
     unsigned long blue_mask;

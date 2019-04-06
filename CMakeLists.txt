@@ -144,19 +144,18 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/z_zone.h
         DOOM/linuxdoom-1.10/pcx.c
         DOOM/linuxdoom-1.10/pcx.h
-        DOOM/linuxdoom-1.10/bitmap.c
-        DOOM/linuxdoom-1.10/bitmap.h
-        DOOM/linuxdoom-1.10/palette.h
-        DOOM/linuxdoom-1.10/palette.c
+#[[        DOOM/linuxdoom-1.10/bitmap.c
+        DOOM/linuxdoom-1.10/bitmap.h]]
+#[[        DOOM/linuxdoom-1.10/palette.h
+        DOOM/linuxdoom-1.10/palette.c]]
         DOOM/linuxdoom-1.10/pixel.h
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
         DOOM/linuxdoom-1.10/debug.c
         DOOM/linuxdoom-1.10/debug.h
-        )
+        DOOM/linuxdoom-1.10/p_enemy2.cpp DOOM/linuxdoom-1.10/p_enemy2.h DOOM/linuxdoom-1.10/player.cpp DOOM/linuxdoom-1.10/player.h DOOM/linuxdoom-1.10/p_pspr2.cpp DOOM/linuxdoom-1.10/p_pspr2.h DOOM/linuxdoom-1.10/mobj2.cpp DOOM/linuxdoom-1.10/mobj2.h DOOM/linuxdoom-1.10/spritenum.cpp DOOM/linuxdoom-1.10/spritenum.h DOOM/linuxdoom-1.10/sector.cpp DOOM/linuxdoom-1.10/sector.h)
 
 target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)
-
 
 set_target_properties(pg_doom PROPERTIES LINKER_LANGUAGE CXX)
 

@@ -583,7 +583,7 @@ void S_UpdateSounds(void* listener_p)
 		//  or modify their params
 		if (c->origin && listener_p != c->origin)
 		{
-		    audible = S_AdjustSoundParams(listener,
+/*		    audible = S_AdjustSoundParams(listener,
 						  c->origin,
 						  &volume,
 						  &sep,
@@ -594,7 +594,7 @@ void S_UpdateSounds(void* listener_p)
 			S_StopChannel(cnum);
 		    }
 		    else
-			I_UpdateSoundParams(c->handle, volume, sep, pitch);
+			I_UpdateSoundParams(c->handle, volume, sep, pitch);*/
 		}
 	    }
 	    else

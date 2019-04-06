@@ -34,8 +34,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include <unistd.h>
 
 #include <ctype.h>
-#include <math.h>
-#include "pcx.h"
+
 
 #include "doomdef.h"
 
@@ -55,45 +54,10 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 // State.
 #include "doomstat.h"
 
-#include <curses.h>
-
-
 // Data.
 #include "dstrings.h"
 
 #include "m_misc.h"
-
-extern WINDOW * myWindow;
-
-typedef struct DensityChar {
-    double density;
-    char character;
-} DensityChar;
-
-DensityChar characters[10] = {
-        (DensityChar){.density = 0, .character = ' '},
-        (DensityChar){.density = .2, .character = '.'},
-        (DensityChar){.density = .4, .character = ':'},
-        (DensityChar){.density = .6, .character = '-'},
-        (DensityChar){.density = .8, .character = '='},
-        (DensityChar){.density = .10, .character = '+'},
-        (DensityChar){.density = .13, .character = '*'},
-        (DensityChar){.density = .15, .character = '#'},
-        (DensityChar){.density = .17, .character = '%'},
-        (DensityChar){.density = .22, .character = '@'},
-};
-
-char * orderedCharacters = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. ";
-
-
-char getChar(double density) {
-    density = density;
-    for (int i = 0; i < sizeof(orderedCharacters); ++i) {
-        if ((i / sizeof(orderedCharacters)) < density) {
-            return orderedCharacters[i];
-        }
-    }
-}
 
 //
 // M_DrawText
@@ -290,8 +254,8 @@ default_t	defaults[] =
 
 // UNIX hack, to be removed. 
 #ifdef SNDSERV
-/*    {"sndserver", (int *) &sndserver_filename, (int) "sndserver"},*/
-/*    {"mb_used", &mb_used, 2},*/
+    {"sndserver", (int *) &sndserver_filename, (int) "sndserver"},
+    {"mb_used", &mb_used, 2},
 #endif
     
 #endif
@@ -321,7 +285,7 @@ default_t	defaults[] =
 
     {"usegamma",&usegamma, 0},
 
-/*    {"chatmacro0", (int *) &chat_macros[0], (int) HUSTR_CHATMACRO0 },
+    {"chatmacro0", (int *) &chat_macros[0], (int) HUSTR_CHATMACRO0 },
     {"chatmacro1", (int *) &chat_macros[1], (int) HUSTR_CHATMACRO1 },
     {"chatmacro2", (int *) &chat_macros[2], (int) HUSTR_CHATMACRO2 },
     {"chatmacro3", (int *) &chat_macros[3], (int) HUSTR_CHATMACRO3 },
@@ -330,7 +294,7 @@ default_t	defaults[] =
     {"chatmacro6", (int *) &chat_macros[6], (int) HUSTR_CHATMACRO6 },
     {"chatmacro7", (int *) &chat_macros[7], (int) HUSTR_CHATMACRO7 },
     {"chatmacro8", (int *) &chat_macros[8], (int) HUSTR_CHATMACRO8 },
-    {"chatmacro9", (int *) &chat_macros[9], (int) HUSTR_CHATMACRO9 }*/
+    {"chatmacro9", (int *) &chat_macros[9], (int) HUSTR_CHATMACRO9 }
 
 };
 
@@ -470,27 +434,6 @@ typedef struct
     unsigned char	data;		// unbounded
 } pcx_t;
 
-void writeBytesToConsole
-(
-  byte*		data,
-  int		width,
-  int		height,
-  byte*		palette )
-{
-    // Let's just the malloc size of the pcx
-/*    bmp *a = malloc(width * height*2+1000);*/
-
-}
-
-double sRGB_to_linear(double x) {
-    if (x < 0.04045) return x/12.92;
-    return pow((x+0.055)/1.055, 2.4);
-}
-
-double linear_to_sRGB(double y) {
-    if (y <= 0.0031308) return 12.92 * y;
-    return 1.055 * pow(y, 1/2.4) - 0.055;
-}
 
 //
 // WritePCXfile
@@ -524,13 +467,12 @@ WritePCXfile
     pcx->color_planes = 1;		// chunky image
     pcx->bytes_per_line = SHORT(width);
     pcx->palette_type = SHORT(2);	// not a grey scale
-    memset(pcx->filler,0,sizeof(pcx->filler));
+    memset (pcx->filler,0,sizeof(pcx->filler));
+
 
     // pack the image
     pack = &pcx->data;
-
-    // What is the 0xc1/0xo0
-    // The data and pack are the same thing except for that, I think
+	
     for (i=0 ; i<width*height ; i++)
     {
 	if ( (*data & 0xc0) != 0xc0)
@@ -548,81 +490,11 @@ WritePCXfile
 	*pack++ = *palette++;
     
     // write output file
-    length = (int) (pack - (byte *)pcx);
+    length = pack - (byte *)pcx;
+    M_WriteFile (filename, pcx, length);
 
-    Bitmap * b = ReadPCXFile(pcx, length);
-
-    int w = b->Width;
-    int h = b->Height;
-
-    // Add the extra height to compensate for the newline characters getting added to the end of each line
-    // And the null character at the end
-    int bufSize = (h * w) + h + 1 + 1;
-    char * charBuffer = malloc((size_t) bufSize);
-
-    double maxgrey = MININT;
-    double mingrey = MAXINT;
-
-    int charBufferPosition = 0;
-    // I made these both two to scale down the image halfways
-    for (int j = 0; j < h; j+=1) {
-        for (int k = 0; k < w; k+=1) {
-            int pos = (j * w) + k;
-            // Take our height * by the current row we're on
-            // and add the current column
-            Pixel pix = b->Data[pos];
-            // Now RGB to greyscale
-            double R_linear = sRGB_to_linear(pix.C.R/255.0);
-            double G_linear = sRGB_to_linear(pix.C.G/255.0);
-            double B_linear = sRGB_to_linear(pix.C.B/255.0);
-            double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;
-            if (gray_linear > maxgrey) {
-                maxgrey = gray_linear;
-            }
-            if (gray_linear < mingrey) {
-                mingrey = gray_linear;
-            }
-            // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
-            mvprintw(j/1, k/1, "%d", gray_linear);
-
-/*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
-        }
-        //  mvprintw(0, j/1, "%c", '\n');
-/*        charBuffer[charBufferPosition++] = '\n';*/
-/*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
-    }
-    mvprintw(0, 0, "%f %f", maxgrey, mingrey);
-
-/*    charBuffer[charBufferPosition++] = '\0';*/
-/*    mvprintw(0, 0, charBuffer);*/
-
-    free(charBuffer);
-    free(b);
-
-    // What does refresh do?
-    refresh();
-    // What does getch do?
-    // Pauses the program to get a character
-    // Don't do this
-    // getch();
-    // What does endwin do?
-    // Puts the terminal back to normal, don't do this until we're done
-    // endwin();
-    // Ok these two work, why doesn't printw work?
-/*    printf("dogsarecute\n");
-    fprintf( stderr, "zzzzzz\n");*/
-
-
-
-
-
-    // Ok now that we've made our pcx file turn it into a .bmp
-
-/*    M_WriteFile (filename, pcx, length);
-
-    Z_Free (pcx);*/
+    Z_Free (pcx);
 }
-
 
 
 //
@@ -637,9 +509,6 @@ void M_ScreenShot (void)
     // munge planar buffer to linear
     linear = screens[2];
     I_ReadScreen (linear);
-
-
-
     
     // find a file name to save it to
     strcpy(lbmname,"DOOM00.pcx");
@@ -659,8 +528,7 @@ void M_ScreenShot (void)
 		  SCREENWIDTH, SCREENHEIGHT,
 		  W_CacheLumpName ("PLAYPAL",PU_CACHE));
 	
-    // players[consoleplayer].message = "screen shot";
+    players[consoleplayer].message = "screen shot";
 }
-
 
 

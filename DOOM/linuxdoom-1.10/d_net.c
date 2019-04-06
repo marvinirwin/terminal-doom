@@ -484,7 +484,7 @@ void D_ArbitrateNetStart (void)
     if (doomcom->consoleplayer)
     {
 	// listen for setup info from key player
-	//printf ("listening for network start info...\n");
+	printf ("listening for network start info...\n");
 	while (1)
 	{
 	    CheckAbort ();
@@ -507,7 +507,7 @@ void D_ArbitrateNetStart (void)
     else
     {
 	// key player, send the setup info
-	//printf ("sending network start info...\n");
+	printf ("sending network start info...\n");
 	do
 	{
 	    CheckAbort ();
@@ -574,7 +574,8 @@ void D_CheckNetGame (void)
     if (netgame)
 	D_ArbitrateNetStart ();
 
-    //printf ("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n", startskill, deathmatch, startmap, startepisode);
+    printf ("startskill %i  deathmatch: %i  startmap: %i  startepisode: %i\n",
+	    startskill, deathmatch, startmap, startepisode);
 	
     // read values out of doomcom
     ticdup = doomcom->ticdup;
@@ -587,7 +588,8 @@ void D_CheckNetGame (void)
     for (i=0 ; i<doomcom->numnodes ; i++)
 	nodeingame[i] = true;
 	
-    //printf ("player %i of %i (%i nodes)\n", consoleplayer+1, doomcom->numplayers, doomcom->numnodes);
+    printf ("player %i of %i (%i nodes)\n",
+	    consoleplayer+1, doomcom->numplayers, doomcom->numnodes);
 
 }
 

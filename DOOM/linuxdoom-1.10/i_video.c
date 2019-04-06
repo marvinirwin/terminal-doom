@@ -48,6 +48,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include <netinet/in.h>
 // #include <errnos.h>
 #include <signal.h>
+#include <curses.h>
 
 #include "doomstat.h"
 #include "i_system.h"
@@ -692,8 +693,20 @@ void grabsharedmemory(int size)
 	  (int) (image->data));*/
 }
 
+
+WINDOW *myWindow;
+
 void I_InitGraphics(void)
 {
+
+#ifndef NO_CURSES
+	myWindow = initscr();
+    keypad(myWindow, true);
+	cbreak();
+	noecho();
+	clear();
+    nodelay(stdscr, TRUE);
+#endif
 
     char*		displayname;
     char*		d;
@@ -701,7 +714,7 @@ void I_InitGraphics(void)
     int			pnum;
     int			x=0;
     int			y=0;
-    
+
     // warning: char format, different type arg
     char		xsign=' ';
     char		ysign=' ';

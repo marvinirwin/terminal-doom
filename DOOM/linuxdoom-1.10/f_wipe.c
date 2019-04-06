@@ -152,7 +152,6 @@ wipe_initMelt
     // to have stuff in column-major format
     wipe_shittyColMajorXform((short*)wipe_scr_start, width/2, height);
     wipe_shittyColMajorXform((short*)wipe_scr_end, width/2, height);
-
     
     // setup initial column positions
     // (y<0 => not ready to scroll yet)

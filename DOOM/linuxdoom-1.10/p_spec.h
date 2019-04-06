@@ -26,9 +26,6 @@
 #ifndef __P_SPEC__
 #define __P_SPEC__
 
-#include "p_mobj.h"
-#include "r_defs.h"
-#include "d_player.h"
 
 //
 // End-level timer (-TIMER option)
@@ -332,8 +329,8 @@ typedef enum
 {
     normal,
     close30ThenOpen,
-    e_close,
-    e_open,
+    close,
+    open,
     raiseIn5Mins,
     blazeRaise,
     blazeOpen,

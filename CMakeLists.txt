@@ -13,7 +13,7 @@ SET(MACOS -DMACOS)
 SET(FLAG32 -m32)
 SET(CMAKE_C_FLAGS "-m32")
 
-add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS})
+add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32})
 
 
 add_executable(pg_doom

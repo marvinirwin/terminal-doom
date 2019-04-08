@@ -703,8 +703,9 @@ int	R_CheckTextureNumForName (char *name)
 		
     for (i=0 ; i<numtextures ; i++)
 	if (!strncasecmp (textures[i]->name, name, 8) )
+        printf("%s\n", textures[i]->name);
 	    return i;
-		
+
     return -1;
 }
 

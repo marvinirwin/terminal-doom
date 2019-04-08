@@ -538,8 +538,12 @@ void M_ScreenShot (void)
             double B_linear = sRGB_to_linear(pix.C.B/255.0);
             double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;*/
             // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
+
 #ifndef NO_CURSES
-            mvprintw(j/1, k/1, "%d", linear[pos]);
+            mvprintw(j/1, k/1, "%c", linear[pos]);
+#else
+/*            unsigned  char c = (unsigned char)linear[pos];
+            printf("%d", c);*/
 #endif
 
 /*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
@@ -550,6 +554,8 @@ void M_ScreenShot (void)
     }
 #ifndef NO_CURSES
     refresh();
+#else
+/*    printf("\nAHHHH");*/
 #endif
 
 

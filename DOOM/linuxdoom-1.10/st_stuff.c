@@ -925,7 +925,6 @@ void ST_updateWidgets(void)
 {
     static int	largeammo = 1994; // means "n/a"
     int		i;
-
     // must redirect the pointer if the ready weapon has changed.
     //  if (w_ready.data != plyr->readyweapon)
     //  {

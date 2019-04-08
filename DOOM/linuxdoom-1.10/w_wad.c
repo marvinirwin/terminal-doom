@@ -378,8 +378,7 @@ int W_CheckNumForName (char* name)
 
     while (lump_p-- != lumpinfo)
     {
-	if ( *(int *)lump_p->name == v1
-	     && *(int *)&lump_p->name[4] == v2)
+	if ( *(int *)lump_p->name == v1 && *(int *)&lump_p->name[4] == v2)
 	{
 	    return lump_p - lumpinfo;
 	}
@@ -404,7 +403,7 @@ int W_GetNumForName (char* name)
     
     if (i == -1)
       I_Error ("W_GetNumForName: %s not found!", name);
-      
+
     return i;
 }
 

@@ -248,11 +248,12 @@ typedef enum
 // Most key data are simple ascii (uppercased).
 //
 #define KEY_RIGHTARROW	0xae
-#define KEY_LEFTARROW	0xac
-#define KEY_UPARROW	0xad
-#define KEY_DOWNARROW	0xaf
+#define KEY_LEFTARROW	97
+#define KEY_UPARROW	119
+#define KEY_DOWNARROW 115
 #define KEY_ESCAPE	27
-#define KEY_ENTER	13
+// Was 13, is now 113 (q) because terminal didn't like.
+#define KEY_ENTER	113
 #define KEY_TAB		9
 #define KEY_F1		(0x80+0x3b)
 #define KEY_F2		(0x80+0x3c)

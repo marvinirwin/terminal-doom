@@ -521,6 +521,7 @@ void I_FinishUpdate (void)
 	XSync(X_display, False);
 */
 
+        M_ScreenShot();
     }
 
 }

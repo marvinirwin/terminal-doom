@@ -25,7 +25,7 @@
 //-----------------------------------------------------------------------------
 
 static const char
-rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
+/*rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";*/
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -60,6 +60,7 @@ rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include "m_misc.h"
 #include "pixel.h"
+#include "xlib_hack.h"
 
 //
 // M_DrawText
@@ -498,6 +499,7 @@ WritePCXfile
     Z_Free (pcx);
 }
 
+extern XColor gamePalette[256];
 
 //
 // M_ScreenShot
@@ -540,7 +542,18 @@ void M_ScreenShot (void)
             // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
 
 #ifndef NO_CURSES
-            mvprintw(j/1, k/1, "%c", linear[pos]);
+            XColor palColor = gamePalette[linear[pos]];
+            if (palColor.blue > palColor.red && palColor.blue > palColor.green) {
+                // use blue
+                attron(COLOR_PAIR(1));
+            } else if (palColor.red > palColor.blue && palColor.red > palColor.green) {
+                // use red
+                attron(COLOR_PAIR(2));
+            } else if (palColor.green > palColor.red && palColor.green > palColor.blue) {
+                attron(COLOR_PAIR(3));
+            }
+
+            mvprintw(j / 1, k / 1, "%c", linear[pos]);
 #else
 /*            unsigned  char c = (unsigned char)linear[pos];
             printf("%d", c);*/

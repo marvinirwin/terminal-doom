@@ -68,6 +68,7 @@ static const char
 
 
 #include "g_game.h"
+#include "debug.h"
 
 
 #define SAVEGAMESIZE    0x2c000
@@ -1483,7 +1484,7 @@ void G_DoPlayDemo(void) {
     demobuffer = demo_p = W_CacheLumpName(defdemoname, PU_STATIC);
     if ( *demo_p++ != VERSION)
     {
-      fprintf( stderr, "Demo is from a different game version!\n");
+      cPrintf("Demo is from a different game version!");
       gameaction = ga_nothing;
       return;
     }

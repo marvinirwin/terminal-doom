@@ -9,7 +9,7 @@
 #include <memory.h>
 #include "debug.h"
 
-int debugStartX  = 340;
+int debugStartX  = 360;
 int debugMaxY = 100;
 int debugPosY = 0;
 void curseDebug(char * cstr){
@@ -20,20 +20,21 @@ void curseDebug(char * cstr){
 
     if (debugPosY > debugMaxY) {
         debugPosY = 0;
+        clear();
     } else {
         debugPosY++;
     }
     // Clear the space
-    mvprintw(debugPosY, debugStartX, "                                                 ");
+    // mvprintw(debugPosY, debugStartX, "                                                 ");
     mvprintw(debugPosY, debugStartX, cstr);
     refresh();
 }
 
-void cPrintf(char * format, ...) {
+void cPrintf(const char * format,  ...) {
     char * newfmt = malloc(strlen(format) * 2 + 10);
     va_list args;
     va_start(args, format);
-    sprintf(newfmt, format, args);
+    vsprintf(newfmt, format, args);
     va_end(args);
     curseDebug(newfmt);
     free(newfmt);

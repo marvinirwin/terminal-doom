@@ -59,6 +59,8 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include "doomdef.h"
 #include "xlib_hack.h"
 #include "m_misc.h"
+#include "i_video.h"
+#include "debug.h"
 
 #define POINTER_WARP_COUNTDOWN	1
 
@@ -536,11 +538,6 @@ void I_ReadScreen (byte* scr)
 }
 
 
-//
-// Palette stuff.
-//
-static XColor	colors[256];
-
 void UploadNewPalette(Colormap cmap, byte *palette)
 {
 
@@ -560,8 +557,8 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 		firstcall = false;
 		for (i=0 ; i<256 ; i++)
 		{
-		    colors[i].pixel = i;
-		    colors[i].flags = DoRed|DoGreen|DoBlue;
+		    gamePalette[i].pixel = i;
+		    gamePalette[i].flags = DoRed|DoGreen|DoBlue;
 		}
 	    }
 
@@ -569,11 +566,11 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 	    for (i=0 ; i<256 ; i++)
 	    {
 		c = gammatable[usegamma][*palette++];
-		colors[i].red = (c<<8) + c;
+		gamePalette[i].red = (c<<8) + c;
 		c = gammatable[usegamma][*palette++];
-		colors[i].green = (c<<8) + c;
+		gamePalette[i].green = (c<<8) + c;
 		c = gammatable[usegamma][*palette++];
-		colors[i].blue = (c<<8) + c;
+		gamePalette[i].blue = (c<<8) + c;
 	    }
 
 	    // store the colors to the current colormap
@@ -707,7 +704,21 @@ void I_InitGraphics(void)
 	cbreak();
 	noecho();
 	clear();
+	cbreak();
+	nodelay(myWindow, TRUE);
     nodelay(stdscr, TRUE);
+
+    if (has_colors() == FALSE) {
+        printf("Your terminal does not support color\n");
+        exit(1);
+    }
+
+	start_color();
+    // https://stackoverflow.com/questions/18551558/how-to-use-terminal-color-palette-with-curses
+    cPrintf("Curses colors list %d\n", COLORS);
+    for (short i = 0; i < COLORS; ++i) {
+		init_pair(i + 1, i, COLOR_BLACK);
+    }
 #endif
 
     char*		displayname;

@@ -6,6 +6,6 @@
 #define PG_DOOM_DEBUG_H
 
 void curseDebug(char * cstr);
-void cPrintf(char * format, ...);
+void cPrintf(const char * format, ...);
 
 #endif //PG_DOOM_DEBUG_H

@@ -25,11 +25,16 @@
 
 
 #include "doomtype.h"
+#include "xlib_hack.h"
 
 #ifdef __GNUG__
 #pragma interface
 #endif
 
+//
+// Palette stuff.
+//
+XColor	gamePalette[256];
 
 // Called by D_DoomMain,
 // determines the hardware configuration

@@ -40,6 +40,7 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <curses.h>
+#include <sys/time.h>
 
 #endif
 
@@ -157,6 +158,78 @@ void D_PostEvent(event_t *ev) {
     eventhead = (++eventhead) & (MAXEVENTS - 1);
 }
 
+void respond(event_t * ev) {
+    if (M_Responder(ev)) {
+    } else {
+        if (G_Responder(ev)) {
+        }
+    }
+}
+
+unsigned int KEYDOWN_LIMIT = 1;
+
+struct keyDownStruct {
+    long start;
+    int key;
+};
+// Can only have 10 keys down at once
+struct keyDownStruct keyDownList[10] = {
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+        {.start = 0,  .key = -1},
+};
+
+void clearKeyDownStruct() {
+    time_t t;
+    time(&t);
+    for (int i = 0; i < 9; ++i) {
+        struct keyDownStruct* s = &keyDownList[i];
+        if (s->key == -1) {
+            continue;
+        }
+/*        char str[500];
+        sprintf(str, "diff %ld", t - s->start);*/
+        cPrintf("diff %ld \n", t - s->start);
+/*        cPrintf("diff %ld", t - s->start);*/
+        if (t - s->start >= KEYDOWN_LIMIT) {
+            cPrintf("Pressing %d up", s->key);
+            event_t * e = malloc(sizeof(event_t));
+            e->type = ev_keyup;
+            e->data1 = s->key;
+            respond(e);
+            s->key = -1;
+            s->start = 0;
+        }
+    }
+}
+
+void enterKeyDownStruct(int c) {
+    time_t t;
+    time(&t);
+    // Iterate through, clearing anything we want
+    for (int i = 0; i < 9; ++i) {
+        struct keyDownStruct* s = &keyDownList[i];
+        if (s->key == -1) {
+            cPrintf("Pressing %d down", s->key);
+            s->key = c;
+            s->start = t;
+            event_t * e = malloc(sizeof(event_t));
+            e->type = ev_keydown;
+            e->data1 = s->key;
+            respond(e);
+            return;
+        }
+    }
+    cPrintf("No room in the keydown list for key %d", 1,  c);
+}
+
 
 //
 // D_ProcessEvents
@@ -189,17 +262,15 @@ void D_ProcessEvents(void) {
         G_Responder(ev);
     }
 
-    cPrintf("Responding to  %d\n", keyev->data1);
+    clearKeyDownStruct();
     if (ch == ERR) {
         return;
     }
-    if (M_Responder(keyev)) {
-    } else {
-        if (G_Responder(keyev)) {
-        }
-    }
 
+    enterKeyDownStruct(ch);
 }
+
+
 
 
 

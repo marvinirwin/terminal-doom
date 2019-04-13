@@ -24,6 +24,8 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <math.h>
+
 static const char
 /*rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";*/
 
@@ -61,6 +63,46 @@ static const char
 #include "m_misc.h"
 #include "pixel.h"
 #include "xlib_hack.h"
+
+char charList[] = ".-`',:_;~\"/!|\\i^trc*v?s()+lj1=e{[]z}<xo7f>aJy3Iun542b6Lw9k#dghq80VpT$YACSFPUZ%mEGXNO&DKBR@HQWM";
+
+// greyscale will be at or between 0, 1
+char lookupChar(double greyscale) {
+    size_t max = strlen(charList);
+    int place = (int) floor((max * greyscale) + 0.5);
+    return charList[place];
+}
+
+XColor colors[] = {
+        {0, 0, 0, 0},
+        {0,255, 0, 0},
+        {0, 0, 255, 0},
+        {0, 0, 0, 255},
+        {0, 255, 255, 0},
+        {0, 255, 0, 255},
+        {0, 0, 255, 255},
+        {0, 255, 255, 255},
+};
+
+double distance(XColor * p1, XColor * p2) {
+    int a = p2->red - p1->red;
+    int b = p2->green - p1->green;
+    int c = p2->blue - p1->blue;
+    double r = sqrt((a*a) + (b*b) + (c*c));
+    return r;
+}
+
+int getClosestColor(XColor * c) {
+    int candidateIndex = 0;
+    XColor * closestCandidate = &colors[candidateIndex];
+    for (int i = 1; i < 8; ++i) {
+        if (distance(closestCandidate, c) > distance(&colors[i], c)) {
+            closestCandidate = &colors[i];
+            candidateIndex = i;
+        }
+    }
+    return candidateIndex;
+}
 
 //
 // M_DrawText
@@ -543,17 +585,12 @@ void M_ScreenShot (void)
 
 #ifndef NO_CURSES
             XColor palColor = gamePalette[linear[pos]];
-            if (palColor.blue > palColor.red && palColor.blue > palColor.green) {
-                // use blue
-                attron(COLOR_PAIR(1));
-            } else if (palColor.red > palColor.blue && palColor.red > palColor.green) {
-                // use red
-                attron(COLOR_PAIR(2));
-            } else if (palColor.green > palColor.red && palColor.green > palColor.blue) {
-                attron(COLOR_PAIR(3));
-            }
+            double gscale = ( (0.3 * palColor.red) + (0.59 * palColor.green) + (0.11 * palColor.blue)) / 255;
+            int colorIndex = getClosestColor(&palColor);
 
-            mvprintw(j / 1, k / 1, "%c", linear[pos]);
+            attron(COLOR_PAIR(colorIndex + 1));
+
+            mvprintw(j / 1, k / 1, "%c", lookupChar(gscale));
 #else
 /*            unsigned  char c = (unsigned char)linear[pos];
             printf("%d", c);*/

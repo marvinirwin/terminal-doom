@@ -693,6 +693,7 @@ void grabsharedmemory(int size)
 }
 
 
+extern XColor colors[];
 WINDOW *myWindow;
 
 void I_InitGraphics(void)
@@ -714,11 +715,17 @@ void I_InitGraphics(void)
     }
 
 	start_color();
-    // https://stackoverflow.com/questions/18551558/how-to-use-terminal-color-palette-with-curses
-    cPrintf("Curses colors list %d\n", COLORS);
-    for (short i = 0; i < COLORS; ++i) {
-		init_pair(i + 1, i, COLOR_BLACK);
-    }
+    // If i use sizeof(colors) / sizeof(XColor) I get an incomplete type warning
+	// TODO not hardcode this number
+	for (int j = 0; j < 8; ++j) {
+		XColor * c = &colors[j];
+		short i = (short) (((c->red / 255) << 0) |
+						   ((c->green / 255) << 1) |
+						   ((c->blue / 255) << 2));
+
+		init_pair(j + 1, i, COLOR_BLACK);
+	}
+
 #endif
 
     char*		displayname;

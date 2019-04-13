@@ -26,8 +26,7 @@
 
 #include <math.h>
 
-static const char
-/*rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";*/
+static const char rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -582,18 +581,23 @@ void M_ScreenShot (void)
             double B_linear = sRGB_to_linear(pix.C.B/255.0);
             double gray_linear = (0.2126 * R_linear + 0.7152 * G_linear + 0.0722 * B_linear) / .21078;*/
             // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
+            XColor palColor = gamePalette[linear[pos]];
+/*            if (palColor.red > 0 || palColor.green > 0 || palColor.blue > 0) {
+                printf("finally, a real color\n");
+            }*/
+            int colorIndex = getClosestColor(&palColor);
+            double gscale = ( (0.3 * palColor.red) + (0.59 * palColor.green) + (0.11 * palColor.blue)) / 255;
+            int c = lookupChar(gscale);
 
 #ifndef NO_CURSES
-            XColor palColor = gamePalette[linear[pos]];
-            double gscale = ( (0.3 * palColor.red) + (0.59 * palColor.green) + (0.11 * palColor.blue)) / 255;
-            int colorIndex = getClosestColor(&palColor);
 
-            attron(COLOR_PAIR(colorIndex + 1));
+            // attron(COLOR_PAIR(colorIndex + 1));
 
-            mvprintw(j / 1, k / 1, "%c", lookupChar(gscale));
+            mvprintw(j / 1, k / 1, "%c", c);
 #else
 /*            unsigned  char c = (unsigned char)linear[pos];
             printf("%d", c);*/
+            printf("%c", c);
 #endif
 
 /*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
@@ -601,11 +605,14 @@ void M_ScreenShot (void)
         //  mvprintw(0, j/1, "%c", '\n');
 /*        charBuffer[charBufferPosition++] = '\n';*/
 /*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
+#ifndef NO_CURSES
+#else
+        printf("\n");
+#endif
     }
 #ifndef NO_CURSES
     refresh();
 #else
-/*    printf("\nAHHHH");*/
 #endif
 
 

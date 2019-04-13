@@ -548,7 +548,9 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 #ifdef __cplusplus
     if (X_visualinfo.c_class == PseudoColor && X_visualinfo.depth == 8)
 #else
-    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)
+/*    if (X_visualinfo.class == PseudoColor && X_visualinfo.depth == 8)*/
+    	// MARVIN, I think this is necessary to convince it to upload the palette?
+        if (true)
 #endif
 	{
 	    // initialize the colormap
@@ -723,7 +725,7 @@ void I_InitGraphics(void)
 						   ((c->green / 255) << 1) |
 						   ((c->blue / 255) << 2));
 
-		init_pair(j + 1, i, COLOR_BLACK);
+		init_pair((short) (j + 1), i, COLOR_BLACK);
 	}
 
 #endif

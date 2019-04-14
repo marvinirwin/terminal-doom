@@ -583,7 +583,7 @@ void M_ScreenShot (void)
             // mvprintw(j/1, k/1, "%c", getChar(gray_linear));
             XColor palColor = gamePalette[linear[pos]];
 /*            if (palColor.red > 0 || palColor.green > 0 || palColor.blue > 0) {
-                printf("finally, a real color\n");
+                cPrintf("finally, a real color\n");
             }*/
             int colorIndex = getClosestColor(&palColor);
             double gscale = ( (0.3 * palColor.red) + (0.59 * palColor.green) + (0.11 * palColor.blue)) / 255;
@@ -596,15 +596,15 @@ void M_ScreenShot (void)
             mvprintw(j / 1, k / 1, "%c", c);
 #else
 /*            unsigned  char c = (unsigned char)linear[pos];
-            printf("%d", c);*/
-            printf("%c", c);
+            cPrintf("%d", c);*/
+            cPrintf("%c", c);
 #endif
 
 /*            charBuffer[charBufferPosition++] = getChar(gray_linear);*/
         }
         //  mvprintw(0, j/1, "%c", '\n');
 /*        charBuffer[charBufferPosition++] = '\n';*/
-/*        printf("max %lf min %lf \n", maxgrey, mingrey);*/
+/*        cPrintf("max %lf min %lf \n", maxgrey, mingrey);*/
 #ifndef NO_CURSES
 #else
         printf("\n");

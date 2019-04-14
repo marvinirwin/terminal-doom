@@ -213,8 +213,17 @@ void clearKeyDownStruct() {
 void enterKeyDownStruct(int c) {
     time_t t;
     time(&t);
-    // Iterate through, clearing anything we want
-    for (int i = 0; i < 9; ++i) {
+    // First try, try to find duplicate key
+    for (int i = 0; i < sizeof(keyDownList) / sizeof(struct keyDownStruct); ++i) {
+        struct keyDownStruct* s = &keyDownList[i];
+        if (s->key == c) {
+            cPrintf("Holding %d down", c);
+            s->start = t;
+            return;
+        }
+    }
+    // Second try, try and find an empty one
+    for (int i = 0; i < sizeof(keyDownList) / sizeof(struct keyDownStruct); ++i) {
         struct keyDownStruct* s = &keyDownList[i];
         if (s->key == -1) {
             cPrintf("Pressing %d down", c);
@@ -262,12 +271,10 @@ void D_ProcessEvents(void) {
         G_Responder(ev);
     }
 
-    clearKeyDownStruct();
-    if (ch == ERR) {
-        return;
+    if (ch != ERR) {
+        enterKeyDownStruct(ch);
     }
-
-    enterKeyDownStruct(ch);
+    clearKeyDownStruct();
 }
 
 

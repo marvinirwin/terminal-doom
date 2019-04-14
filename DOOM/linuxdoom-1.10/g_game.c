@@ -162,7 +162,7 @@ int key_up = KEY_UPARROW;
 int key_down = KEY_DOWNARROW;
 int key_strafeleft;
 int key_straferight;
-int key_fire;
+int key_fire = 'e';
 int key_use;
 int key_strafe;
 int key_speed;

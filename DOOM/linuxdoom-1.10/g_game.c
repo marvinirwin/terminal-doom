@@ -155,11 +155,11 @@ byte *savebuffer;
 // 
 // controls (have defaults) 
 // 
-int key_right;
-int key_left;
+int key_right = KEY_RIGHTARROW;
+int key_left = KEY_LEFTARROW;
 
-int key_up;
-int key_down;
+int key_up = KEY_UPARROW;
+int key_down = KEY_DOWNARROW;
 int key_strafeleft;
 int key_straferight;
 int key_fire;

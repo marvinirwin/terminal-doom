@@ -284,10 +284,10 @@ default_t	defaults[] =
     
 
 #ifdef NORMALUNIX
-    {"key_right",&key_right, KEY_RIGHTARROW},
+/*    {"key_right",&key_right, KEY_RIGHTARROW},
     {"key_left",&key_left, KEY_LEFTARROW},
     {"key_up",&key_up, KEY_UPARROW},
-    {"key_down",&key_down, KEY_DOWNARROW},
+    {"key_down",&key_down, KEY_DOWNARROW},*/
     {"key_strafeleft",&key_strafeleft, ','},
     {"key_straferight",&key_straferight, '.'},
 
@@ -381,6 +381,8 @@ void M_SaveDefaults (void)
 //
 extern byte	scantokey[128];
 
+// MARVIN
+// I wonder what happens if I don't load defaults
 void M_LoadDefaults (void)
 {
     int		i;
@@ -391,7 +393,7 @@ void M_LoadDefaults (void)
     char*	newstring;
     int		parm;
     boolean	isstring;
-    
+
     // set everything to base values
     numdefaults = sizeof(defaults)/sizeof(defaults[0]);
     for (i=0 ; i<numdefaults ; i++)

@@ -264,6 +264,26 @@ void G_BuildTiccmd(ticcmd_t *cmd) {
              || joybuttons[joybstrafe];
     speed = gamekeydown[key_speed] || joybuttons[joybspeed];
 
+    cPrintf("%d", key_down);
+    if (strafe) {
+        cPrintf("strafing");
+    }
+    if (speed) {
+        cPrintf("speed?");
+    }
+    if (gamekeydown[key_right]) {
+        cPrintf("right");
+    }
+    if (gamekeydown[key_left]) {
+        cPrintf("left");
+    }
+    if (gamekeydown[key_up]) {
+        cPrintf("up");
+    }
+    if (gamekeydown[key_down]) {
+        cPrintf("down");
+    }
+
     forward = side = 0;
 
     // use two stage accelerative turning

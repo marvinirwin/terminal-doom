@@ -20,7 +20,6 @@ void curseDebug(char * cstr){
 
     if (debugPosY > debugMaxY) {
         debugPosY = 0;
-        clear();
     } else {
         debugPosY++;
     }

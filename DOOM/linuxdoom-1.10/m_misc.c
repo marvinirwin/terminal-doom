@@ -62,6 +62,7 @@ static const char rcsid[] = "$Id: m_misc.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #include "m_misc.h"
 #include "pixel.h"
 #include "xlib_hack.h"
+#include "debug.h"
 
 char charList[] = ".-`',:_;~\"/!|\\i^trc*v?s()+lj1=e{[]z}<xo7f>aJy3Iun542b6Lw9k#dghq80VpT$YACSFPUZ%mEGXNO&DKBR@HQWM";
 
@@ -74,13 +75,13 @@ char lookupChar(double greyscale) {
 
 XColor colors[] = {
         {0, 0, 0, 0},
-        {0,255, 0, 0},
-        {0, 0, 255, 0},
-        {0, 0, 0, 255},
-        {0, 255, 255, 0},
-        {0, 255, 0, 255},
-        {0, 0, 255, 255},
-        {0, 255, 255, 255},
+        {0, UINT16_MAX, 0, 0},
+        {0, 0, UINT16_MAX},
+        {0, 0, 0, UINT16_MAX},
+        {0, UINT16_MAX, UINT16_MAX},
+        {0, UINT16_MAX, 0, UINT16_MAX},
+        {0, 0, UINT16_MAX, UINT16_MAX},
+        {0, UINT16_MAX, UINT16_MAX, UINT16_MAX}
 };
 
 double distance(XColor * p1, XColor * p2) {
@@ -92,10 +93,14 @@ double distance(XColor * p1, XColor * p2) {
 }
 
 int getClosestColor(XColor * c) {
+    // How is the red of the first color 29812?
     int candidateIndex = 0;
     XColor * closestCandidate = &colors[candidateIndex];
     for (int i = 1; i < 8; ++i) {
-        if (distance(closestCandidate, c) > distance(&colors[i], c)) {
+        double d1 = distance(closestCandidate, c);
+        double d2 = distance(&colors[i], c);
+/*        cPrintf("d1: %lf   d2: %lf", d1, d2);*/
+        if (d1 > d2) {
             closestCandidate = &colors[i];
             candidateIndex = i;
         }
@@ -571,6 +576,7 @@ void M_ScreenShot (void)
     }
     if (i==100)
 	I_Error ("M_ScreenShot: Couldn't create a PCX");*/
+    int previousColorIndex = -1;
 
     for (int j = 0; j < SCREENHEIGHT; j+=1) {
         for (int k = 0; k < SCREENWIDTH; k+=1) {
@@ -590,10 +596,22 @@ void M_ScreenShot (void)
             int colorIndex = getClosestColor(&palColor);
             double gscale = ( (0.3 * palColor.red) + (0.59 * palColor.green) + (0.11 * palColor.blue)) / 255;
             int c = lookupChar(gscale);
+            int cPair = COLOR_PAIR(colorIndex + 1);
+            cPrintf("color pair: %d\n", cPair);
+            cPrintf("color at color pair: %d\n",
+                    colors[colorIndex].red << 0 |
+                    colors[colorIndex].green << 1 |
+                    colors[colorIndex].blue << 2
+            );
 
 #ifndef NO_CURSES
 
-            // attron(COLOR_PAIR(colorIndex + 1));
+            if (previousColorIndex != colorIndex) {
+                // I'm surprised this doesn't segfault
+                // Index 256 shouldn't exist
+                attron(cPair);
+                previousColorIndex = colorIndex;
+            }
 
             mvprintw(j / 1, k / 1, "%c", c);
 #else

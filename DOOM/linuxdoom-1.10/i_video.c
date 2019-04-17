@@ -707,7 +707,6 @@ void I_InitGraphics(void)
 	cbreak();
 	noecho();
 	clear();
-	cbreak();
 	nodelay(myWindow, TRUE);
     nodelay(stdscr, TRUE);
 
@@ -721,12 +720,14 @@ void I_InitGraphics(void)
 	// TODO not hardcode this number
 	for (int j = 0; j < 8; ++j) {
 		XColor * c = &colors[j];
-		short i = (short) (((c->red / 255) << 0) |
-						   ((c->green / 255) << 1) |
-						   ((c->blue / 255) << 2));
+		short i = (short) (((c->red / UINT16_MAX) << 0) |
+						   ((c->green / UINT16_MAX) << 1) |
+						   ((c->blue / UINT16_MAX) << 2));
+
 
 		init_pair((short) (j + 1), i, COLOR_BLACK);
 	}
+	return;
 
 #endif
 

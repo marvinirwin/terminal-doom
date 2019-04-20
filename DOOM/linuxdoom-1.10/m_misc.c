@@ -615,7 +615,7 @@ void DrawScreen(const byte *linear) {
     }
     // Ok so now we have all our pixels grouped by color
     // This should be eight
-    for (int i = 0; i < colorLists; ++i) {
+    for (int i = 0; i < drawableColorCount; ++i) {
         // Get the curses color pair index
         // Curse color pair initialization starts at 1 instead of zero, so +1 to the index
 #ifndef NO_COLORS
@@ -625,8 +625,7 @@ void DrawScreen(const byte *linear) {
 #endif
         // I'm not sure if I should be using a CharDraw* or CharDraw
         Node *listHead = colorLists[i];
-        // Avoid the first one since it is empty
-        if (!listHead->next) {
+        if (!listHead) {
             continue;
         }
         listHead = listHead->next;
@@ -634,10 +633,8 @@ void DrawScreen(const byte *linear) {
         while(listHead != NULL) {
 // if curses has been specified we printed in the previous loop
 #ifndef NO_CURSES
-            mvprintw(colorListHead->y, colorListHead->x, "%c", colorListHead->c);
+            mvprintw(listHead->y, listHead->x, "%c", listHead->c);
 #endif
-            i++;
-            cPrintf("i %d\n", i);
             // Let's see if I can get away with doing the freeing here
             Node * previous = listHead;
             listHead = listHead->next;

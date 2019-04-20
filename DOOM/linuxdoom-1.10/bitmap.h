@@ -170,7 +170,7 @@ INLINE const StrBuf* GetBitmapName (const Bitmap* B)
 
 #if defined(HAVE_INLINE)
 INLINE unsigned GetBitmapColors (const Bitmap* B)
-/* Get the number of colors in an image. The function will return the number
+/* Get the number of drawableColors in an image. The function will return the number
 ** of palette entries for indexed bitmaps and 2^24 for non indexed bitmaps.
 */
 {

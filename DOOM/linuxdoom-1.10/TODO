@@ -57,7 +57,7 @@
 
 - 16bpp CLUT. The lightmaps and the
   framebuffer could be changed to switch
-  to 64K colors. Prolly better to do
+  to 64K drawableColors. Prolly better to do
   GLDOOM right away.
 
 - remove checks for commercial etc., in

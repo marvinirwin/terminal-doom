@@ -18,6 +18,7 @@ void curseDebug(char * cstr){
     return;
 #endif
 
+
     if (debugPosY > debugMaxY) {
         debugPosY = 0;
     } else {
@@ -30,6 +31,7 @@ void curseDebug(char * cstr){
 }
 
 void cPrintf(const char * format,  ...) {
+
     char * newfmt = malloc(strlen(format) * 2 + 10);
     va_list args;
     va_start(args, format);

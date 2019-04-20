@@ -14,7 +14,7 @@ Ultimate DOOM, "playable" in the terminal
 It was an excuse to learn to read and write(poorly) some C and it was funny.  
 
 ## Why does it look so bad?
-Each pixel is converted to greyscale and then mapped to an ASCII character based on density, turns out ASCII characters aren't very distinct when based on density.
+Each pixel is converted to greyscale and then mapped to an ASCII character based on density, turns out ASCII characters aren't very distinct when looked at far away.
 
 ## Why aren't there colors?
 If you change the compiler flags you can see what it looks like with colors, it's just that the curses `attron` function takes so long.  I even optimized it so that I would only need to change colors 8 times per frame, it's still unbearably slow.

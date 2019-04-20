@@ -15,7 +15,7 @@ SET(CMAKE_C_FLAGS "-m32")
 SET(NO_CURSES -DNO_CURSES)
 SET(NO_COLORS -DNO_COLORS)
 
-add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} ${NO_CURSES})
+add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} )
 
 
 add_executable(pg_doom

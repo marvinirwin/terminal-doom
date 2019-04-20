@@ -1,6 +1,6 @@
 # terminal-doom
 
-Ultimate DOOM, playable in the terminal
+Ultimate DOOM, "playable" in the terminal
 
 ## Prerequisites
 

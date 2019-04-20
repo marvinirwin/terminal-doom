@@ -13,6 +13,9 @@ int debugStartX  = 360;
 int debugMaxY = 100;
 int debugPosY = 0;
 void curseDebug(char * cstr){
+#ifdef NO_DEBUG
+    return;
+#endif
 #ifdef NO_CURSES
     printf(cstr);
     return;
@@ -31,7 +34,9 @@ void curseDebug(char * cstr){
 }
 
 void cPrintf(const char * format,  ...) {
-
+#ifdef NO_DEBUG
+    return;
+#endif
     char * newfmt = malloc(strlen(format) * 2 + 10);
     va_list args;
     va_start(args, format);

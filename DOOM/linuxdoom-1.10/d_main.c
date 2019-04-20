@@ -166,7 +166,7 @@ void respond(event_t * ev) {
     }
 }
 
-unsigned int KEYDOWN_LIMIT = 500;
+unsigned int KEYDOWN_LIMIT = 1000;
 
 struct keyDownStruct {
     clock_t start;

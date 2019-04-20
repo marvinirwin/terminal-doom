@@ -575,8 +575,8 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 		gamePalette[i].blue = (c<<8) + c;
 	    }
 
-	    // store the colors to the current colormap
-/*	    XStoreColors(X_display, cmap, colors, 256);*/
+	    // store the drawableColors to the current colormap
+/*	    XStoreColors(X_display, cmap, drawableColors, 256);*/
 
 	}
 }
@@ -695,7 +695,7 @@ void grabsharedmemory(int size)
 }
 
 
-extern XColor colors[];
+extern XColor drawableColors[];
 WINDOW *myWindow;
 
 void I_InitGraphics(void)
@@ -716,10 +716,10 @@ void I_InitGraphics(void)
     }
 
 	start_color();
-    // If i use sizeof(colors) / sizeof(XColor) I get an incomplete type warning
+    // If i use sizeof(drawableColors) / sizeof(XColor) I get an incomplete type warning
 	// TODO not hardcode this number
 	for (int j = 0; j < 8; ++j) {
-		XColor * c = &colors[j];
+		XColor * c = &drawableColors[j];
 		short i = (short) (((c->red / UINT16_MAX) << 0) |
 						   ((c->green / UINT16_MAX) << 1) |
 						   ((c->blue / UINT16_MAX) << 2));

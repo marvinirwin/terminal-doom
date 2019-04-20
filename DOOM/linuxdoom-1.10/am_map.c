@@ -64,7 +64,7 @@ static const char rcsid[] = "$Id: am_map.c,v 1.4 1997/02/03 21:24:33 b1 Exp $";
 #define BLACK		0
 #define WHITE		(256-47)
 
-// Automap colors
+// Automap drawableColors
 #define BACKGROUND	BLACK
 #define YOURCOLORS	WHITE
 #define YOURRANGE	0

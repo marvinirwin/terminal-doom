@@ -73,7 +73,7 @@ Palette* NewMonochromePalette (void)
     /* Create a new palette */
     Palette* P = NewPalette (2);
 
-    /* Set the two colors */
+    /* Set the two drawableColors */
     P->Entries[0] = RGBA (0x00, 0x00, 0x00, 0x00);
     P->Entries[1] = RGBA (0xFF, 0xFF, 0xFF, 0x00);
 

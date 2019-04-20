@@ -71,7 +71,7 @@ int		columnofs[MAXWIDTH];
 
 // Color tables for different players,
 //  translate a limited part to another
-//  (color ramps used for  suit colors).
+//  (color ramps used for  suit drawableColors).
 //
 byte		translations[3][256];	
  
@@ -463,7 +463,7 @@ void R_InitTranslationTables (void)
     translationtables = Z_Malloc (256*3+255, PU_STATIC, 0);
     translationtables = (byte *)(( (int)translationtables + 255 )& ~255);
     
-    // translate just the 16 green colors
+    // translate just the 16 green drawableColors
     for (i=0 ; i<256 ; i++)
     {
 	if (i >= 0x70 && i<= 0x7f)
@@ -475,7 +475,7 @@ void R_InitTranslationTables (void)
 	}
 	else
 	{
-	    // Keep all other colors as is.
+	    // Keep all other drawableColors as is.
 	    translationtables[i] = translationtables[i+256] 
 		= translationtables[i+512] = i;
 	}

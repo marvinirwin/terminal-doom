@@ -166,10 +166,10 @@ void respond(event_t * ev) {
     }
 }
 
-unsigned int KEYDOWN_LIMIT = 1;
+unsigned int KEYDOWN_LIMIT = 500;
 
 struct keyDownStruct {
-    long start;
+    clock_t start;
     int key;
 };
 // Can only have 10 keys down at once
@@ -187,8 +187,7 @@ struct keyDownStruct keyDownList[10] = {
 };
 
 void clearKeyDownStruct() {
-    time_t t;
-    time(&t);
+    clock_t t = clock();
     for (int i = 0; i < 9; ++i) {
         struct keyDownStruct* s = &keyDownList[i];
         if (s->key == -1) {
@@ -211,8 +210,7 @@ void clearKeyDownStruct() {
 }
 
 void enterKeyDownStruct(int c) {
-    time_t t;
-    time(&t);
+    clock_t t = clock();
     // First try, try to find duplicate key
     for (int i = 0; i < sizeof(keyDownList) / sizeof(struct keyDownStruct); ++i) {
         struct keyDownStruct* s = &keyDownList[i];

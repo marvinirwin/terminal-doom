@@ -366,7 +366,7 @@ Bitmap *ReadPCXFile(const char *bytes, int length)
 
                 /* Check the maximum index for safety */
 /*                if (MaxIdx > 15) {
-                    printf("PCX file '%s' contains more than 16 indexed colors "
+                    printf("PCX file '%s' contains more than 16 indexed drawableColors "
                            "but no extra palette", Name);
                 }*/
 

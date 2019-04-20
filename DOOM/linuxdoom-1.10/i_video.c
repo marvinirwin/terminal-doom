@@ -725,7 +725,7 @@ void I_InitGraphics(void)
 						   ((c->blue / UINT16_MAX) << 2));
 
 
-		init_pair((short) (j + 1), i, COLOR_BLACK);
+		init_pair((short) (j + 1), COLOR_BLACK, i);
 	}
 	return;
 

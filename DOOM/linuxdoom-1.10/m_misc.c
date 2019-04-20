@@ -527,32 +527,32 @@ WritePCXfile
 typedef struct s_node {
     int x,y,c;
     struct s_node * next;
+    struct s_node * previous;
 } Node;
 
 
-// Is the head the first or the last?
-// I think it's the last
-// So I'm getting passed the tail?
+// appending to a circular linked list is
+// The previous of the tail is now the new node
+// The last formaer previous has its next set to new node
 Node * AddToDrawChar(Node * tail, int c, int x, int y) {
-    Node * head = tail;
     Node * newNode = malloc(sizeof(Node));
     // If tail is null we're creating a new tree
-    if (head == NULL) {
+    if (tail == NULL) {
         newNode->x = x;
         newNode->y = y;
         newNode->c = c;
-        newNode->next = NULL;
+        newNode->next = newNode;
+        newNode->previous = newNode;
         return newNode;
     }
-    while (head->next) {
-        head = head->next;
-    }
     newNode = malloc(sizeof (Node));
-    head->next = newNode;
     newNode->x = x;
     newNode->y = y;
     newNode->c = c;
-    newNode->next = NULL;
+    newNode->next = tail;
+    Node * oldPrevious = tail->previous;
+    tail->previous = newNode;
+    oldPrevious->next = newNode;
 /*    if (newNode->x == 3 && newNode->y == 0) {
         cPrintf("new node %d\n", newNode->c);
     }*/
@@ -586,7 +586,7 @@ void DrawScreen(const byte *linear) {
                 AddToDrawChar(colorLists[colorIndex], c, x, y);
             } else {
                 colorLists[colorIndex] = AddToDrawChar(NULL, c, x, y);
-                cPrintf("new tree %d\n", colorLists[colorIndex]->c);
+/*                cPrintf("new tree %d\n", colorLists[colorIndex]->c);*/
             }
             // Since I'm declaring this here, will it get destroyed when it leaves this block?
             // I don't think it does that
@@ -624,22 +624,22 @@ void DrawScreen(const byte *linear) {
         attron(cPair);
 #endif
         // I'm not sure if I should be using a CharDraw* or CharDraw
-        Node *listHead = colorLists[i];
-        if (!listHead) {
+        Node *position = colorLists[i];
+        Node *start = position;
+        if (!position) {
             continue;
         }
-        listHead = listHead->next;
-
-        while(listHead != NULL) {
+        do {
 // if curses has been specified we printed in the previous loop
 #ifndef NO_CURSES
-            mvprintw(listHead->y, listHead->x, "%c", listHead->c);
+            mvprintw(position->y, position->x, "%c", position->c);
 #endif
             // Let's see if I can get away with doing the freeing here
-            Node * previous = listHead;
-            listHead = listHead->next;
+            Node * previous = position;
+            position = position->next;
+            // I wonder if this free will still work now that I've made it a circular list
             free(previous);
-        }
+        } while(position != start);
 
     }
     // If curses is enabled, refresh the view after we're done placing pixels

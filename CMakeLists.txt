@@ -12,8 +12,11 @@ SET(NORMALUNIX -DNORMALUNIX)
 SET(MACOS -DMACOS)
 SET(FLAG32 -m32)
 SET(CMAKE_C_FLAGS "-m32")
+# intellij and curses dont get along
 SET(NO_CURSES -DNO_CURSES)
+# It wont run without colors
 SET(NO_COLORS -DNO_COLORS)
+# turns off the scrolling curse debug
 SET(NO_DEBUG -DNO_DEBUG)
 
 add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} ${NO_DEBUG} ${NO_COLORS})
@@ -158,6 +161,6 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/color.h
         DOOM/linuxdoom-1.10/debug.c DOOM/linuxdoom-1.10/debug.h)
 
-# find_package(Curses REQUIRED)
 # I'm not sure how to get cmake to find the 32 bit version of curses
+# find_package(Curses REQUIRED)
 target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)

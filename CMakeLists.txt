@@ -16,7 +16,7 @@ SET(NO_CURSES -DNO_CURSES)
 SET(NO_COLORS -DNO_COLORS)
 SET(NO_DEBUG -DNO_DEBUG)
 
-add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} ${NO_DEBUG} ${NO_COLORS})
+add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} ${NO_DEBUG} ${NO_COLORS} ${NO_CURSES})
 
 
 add_executable(pg_doom

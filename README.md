@@ -23,7 +23,7 @@ Each pixel is converted to greyscale and then mapped to an ASCII character based
 If you change the compiler flags you can see what it looks like with colors, it's just that the curses `attron` function takes so long.  I even optimized it so that I would only need to change colors 8 times per frame, it's still unbearably slow.
 
 ## Why is it so difficult to move
-I can't detect keyup events with the terminal, moveover I cannot press more than 1 down at once.  
+I can't detect keyup events with the terminal, moreover I cannot press more than 1 down at once.  
 
 ## Can I play multiplayer?
 Don't know, I've never tried, this is just a mildly modified version of https://github.com/id-Software/DOOM

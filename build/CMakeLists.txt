@@ -171,6 +171,11 @@ configure_file(
         ${CMAKE_CURRENT_BINARY_DIR}/doom1.wad
         COPYONLY
 )
+#[[configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/DOOM1 2.WAD"
+        "${CMAKE_CURRENT_BINARY_DIR}/DOOM1 2.WAD"
+        COPYONLY
+)]]
 
 
 # target_link_libraries(terminal-doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)

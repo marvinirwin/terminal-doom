@@ -5,8 +5,9 @@ DOOM/linuxdoom-1.10/CVS/
 DOOM/linuxdoom-1.10/linux/
 CMakeCache.txt
 DOOM/CMakeLists.txt
-pg_doom
 .idea/
 build/DOOM/CMakeLists.txt
 build/DOOM/linuxdoom-1.10/CVS/
 build/DOOM/linuxdoom-1.10/linux/
+/build/terminal-doom
+/build/Makefile

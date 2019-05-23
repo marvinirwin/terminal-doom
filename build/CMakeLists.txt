@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 2.8.12.2)
 project(pg_doom C)
 
 set(CMAKE_C_STANDARD 11)
@@ -12,15 +12,14 @@ SET(NORMALUNIX -DNORMALUNIX)
 SET(MACOS -DMACOS)
 SET(FLAG32 -m32)
 SET(CMAKE_C_FLAGS "-m32")
-# intellij and curses dont get along
 SET(NO_CURSES -DNO_CURSES)
-# It wont run without colors
 SET(NO_COLORS -DNO_COLORS)
-# turns off the scrolling curse debug
 SET(NO_DEBUG -DNO_DEBUG)
+if(UNIX AND NOT APPLE)
+    SET(LINUX -DLINUX)
+endif()
 
 add_definitions(${DEBUG} ${WALL} ${NORMALUNIX} ${MACOS} ${FLAGS32} ${NO_DEBUG} ${NO_COLORS})
-
 
 add_executable(pg_doom
         DOOM/linuxdoom-1.10/am_map.c
@@ -159,8 +158,11 @@ add_executable(pg_doom
         DOOM/linuxdoom-1.10/pixel.h
         DOOM/linuxdoom-1.10/color.c
         DOOM/linuxdoom-1.10/color.h
-        DOOM/linuxdoom-1.10/debug.c DOOM/linuxdoom-1.10/debug.h)
+        DOOM/linuxdoom-1.10/debug.c
+        DOOM/linuxdoom-1.10/debug.h
+        )
+find_package(Curses REQUIRED)
+target_link_libraries(pg_doom ${CURSES_LIBRARIES})
+target_link_libraries(pg_doom m)
 
-# I'm not sure how to get cmake to find the 32 bit version of curses
-# find_package(Curses REQUIRED)
-target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)
+# target_link_libraries(pg_doom /Volumes/Xcode/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/lib/libcurses.tbd)

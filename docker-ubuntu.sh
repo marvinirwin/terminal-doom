@@ -5,6 +5,7 @@ sudo docker rm DOOM_UBUNTU;
 sudo docker run --name=DOOM_UBUNTU -it \
     --expose=22 \
     -p 22:22/tcp \
+    --security-opt seccomp:unconfined \
     i386/ubuntu:xenial /bin/bash -c "
         apt update &&
         apt-get -y install libncurses5-dev cmake gdb &&

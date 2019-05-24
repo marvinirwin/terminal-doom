@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 sudo docker rm DOOM_UBUNTU;
 
+    # -v $(pwd)/build:/terminal-doom \
 sudo docker run --name=DOOM_UBUNTU -it \
-    -v $(pwd)/build:/terminal-doom \
     --expose=22 \
     -p 22:22/tcp \
     i386/ubuntu:xenial /bin/bash -c "

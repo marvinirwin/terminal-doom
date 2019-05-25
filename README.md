@@ -4,6 +4,9 @@ Ultimate DOOM, "playable" in the terminal
 
 ![](https://user-images.githubusercontent.com/25396621/57265443-9b6d1500-702c-11e9-91a7-32ca2916bec0.gif)
 
+## Quickplay MacOS/Linux (requires Docker)
+
+`bash ./docker-ubuntu.sh`
 
 ## Prerequisites
 

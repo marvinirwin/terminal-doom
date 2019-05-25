@@ -4,9 +4,21 @@ Ultimate DOOM, "playable" in the terminal
 
 ![](https://user-images.githubusercontent.com/25396621/57265443-9b6d1500-702c-11e9-91a7-32ca2916bec0.gif)
 
-## Quickplay MacOS/Linux (requires Docker)
-
-`bash ./docker-ubuntu.sh`
+## Docker Quickplay
+```
+git clone https://github.com/marvinirwin/terminal-doom.git &&
+cd terminal-doom &&
+docker run --name=DOOM_UBUNTU -it \
+    -v $(pwd)/build:/terminal-doom \
+    i386/ubuntu:xenial /bin/bash -c "
+        apt update &&
+        apt-get -y install libncurses5-dev cmake  &&
+        cd /terminal-doom &&
+        cmake . &&
+        make &&
+        ./terminal-doom
+    "
+```
 
 ## Prerequisites
 

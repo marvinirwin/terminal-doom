@@ -23,7 +23,7 @@ sudo docker run --name=DOOM_UBUNTU -it \
         cd /terminal-doom &&
         cmake . &&
         make &&
-        gdb :1234 ./terminal-doom
+        gdbserver :1234 ./terminal-doom
     "
 
 

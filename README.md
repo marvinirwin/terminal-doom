@@ -46,8 +46,5 @@ Don't know, I've never tried, this is just a mildly modified version of https://
 ## Sound?
 No, I never figured out how that worked, the sound server fails on startup (whatever a sound server is)
 
-## Any plans for the future?
-I'm going to try and make it run as a postgres extension using tables for input and output.
-
 ## It memory leaks!
 I prefer the phrase "Has considerable hardware requirements"
